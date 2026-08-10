@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/*
+  Design tokens mirrored from packages/shared/src/theme.ts (Colors).
+  Tailwind can't read JS/TS values at build time, so these are kept as
+  plain CSS variables here. If theme.ts changes, update this block too.
+*/
+:root {
+  --color-primary: #1B3A8C;
+  --color-primary-dark: #12295E;
+  --color-secondary: #22C55E;
+  --color-secondary-light: #DCFCE7;
+  --color-bg: #FFFFFF;
+  --color-bg-soft: #F4F7FE;
+  --color-text: #1F2937;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
