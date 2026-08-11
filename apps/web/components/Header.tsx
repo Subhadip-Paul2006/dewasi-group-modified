@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Stethoscope, Menu, X, LogOut, LayoutDashboard, User } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { Link, useRouter } from "@/i18n/routing";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 // Single shared header used on every page (home, login, register,

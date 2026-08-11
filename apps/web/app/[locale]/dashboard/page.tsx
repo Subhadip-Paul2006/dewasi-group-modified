@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth-context";
 import { useMyAppointments } from "@/lib/hooks/useAppointments";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 
 const STATUS_STYLES: Record<string, string> = {

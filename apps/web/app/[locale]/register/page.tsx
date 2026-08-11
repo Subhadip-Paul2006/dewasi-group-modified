@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Phone, MessageCircle, Mail } from "lucide-react";
 import { registerSchema, type RegisterInput } from "@doctor-contract/shared";
 import { api } from "@/lib/api";

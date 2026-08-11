@@ -3,9 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/routing";
 import { useState } from "react";
-import Link from "next/link";
 import { loginSchema, type LoginInput } from "@doctor-contract/shared";
 import { api, setAccessToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";

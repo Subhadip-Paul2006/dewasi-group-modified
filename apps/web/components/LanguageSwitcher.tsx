@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 
 const locales = [
   { code: "bn", label: "Bangla" },
@@ -15,9 +15,7 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
 
   function switchTo(code: string) {
-    const segments = pathname.split("/");
-    segments[1] = code;
-    router.push(segments.join("/"));
+    router.replace(pathname, { locale: code });
   }
 
   return (

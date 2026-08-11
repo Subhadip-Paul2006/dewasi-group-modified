@@ -128,5 +128,18 @@
     "addressPlaceholder": "Street, area, city",
     "bloodGroupPlaceholder": "e.g. O+",
     "backToDashboard": "Back to dashboard"
+  },
+  "DoctorSearch": {
+    "heading": "Available Doctors",
+    "noResults": "No doctors found. Try a different search.",
+    "experience": "years experience",
+    "consultationFee": "Consultation Fee",
+    "bookButton": "Book Appointment",
+    "selectDate": "Select date",
+    "confirmBooking": "Confirm Booking",
+    "bookingLoading": "Booking...",
+    "bookSuccess": "Appointment booked! Your token is",
+    "bookError": "Could not book this appointment. Please try again.",
+    "viewDoctors": "See Doctors"
   }
 }

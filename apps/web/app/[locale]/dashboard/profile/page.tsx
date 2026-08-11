@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, User, Mail, Phone } from "lucide-react";
 import { updateProfileSchema, type UpdateProfileInput } from "@doctor-contract/shared";
