@@ -2,9 +2,22 @@
 
 import { Search, MapPin, Stethoscope } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useRouter } from "@/i18n/routing";
 
 export default function Hero() {
   const t = useTranslations("Hero");
+  const router = useRouter();
+  const [doctorName, setDoctorName] = useState("");
+  const [city, setCity] = useState("");
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (doctorName) params.set("doctorName", doctorName);
+    if (city) params.set("city", city);
+    router.push("/dashboard/doctors?" + params.toString());
+  }
 
   return (
     <section
@@ -23,10 +36,15 @@ export default function Hero() {
           {t("subtitle")}
         </p>
 
-        <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-lg shadow-blue-900/5 md:flex-row">
+        <form
+          onSubmit={handleSearch}
+          className="mx-auto mt-8 flex max-w-2xl flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-lg shadow-blue-900/5 md:flex-row"
+        >
           <div className="flex flex-1 items-center gap-2 rounded-xl px-4 py-3">
             <Stethoscope className="h-5 w-5 text-[var(--color-primary)]" />
             <input
+              value={doctorName}
+              onChange={(e) => setDoctorName(e.target.value)}
               placeholder={t("searchDoctorPlaceholder")}
               className="w-full text-sm outline-none placeholder:text-gray-400"
             />
@@ -35,15 +53,20 @@ export default function Hero() {
           <div className="flex flex-1 items-center gap-2 rounded-xl px-4 py-3">
             <MapPin className="h-5 w-5 text-[var(--color-primary)]" />
             <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
               placeholder={t("searchLocationPlaceholder")}
               className="w-full text-sm outline-none placeholder:text-gray-400"
             />
           </div>
-          <button className="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)]">
+          <button
+            type="submit"
+            className="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)]"
+          >
             <Search className="h-4 w-4" />
             {t("searchButton")}
           </button>
-        </div>
+        </form>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm text-gray-500">
           <Stat value="120+" label={t("statDoctors")} />

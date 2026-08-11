@@ -47,3 +47,14 @@ export type Appointment = {
   doctor?: { user?: { name: string } };
   clinic?: { clinicName: string };
 };
+
+export type Doctor = {
+  id: string;
+  specialization: string | null;
+  qualification: string | null;
+  experience: number | null;
+  fee: number | null;
+  clinicId: string;
+  user: { name: string };
+  clinic: { id: string; clinicName: string; city: string | null; address: string | null };
+};
