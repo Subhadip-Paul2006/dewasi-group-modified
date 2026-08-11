@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/lib/auth-context";
 import { Link, useRouter } from "@/i18n/routing";
 import LanguageSwitcher from "./LanguageSwitcher";
+import NotificationBell from "./NotificationBell";
 
 // Single shared header used on every page (home, login, register,
 // dashboard). Its content adapts based on auth state, but the visual
@@ -53,6 +54,7 @@ export default function Header() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
+          {user && <NotificationBell />}
           {user ? (
             <>
               <Link

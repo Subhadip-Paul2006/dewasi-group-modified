@@ -141,5 +141,12 @@
     "bookSuccess": "Appointment booked! Your token is",
     "bookError": "Could not book this appointment. Please try again.",
     "viewDoctors": "See Doctors"
+  },
+  "Notifications": {
+    "heading": "Notifications",
+    "empty": "No notifications yet.",
+    "markAllRead": "Mark all as read",
+    "viewAll": "View all",
+    "justNow": "just now"
   }
 }

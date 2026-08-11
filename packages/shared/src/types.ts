@@ -58,3 +58,22 @@ export type Doctor = {
   user: { name: string };
   clinic: { id: string; clinicName: string; city: string | null; address: string | null };
 };
+
+export type NotificationType =
+  | "APPOINTMENT_BOOKED"
+  | "APPOINTMENT_CANCELLED"
+  | "CLINIC_APPROVED"
+  | "CLINIC_REVOKED"
+  | "DOCTOR_VERIFIED"
+  | "CONNECTION_REQUEST_RECEIVED"
+  | "CONNECTION_REQUEST_RESPONDED"
+  | "GENERAL";
+
+export type AppNotification = {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+};

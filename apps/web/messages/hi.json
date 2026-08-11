@@ -128,5 +128,25 @@
     "addressPlaceholder": "सड़क, क्षेत्र, शहर",
     "bloodGroupPlaceholder": "जैसे O+",
     "backToDashboard": "डैशबोर्ड पर वापस जाएं"
+  },
+  "Notifications": {
+    "heading": "सूचनाएं",
+    "empty": "अभी तक कोई सूचना नहीं है।",
+    "markAllRead": "सभी को पढ़ा हुआ चिह्नित करें",
+    "viewAll": "सभी देखें",
+    "justNow": "अभी अभी"
+  },
+  "DoctorSearch": {
+    "heading": "उपलब्ध डॉक्टर",
+    "noResults": "कोई डॉक्टर नहीं मिला। दूसरी तरह से खोजें।",
+    "experience": "साल का अनुभव",
+    "consultationFee": "परामर्श शुल्क",
+    "bookButton": "अपॉइंटमेंट बुक करें",
+    "selectDate": "तारीख चुनें",
+    "confirmBooking": "बुकिंग की पुष्टि करें",
+    "bookingLoading": "बुक हो रहा है...",
+    "bookSuccess": "अपॉइंटमेंट बुक हो गई! आपका टोकन",
+    "bookError": "बुक नहीं हो सका। दोबारा कोशिश करें।",
+    "viewDoctors": "डॉक्टर देखें"
   }
 }

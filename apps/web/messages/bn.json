@@ -128,5 +128,25 @@
     "addressPlaceholder": "রাস্তা, এলাকা, শহর",
     "bloodGroupPlaceholder": "যেমন O+",
     "backToDashboard": "ড্যাশবোর্ডে ফিরে যান"
+  },
+  "Notifications": {
+    "heading": "নোটিফিকেশন",
+    "empty": "এখনো কোনো নোটিফিকেশন নেই।",
+    "markAllRead": "সব পঠিত হিসেবে চিহ্নিত করুন",
+    "viewAll": "সব দেখুন",
+    "justNow": "এইমাত্র"
+  },
+  "DoctorSearch": {
+    "heading": "উপলব্ধ ডাক্তার",
+    "noResults": "কোনো ডাক্তার পাওয়া যায়নি। অন্যভাবে খুঁজে দেখুন।",
+    "experience": "বছরের অভিজ্ঞতা",
+    "consultationFee": "কনসালটেশন ফি",
+    "bookButton": "অ্যাপয়েন্টমেন্ট বুক করুন",
+    "selectDate": "তারিখ নির্বাচন করুন",
+    "confirmBooking": "বুকিং নিশ্চিত করুন",
+    "bookingLoading": "বুক হচ্ছে...",
+    "bookSuccess": "অ্যাপয়েন্টমেন্ট বুক হয়েছে! আপনার টোকেন",
+    "bookError": "বুক করা যায়নি। আবার চেষ্টা করুন।",
+    "viewDoctors": "ডাক্তার দেখুন"
   }
 }
