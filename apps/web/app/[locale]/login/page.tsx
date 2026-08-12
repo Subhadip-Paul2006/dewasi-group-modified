@@ -28,10 +28,17 @@ export default function LoginPage() {
       setAccessToken(data.data.accessToken);
       setUser(data.data.user);
 
-      if (data.data.user.role === "PATIENT") {
-        router.push("/dashboard");
-      } else {
-        router.push("/");
+      switch (data.data.user.role) {
+        case "PATIENT":
+          router.push("/dashboard");
+          break;
+        case "CLINIC":
+          router.push("/clinic");
+          break;
+        // DOCTOR, RECEPTIONIST, ADMIN, SUPER_ADMIN dashboards aren't built
+        // yet — sending them home for now instead of a 404.
+        default:
+          router.push("/");
       }
     } catch (err: any) {
       setServerError(err?.response?.data?.message || t("genericError"));

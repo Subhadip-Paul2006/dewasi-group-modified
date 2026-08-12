@@ -1,35 +1,91 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "@/i18n/routing";
+import { usePathname, Link, useRouter } from "@/i18n/routing";
+import {
+  LayoutDashboard,
+  Stethoscope,
+  Users,
+  CalendarClock,
+  Inbox,
+  FlaskConical,
+} from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
-// Auth guard only -- the visual header/nav is the shared <Header />
-// rendered once in the root layout, so it stays identical across
-// every page including this one.
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+const NAV = [
+  { href: "/clinic", label: "Overview", icon: LayoutDashboard, exact: true },
+  { href: "/clinic/doctors", label: "Doctors", icon: Stethoscope },
+  { href: "/clinic/receptionists", label: "Receptionists", icon: Users },
+  { href: "/clinic/schedule", label: "Schedule", icon: CalendarClock },
+  { href: "/clinic/requests", label: "Requests", icon: Inbox },
+  { href: "/clinic/referrals", label: "Referrals", icon: FlaskConical },
+];
+
+export default function ClinicDashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login");
-    } else if (!loading && user && user.role !== "PATIENT") {
-      router.replace("/");
+    if (!loading && (!user || user.role !== "CLINIC")) {
+      router.push("/login");
     }
   }, [loading, user, router]);
 
-  if (loading || !user || user.role !== "PATIENT") {
+  if (loading || !user || user.role !== "CLINIC") {
     return (
-      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-[var(--color-bg-soft)]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-primary)] border-t-transparent" />
+      <div className="flex min-h-[60vh] items-center justify-center text-sm text-gray-500">
+        Loading...
       </div>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-soft)]">
-      <main className="mx-auto max-w-5xl px-5 py-8">{children}</main>
+    <div className="mx-auto flex max-w-7xl gap-6 px-5 py-8 lg:px-8">
+      <aside className="hidden w-56 shrink-0 md:block">
+        <nav className="sticky top-24 space-y-1">
+          {NAV.map(({ href, label, icon: Icon, exact }) => {
+            const active = exact ? pathname === href : pathname.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={
+                  "flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors " +
+                  (active
+                    ? "bg-[var(--color-primary)] text-white"
+                    : "text-gray-600 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]")
+                }
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Mobile tab bar */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-gray-100 bg-white px-2 py-2 md:hidden">
+        {NAV.map(({ href, label, icon: Icon, exact }) => {
+          const active = exact ? pathname === href : pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={
+                "flex flex-col items-center gap-0.5 rounded-lg px-2 py-1 text-[10px] font-medium " +
+                (active ? "text-[var(--color-primary)]" : "text-gray-500")
+              }
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <main className="min-w-0 flex-1 pb-16 md:pb-0">{children}</main>
     </div>
   );
 }
