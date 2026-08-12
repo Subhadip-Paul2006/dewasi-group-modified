@@ -4,7 +4,6 @@ import FeaturedDoctors from "@/components/FeaturedDoctors";
 import Specialties from "@/components/Specialties";
 import HowItWorks from "@/components/HowItWorks";
 import ClinicCTA from "@/components/ClinicCTA";
-import Footer from "@/components/Footer";
 
 export default async function HomePage({
   params,
@@ -21,7 +20,6 @@ export default async function HomePage({
       <Specialties />
       <HowItWorks />
       <ClinicCTA />
-      <Footer />
     </main>
   );
 }

@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth-context";
 import QueryProvider from "@/components/QueryProvider";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -61,7 +62,8 @@ export default async function RootLayout({
           <QueryProvider>
             <AuthProvider>
               <Header />
-              {children}
+              <div className="flex-1">{children}</div>
+              <Footer />
             </AuthProvider>
           </QueryProvider>
         </NextIntlClientProvider>

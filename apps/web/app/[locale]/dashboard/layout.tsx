@@ -2,37 +2,26 @@
 
 import { useEffect } from "react";
 import { usePathname, Link, useRouter } from "@/i18n/routing";
-import {
-  LayoutDashboard,
-  Stethoscope,
-  Users,
-  CalendarClock,
-  Inbox,
-  FlaskConical,
-} from "lucide-react";
+import { LayoutDashboard, User } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
-  { href: "/clinic", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/clinic/doctors", label: "Doctors", icon: Stethoscope },
-  { href: "/clinic/receptionists", label: "Receptionists", icon: Users },
-  { href: "/clinic/schedule", label: "Schedule", icon: CalendarClock },
-  { href: "/clinic/requests", label: "Requests", icon: Inbox },
-  { href: "/clinic/referrals", label: "Referrals", icon: FlaskConical },
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
-export default function ClinicDashboardLayout({ children }: { children: React.ReactNode }) {
+export default function PatientDashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && (!user || user.role !== "CLINIC")) {
+    if (!loading && (!user || user.role !== "PATIENT")) {
       router.push("/login");
     }
   }, [loading, user, router]);
 
-  if (loading || !user || user.role !== "CLINIC") {
+  if (loading || !user || user.role !== "PATIENT") {
     return (
       <div className="flex min-h-[60vh] items-center justify-center text-sm text-gray-500">
         Loading...

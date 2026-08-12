@@ -29,6 +29,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
+  // Clinics land on /clinic and don't have a patient-style profile page.
+  const isClinic = user?.role === "CLINIC";
+  const dashboardHref = isClinic ? "/clinic" : "/dashboard";
+  const dashboardLabel = isClinic ? "Clinic Panel" : "Dashboard";
+
   async function handleLogout() {
     await logout();
     setOpen(false);
@@ -117,23 +122,25 @@ export default function Header() {
                 <div className="absolute right-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
                   {/* Dashboard */}
                   <Link
-                    href="/dashboard"
+                    href={dashboardHref}
                     onClick={() => setShowUserMenu(false)}
                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     <LayoutDashboard className="h-4 w-4" />
-                    Dashboard
+                    {dashboardLabel}
                   </Link>
 
-                  {/* Profile */}
-                  <Link
-                    href="/dashboard/profile"
-                    onClick={() => setShowUserMenu(false)}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  >
-                    <User className="h-4 w-4" />
-                    Profile
-                  </Link>
+                  {/* Profile — patients only */}
+                  {!isClinic && (
+                    <Link
+                      href="/dashboard/profile"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <User className="h-4 w-4" />
+                      Profile
+                    </Link>
+                  )}
 
                   <hr className="my-1 border-gray-100" />
 
@@ -204,7 +211,7 @@ export default function Header() {
 
                   <div>
                     <p className="font-medium text-gray-800">{user.name}</p>
-                    <p className="text-xs text-gray-500">Patient</p>
+                    <p className="text-xs text-gray-500">{isClinic ? "Clinic" : "Patient"}</p>
                   </div>
                 </div>
 
@@ -228,23 +235,25 @@ export default function Header() {
 
                 {/* ================= DASHBOARD ================= */}
                 <Link
-                  href="/dashboard"
+                  href={dashboardHref}
                   onClick={() => setOpen(false)}
                   className="block rounded-lg px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                 >
                   <LayoutDashboard className="mr-2 inline h-4 w-4" />
-                  Dashboard
+                  {dashboardLabel}
                 </Link>
 
-                {/* ================= PROFILE ================= */}
-                <Link
-                  href="/dashboard/profile"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
-                >
-                  <User className="mr-2 inline h-4 w-4" />
-                  Profile
-                </Link>
+                {/* ================= PROFILE (patients only) ================= */}
+                {!isClinic && (
+                  <Link
+                    href="/dashboard/profile"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                  >
+                    <User className="mr-2 inline h-4 w-4" />
+                    Profile
+                  </Link>
+                )}
 
                 <hr className="border-gray-100" />
 
