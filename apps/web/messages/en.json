@@ -158,7 +158,8 @@
     "newDoctor": "New",
     "cancelBooking": "Cancel",
     "pleaseSelectDateTime": "Please select both date and time",
-    "pastDateError": "Please select a future date and time"   
+    "pastDateError": "Please select a future date and time",
+    "cancel": "cancel"   
   },
   "Notifications": {
     "heading": "Notifications",

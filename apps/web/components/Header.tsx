@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   User,
   ChevronDown,
+  Bell,
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -27,211 +28,234 @@ export default function Header() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   async function handleLogout() {
     await logout();
     setOpen(false);
+    setShowUserMenu(false);
     router.push("/login");
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
-      <div className="mx-auto flex h-[78px] max-w-7xl items-center justify-between px-5 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* ================= LOGO ================= */}
-        <Link href="/" className="group flex items-center gap-3.5">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-sm">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
             <Image
               src="/logo-icon.png"
               alt="Doctor Contact"
-              width={48}
-              height={48}
-              className="h-11 w-11 object-contain"
+              width={36}
+              height={36}
+              className="h-9 w-9 object-contain"
               priority
             />
           </div>
-
-          <div className="flex flex-col justify-center">
-            <span className="text-[19px] font-bold leading-none tracking-tight text-[var(--color-primary-dark)]">
+          <div>
+            <span className="text-lg font-bold text-gray-800">
               {t("title")}
             </span>
-            <span className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-              Healthcare Platform
-            </span>
+            <p className="hidden text-[10px] font-medium text-gray-400 sm:block">
+              Healthcare
+            </p>
           </div>
         </Link>
 
-        {/* ================= DESKTOP ACTIONS ================= */}
-        <div className="hidden items-center gap-2.5 md:flex">
+        {/* ================= DESKTOP NAV ================= */}
+        <div className="hidden items-center gap-3 md:flex">
+          {/* Main Actions */}
           <Link
             href="/doctors"
-            className="rounded-full bg-[var(--color-secondary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+            className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
           >
             {nav("availableDoctors")}
           </Link>
 
           <Link
             href="/#clinics"
-            className="rounded-full bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[var(--color-primary-dark)] hover:shadow-md"
+            className="rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
           >
             {nav("applyForListing")}
           </Link>
 
-          {user && (
-            <Link
-              href="/dashboard"
-              className="ml-1 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              {dash("myAppointments")}
-            </Link>
-          )}
+          {/* Divider */}
+          <span className="mx-1 h-6 w-px bg-gray-200"></span>
 
-          <div className="mx-1 h-7 w-px bg-gray-200" />
-
+          {/* Language */}
           <LanguageSwitcher />
 
-          {user && (
-            <>
-              <NotificationBell />
-
-              <Link
-                href="/dashboard/profile"
-                className="group ml-1 flex items-center gap-2.5 rounded-full border border-transparent px-3 py-2 transition-all hover:border-gray-100 hover:bg-gray-50"
-              >
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
-                  <User className="h-4 w-4" />
-                </div>
-
-                <div className="hidden max-w-[130px] lg:block">
-                  <p className="truncate text-sm font-semibold text-gray-700">{user.name}</p>
-                  <p className="text-[10px] font-medium text-gray-400">My Profile</p>
-                </div>
-
-                <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
-              </Link>
-
+          {/* User Section */}
+          {user ? (
+            <div className="relative">
               <button
-                type="button"
-                onClick={handleLogout}
-                className="ml-1 flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-gray-500 transition-all hover:bg-red-50 hover:text-red-500"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-2 rounded-full px-3 py-1.5 hover:bg-gray-50 transition"
               >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden lg:inline">{dash("logout")}</span>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                  <span className="text-sm font-bold">
+                    {user.name?.charAt(0).toUpperCase() || "U"}
+                  </span>
+                </div>
+                <span className="hidden text-sm font-medium text-gray-700 lg:block">
+                  {user.name}
+                </span>
+                <ChevronDown className="h-4 w-4 text-gray-400" />
               </button>
-            </>
-          )}
 
-          {!user && (
-            <>
+              {/* User Dropdown */}
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/dashboard/profile"
+                    onClick={() => setShowUserMenu(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    <User className="h-4 w-4" />
+                    Profile
+                  </Link>
+                  <hr className="my-1 border-gray-100" />
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="ml-1 rounded-full border border-[var(--color-primary)]/25 px-5 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
+                className="px-4 py-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition"
               >
                 {t("login")}
               </Link>
-
               <Link
                 href="/register"
-                className="rounded-full border border-[var(--color-primary)]/25 px-5 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
+                className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
               >
                 {t("register")}
               </Link>
-            </>
+            </div>
           )}
         </div>
 
         {/* ================= MOBILE BUTTON ================= */}
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen(!open)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 shadow-sm transition-all hover:bg-gray-50 md:hidden"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {user && <NotificationBell />}
+          
+          <button
+            onClick={() => setOpen(!open)}
+            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 transition"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* ================= MOBILE MENU ================= */}
       {open && (
-        <div className="border-t border-gray-100 bg-white shadow-lg md:hidden">
-          <div className="mx-auto max-w-7xl space-y-2 px-5 py-5">
-
-            {user && (
-              <Link
-                href="/dashboard/profile"
-                onClick={() => setOpen(false)}
-                className="mb-4 flex items-center gap-3 rounded-2xl bg-[var(--color-bg-soft)] p-4"
-              >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[var(--color-primary)] shadow-sm">
-                  <User className="h-5 w-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-gray-800">{user.name}</p>
-                  <p className="mt-0.5 text-xs text-gray-500">{dash("myProfile")}</p>
-                </div>
-                <ChevronDown className="h-4 w-4 rotate-[-90deg] text-gray-400" />
-              </Link>
-            )}
-
-            <Link
-              href="/doctors"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-center rounded-full bg-[var(--color-secondary)] px-4 py-3.5 text-sm font-semibold text-white"
-            >
-              {nav("availableDoctors")}
-            </Link>
-
-            <Link
-              href="/#clinics"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-3.5 text-sm font-semibold text-white"
-            >
-              {nav("applyForListing")}
-            </Link>
-
-            {user && (
-              <Link
-                href="/dashboard"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                {dash("myAppointments")}
-              </Link>
-            )}
-
-            <div className="my-3 h-px bg-gray-100" />
-
+        <div className="border-t border-gray-200 bg-white md:hidden">
+          <div className="space-y-2 px-4 py-4">
             {user ? (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-red-50 py-3.5 text-sm font-semibold text-red-500 transition hover:bg-red-100"
-              >
-                <LogOut className="h-4 w-4" />
-                {dash("logout")}
-              </button>
+              <>
+                <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                    <span className="font-bold">
+                      {user.name?.charAt(0).toUpperCase() || "U"}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-800">{user.name}</p>
+                    <p className="text-xs text-gray-500">Patient</p>
+                  </div>
+                </div>
+
+                <Link
+                  href="/doctors"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white"
+                >
+                  {nav("availableDoctors")}
+                </Link>
+
+                <Link
+                  href="/#clinics"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700"
+                >
+                  {nav("applyForListing")}
+                </Link>
+
+                <Link
+                  href="/dashboard"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg px-4 py-3 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <LayoutDashboard className="mr-2 inline h-4 w-4" />
+                  Dashboard
+                </Link>
+
+                <hr className="border-gray-100" />
+
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
+              <>
                 <Link
-                  href="/login"
+                  href="/doctors"
                   onClick={() => setOpen(false)}
-                  className="rounded-full border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
+                  className="block rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white"
                 >
-                  {t("login")}
+                  {nav("availableDoctors")}
                 </Link>
+
                 <Link
-                  href="/register"
+                  href="/#clinics"
                   onClick={() => setOpen(false)}
-                  className="rounded-full border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
+                  className="block rounded-lg border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700"
                 >
-                  {t("register")}
+                  {nav("applyForListing")}
                 </Link>
-              </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700"
+                  >
+                    {t("login")}
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white"
+                  >
+                    {t("register")}
+                  </Link>
+                </div>
+              </>
             )}
 
-            <div className="flex justify-center pt-3">
+            <div className="pt-3 text-center">
               <LanguageSwitcher />
             </div>
           </div>

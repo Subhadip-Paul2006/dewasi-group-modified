@@ -166,6 +166,7 @@
     "newDoctor": "नया",
     "cancelBooking": "रद्द करें",
     "pleaseSelectDateTime": "कृपया तारीख और समय दोनों चुनें",
-    "pastDateError": "कृपया भविष्य की तारीख और समय चुनें"
+    "pastDateError": "कृपया भविष्य की तारीख और समय चुनें",
+    "cancel": "रद्द करें"
   }
 }
