@@ -4,9 +4,9 @@ import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/routing";
 
 const locales = [
-  { code: "bn", label: "Bangla" },
+  { code: "bn", label: "বাংলা" },
   { code: "en", label: "English" },
-  { code: "hi", label: "Hindi" },
+  { code: "hi", label: "हिन्दी" },
 ];
 
 export default function LanguageSwitcher() {
@@ -15,25 +15,35 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
 
   function switchTo(code: string) {
+    if (code === locale) return;
     router.replace(pathname, { locale: code });
   }
 
   return (
-    <div className="flex gap-2">
-      {locales.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => switchTo(l.code)}
-          className={
-            "rounded px-3 py-1 text-sm transition " +
-            (locale === l.code
-              ? "bg-[var(--color-primary)] text-white"
-              : "border border-gray-300 text-gray-600")
-          }
-        >
-          {l.label}
-        </button>
-      ))}
+    <div className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 p-1 shadow-sm">
+      {locales.map((l) => {
+        const isActive = locale === l.code;
+
+        return (
+          <button
+            key={l.code}
+            type="button"
+            onClick={() => switchTo(l.code)}
+            aria-pressed={isActive}
+            className={`
+              rounded-full px-3.5 py-1.5 text-sm font-medium
+              transition-all duration-200
+              ${
+                isActive
+                  ? "bg-[var(--color-primary)] text-white shadow-sm"
+                  : "text-gray-500 hover:bg-white hover:text-gray-800"
+              }
+            `}
+          >
+            {l.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
