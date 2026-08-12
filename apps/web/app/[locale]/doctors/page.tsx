@@ -2,170 +2,122 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { MapPin, Calendar } from "lucide-react";
-import type { Doctor } from "@doctor-contract/shared";
-import { useAuth } from "@/lib/auth-context";
-import { useRouter } from "@/i18n/routing";
-import { useDoctorSearch, useBookAppointment } from "@/lib/hooks/useDoctorSearch";
+import { MapPin, Loader2, Pencil, X } from "lucide-react";
+import DoctorGrid from "@/components/DoctorGrid";
+import { useLocationCity } from "@/lib/hooks/useLocationCity";
 
-export default function DoctorGrid({ query }: { query: string }) {
+export default function DoctorsPage() {
   const t = useTranslations("DoctorSearch");
-  const { data: doctors, isLoading } = useDoctorSearch(query);
+  const { city, status, setManualCity } = useLocationCity();
 
-  if (isLoading) {
-    return <p className="text-center text-sm text-gray-500">...</p>;
-  }
+  const [editingLocation, setEditingLocation] = useState(false);
+  const [manualInput, setManualInput] = useState("");
 
-  if (doctors?.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
-        <p className="text-sm text-gray-500">{t("noResults")}</p>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2
-                 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-                 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:pb-0 lg:grid-cols-3"
-    >
-      {doctors?.map((doctor) => (
-        <div key={doctor.id} className="w-[82%] shrink-0 snap-center sm:w-auto sm:shrink">
-          <DoctorCard doctor={doctor} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
-
-function DoctorCard({ doctor }: { doctor: Doctor }) {
-  const t = useTranslations("DoctorSearch");
-  const { user } = useAuth();
-  const router = useRouter();
-  const [showBooking, setShowBooking] = useState(false);
-  const [date, setDate] = useState("");
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(
-    null
-  );
-
-  const bookMutation = useBookAppointment();
-
-  function handleBookClick() {
-    if (!user) {
-      router.push("/login");
-      return;
+  function applyManualLocation(e: React.FormEvent) {
+    e.preventDefault();
+    if (manualInput.trim()) {
+      setManualCity(manualInput.trim());
+      setEditingLocation(false);
     }
-    setShowBooking((v) => !v);
   }
 
-  function handleConfirm() {
-    if (!date) return;
-    bookMutation.mutate(
-      { doctorId: doctor.id, clinicId: doctor.clinicId, date },
-      {
-        onSuccess: (appointment) => {
-          setMessage({
-            type: "success",
-            text: t("bookSuccess") + " #" + appointment.token,
-          });
-        },
-        onError: () => {
-          setMessage({ type: "error", text: t("bookError") });
-        },
-      }
-    );
+  function clearLocation() {
+    setManualCity("");
+    setManualInput("");
+    setEditingLocation(false);
+  }
+
+  function cancelEditing() {
+    setEditingLocation(false);
+    setManualInput("");
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-      {doctor.experience != null && (
-        <span className="absolute left-0 top-4 rounded-r-full bg-[var(--color-secondary)] py-1 pl-3 pr-4 text-xs font-bold text-white shadow-sm">
-          {doctor.experience} {t("experienceShort")}
-        </span>
-      )}
+    <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+      <h1 className="mb-4 text-2xl font-bold text-[var(--color-primary-dark)]">
+        {t("heading")}
+      </h1>
 
-      <div className="flex flex-col gap-4 p-6 pt-12">
-        <div className="flex items-start gap-3">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] text-lg font-bold text-[var(--color-primary)]">
-            {initials(doctor.user.name)}
-          </div>
-          <div className="min-w-0">
-            <p className="truncate font-bold text-[var(--color-primary-dark)]">
-              {doctor.user.name}
-            </p>
-            {doctor.qualification && (
-              <p className="truncate text-sm font-semibold text-gray-700">
-                {doctor.qualification}
-              </p>
-            )}
-            {doctor.specialization && (
-              <p className="truncate text-sm text-gray-500">{doctor.specialization}</p>
-            )}
-          </div>
-        </div>
+      {/* ================= LOCATION BAR ================= */}
+      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] px-4 py-3">
+        <MapPin className="h-4 w-4 shrink-0 text-[var(--color-primary)]" />
 
-        <span className="inline-flex w-fit items-center gap-1 rounded-full bg-[var(--color-bg-soft)] px-3 py-1 text-xs font-medium text-[var(--color-primary)]">
-          <MapPin className="h-3 w-3" />
-          {doctor.clinic.city ?? doctor.clinic.clinicName}
-        </span>
+        {status === "loading" && (
+          <span className="flex items-center gap-2 text-sm text-gray-600">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            {t("locationDetecting")}
+          </span>
+        )}
 
-        <div className="flex items-center justify-between border-t border-gray-50 pt-4">
-          {doctor.fee != null ? (
-            <p className="text-sm font-semibold text-[var(--color-primary)]">
-              {t("consultationFee")}: Rs. {doctor.fee}
-            </p>
-          ) : (
-            <span />
-          )}
-          <button
-            onClick={handleBookClick}
-            className="rounded-full bg-[var(--color-primary)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--color-primary-dark)]"
-          >
-            {t("bookButton")}
-          </button>
-        </div>
-
-        {showBooking && user && (
-          <div className="flex flex-wrap items-center gap-3 border-t border-gray-50 pt-4">
-            <div className="flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-2">
-              <Calendar className="h-4 w-4 text-[var(--color-primary)]" />
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="text-sm outline-none"
-              />
-            </div>
+        {status !== "loading" && !editingLocation && city && (
+          <span className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-gray-700">
+              {t("locationShowing")} <strong className="text-[var(--color-primary-dark)]">{city}</strong>
+            </span>
             <button
-              onClick={handleConfirm}
-              disabled={!date || bookMutation.isPending}
-              className="rounded-lg bg-[var(--color-secondary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+              type="button"
+              onClick={() => {
+                setManualInput(city);
+                setEditingLocation(true);
+              }}
+              className="flex items-center gap-1 rounded-full border border-[var(--color-primary)]/25 bg-white px-3 py-1 text-xs font-semibold text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-colors"
             >
-              {bookMutation.isPending ? t("bookingLoading") : t("confirmBooking")}
+              <Pencil className="h-3 w-3" />
+              {t("locationChange")}
             </button>
-            {message && (
-              <span
-                className={
-                  "text-sm " + (message.type === "success" ? "text-green-600" : "text-red-600")
-                }
-              >
-                {message.text}
-              </span>
-            )}
-          </div>
+            <button
+              type="button"
+              onClick={clearLocation}
+              className="flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-100 transition-colors"
+            >
+              <X className="h-3 w-3" />
+              Clear
+            </button>
+          </span>
+        )}
+
+        {status !== "loading" && !editingLocation && !city && (
+          <span className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+            {t("locationPrompt")}
+            <button
+              type="button"
+              onClick={() => setEditingLocation(true)}
+              className="rounded-full border border-[var(--color-primary)]/25 bg-white px-3 py-1 text-xs font-semibold text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-colors"
+            >
+              {t("locationChange")}
+            </button>
+          </span>
+        )}
+
+        {editingLocation && (
+          <form onSubmit={applyManualLocation} className="flex flex-wrap items-center gap-2 w-full">
+            <input
+              autoFocus
+              value={manualInput}
+              onChange={(e) => setManualInput(e.target.value)}
+              placeholder={t("locationInputPlaceholder") || "Enter city name..."}
+              className="flex-1 min-w-[150px] rounded-full border border-gray-300 bg-white px-4 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all"
+            />
+            <button
+              type="submit"
+              disabled={!manualInput.trim()}
+              className="rounded-full bg-[var(--color-primary)] px-4 py-2 text-xs font-semibold text-white hover:bg-[var(--color-primary-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {t("locationApply")}
+            </button>
+            <button
+              type="button"
+              onClick={cancelEditing}
+              className="rounded-full border border-gray-300 px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+            >
+              {t("cancel") || "Cancel"}
+            </button>
+          </form>
         )}
       </div>
-    </div>
+
+      {/* ================= DOCTOR GRID ================= */}
+      <DoctorGrid query="" city={city ?? undefined} />
+    </main>
   );
 }

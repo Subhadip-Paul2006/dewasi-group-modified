@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import Hero from "@/components/Hero";
+import FeaturedDoctors from "@/components/FeaturedDoctors";
 import Specialties from "@/components/Specialties";
 import HowItWorks from "@/components/HowItWorks";
 import ClinicCTA from "@/components/ClinicCTA";
@@ -16,6 +17,7 @@ export default async function HomePage({
   return (
     <main className="min-h-screen bg-white">
       <Hero />
+      <FeaturedDoctors />
       <Specialties />
       <HowItWorks />
       <ClinicCTA />

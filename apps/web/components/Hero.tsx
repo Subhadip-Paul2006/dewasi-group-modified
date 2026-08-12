@@ -37,11 +37,14 @@ export default function Hero() {
         </button>
       </form>
 
-      {/* Doctor cards load right here, on the homepage — all doctors by
-          default, filtered as soon as you search. Same flow as zoomdoctor.in */}
-      <div className="mx-auto mt-8 max-w-6xl">
-        <DoctorGrid query={appliedQuery} />
-      </div>
+      {/* Search results show here ONLY after the person actually searches.
+          Before that, "Featured Doctors" below already shows a preview list —
+          rendering this too would duplicate every doctor on the page. */}
+      {appliedQuery && (
+        <div className="mx-auto mt-8 max-w-6xl">
+          <DoctorGrid query={appliedQuery} />
+        </div>
+      )}
     </section>
   );
 }

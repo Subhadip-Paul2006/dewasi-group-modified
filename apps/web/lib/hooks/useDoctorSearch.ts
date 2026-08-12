@@ -2,13 +2,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Doctor } from "@doctor-contract/shared";
 import { api } from "@/lib/api";
 
-export function useDoctorSearch(query: string) {
+export function useDoctorSearch(query: string, city?: string) {
   return useQuery<Doctor[]>({
-    queryKey: ["doctors", "search", query],
+    queryKey: ["doctors", "search", query, city ?? ""],
     queryFn: async () => {
-      const { data } = await api.get("/appointments/doctors/search", {
-        params: query ? { q: query } : {},
-      });
+      const params: Record<string, string> = {};
+      if (query) params.q = query;
+      if (city) params.city = city;
+      const { data } = await api.get("/appointments/doctors/search", { params });
       return data.data.doctors;
     },
   });

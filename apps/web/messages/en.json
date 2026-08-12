@@ -3,7 +3,9 @@
     "title": "Doctor Contact",
     "subtitle": "Doctor Appointment & Clinic Management System",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "featuredDoctors": "Featured Doctors",
+"viewAll": "View All"
   },
   "Navbar": {
     "findDoctor": "Find a Doctor",
@@ -144,7 +146,19 @@
     "bookSuccess": "Appointment booked! Your token is",
     "bookError": "Could not book this appointment. Please try again.",
     "viewDoctors": "See Doctors",
-    "experienceShort": "Yrs Exp"
+    "experienceShort": "Yrs Exp",
+    "locationDetecting": "Finding doctors near you…",
+    "locationShowing": "Showing doctors in",
+    "locationChange": "Change location",
+    "locationPrompt": "Enable location to see doctors near you",
+    "locationInputPlaceholder": "Enter your city",
+    "locationApply": "Apply",
+    "locationShowAll": "Show all",
+    "loading": "Loading doctors...",
+    "newDoctor": "New",
+    "cancelBooking": "Cancel",
+    "pleaseSelectDateTime": "Please select both date and time",
+    "pastDateError": "Please select a future date and time"   
   },
   "Notifications": {
     "heading": "Notifications",

@@ -3,7 +3,9 @@
     "title": "ডক্টর কনট্রাক্ট",
     "subtitle": "ডাক্তার অ্যাপয়েন্টমেন্ট ও ক্লিনিক ম্যানেজমেন্ট সিস্টেম",
     "login": "লগইন",
-    "register": "রেজিস্টার"
+    "register": "রেজিস্টার",
+    "featuredDoctors": "বিশেষ ডাক্তারগণ",
+"viewAll": "সব দেখুন"
   },
   "Navbar": {
     "findDoctor": "ডাক্তার খুঁজুন",
@@ -151,6 +153,18 @@
     "bookSuccess": "অ্যাপয়েন্টমেন্ট বুক হয়েছে! আপনার টোকেন",
     "bookError": "বুক করা যায়নি। আবার চেষ্টা করুন।",
     "viewDoctors": "ডাক্তার দেখুন",
-    "experienceShort": "বছরের অভিজ্ঞতা"
+    "experienceShort": "বছরের অভিজ্ঞতা",
+    "locationDetecting": "আপনার কাছাকাছি ডাক্তার খোঁজা হচ্ছে…",
+    "locationShowing": "এখানকার ডাক্তার দেখানো হচ্ছে:",
+    "locationChange": "লোকেশন পরিবর্তন করুন",
+    "locationPrompt": "কাছের ডাক্তার দেখতে লোকেশন চালু করুন",
+    "locationInputPlaceholder": "আপনার শহর লিখুন",
+    "locationApply": "প্রয়োগ করুন",
+    "locationShowAll": "সব দেখান",
+    "loading": "ডাক্তারদের তথ্য লোড হচ্ছে...",
+    "newDoctor": "নতুন",
+    "cancelBooking": "বাতিল করুন",
+    "pleaseSelectDateTime": "অনুগ্রহ করে তারিখ ও সময় দুটোই নির্বাচন করুন",
+    "pastDateError": "অনুগ্রহ করে ভবিষ্যতের তারিখ ও সময় নির্বাচন করুন"    
   }
 }

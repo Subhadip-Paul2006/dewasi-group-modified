@@ -3,7 +3,9 @@
     "title": "डॉक्टर कॉन्ट्रैक्ट",
     "subtitle": "डॉक्टर अपॉइंटमेंट और क्लिनिक प्रबंधन प्रणाली",
     "login": "लॉगिन",
-    "register": "रजिस्टर"
+    "register": "रजिस्टर",
+    "featuredDoctors": "फीचर्ड डॉक्टर",
+"viewAll": "सभी देखें"
   },
   "Navbar": {
     "findDoctor": "डॉक्टर खोजें",
@@ -152,6 +154,18 @@
     "bookSuccess": "अपॉइंटमेंट बुक हो गई! आपका टोकन",
     "bookError": "बुक नहीं हो सका। दोबारा कोशिश करें।",
     "viewDoctors": "डॉक्टर देखें",
-    "experienceShort": "वर्षों का अनुभव"
+    "experienceShort": "वर्षों का अनुभव",
+    "locationDetecting": "आपके पास के डॉक्टर खोजे जा रहे हैं…",
+    "locationShowing": "यहाँ के डॉक्टर दिखा रहे हैं:",
+    "locationChange": "लोकेशन बदलें",
+    "locationPrompt": "पास के डॉक्टर देखने के लिए लोकेशन चालू करें",
+    "locationInputPlaceholder": "अपना शहर लिखें",
+    "locationApply": "लागू करें",
+    "locationShowAll": "सभी दिखाएं",
+    "loading": "डॉक्टरों की जानकारी लोड हो रही है...",
+    "newDoctor": "नया",
+    "cancelBooking": "रद्द करें",
+    "pleaseSelectDateTime": "कृपया तारीख और समय दोनों चुनें",
+    "pastDateError": "कृपया भविष्य की तारीख और समय चुनें"
   }
 }
