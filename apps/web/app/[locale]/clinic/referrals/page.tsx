@@ -1,7 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Search, X, Send } from "lucide-react";
+import {
+  Search,
+  X,
+  Send,
+  FlaskConical,
+  User,
+  Building2,
+  FileText,
+  Plus,
+  CheckCircle2,
+  Loader2,
+  CalendarDays,
+  MapPin,
+  Phone,
+} from "lucide-react";
 import {
   useSearchPatientByPhone,
   useSearchDiagnosticCenters,
@@ -10,6 +24,10 @@ import {
   type PatientLookup,
   type DiagnosticCenterLookup,
 } from "@/lib/hooks/useReferrals";
+
+// Replaces global <style jsx> to match the clean layout design language
+const inputClasses =
+  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15";
 
 export default function ClinicReferralsPage() {
   const { data: sent, isLoading: loadingSent } = useSentReferrals();
@@ -24,7 +42,8 @@ export default function ClinicReferralsPage() {
   const searchCenters = useSearchDiagnosticCenters();
   const [centerQuery, setCenterQuery] = useState("");
   const [centers, setCenters] = useState<DiagnosticCenterLookup[]>([]);
-  const [selectedCenter, setSelectedCenter] = useState<DiagnosticCenterLookup | null>(null);
+  const [selectedCenter, setSelectedCenter] =
+    useState<DiagnosticCenterLookup | null>(null);
 
   // Tests + notes
   const [testInput, setTestInput] = useState("");
@@ -100,214 +119,404 @@ export default function ClinicReferralsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
-        Send Test Referral
-      </h1>
+      {/* =====================================================
+          PAGE HEADER
+      ====================================================== */}
+      <div className="flex flex-col gap-1">
+        <div className="mb-2 flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)]">
+            <FlaskConical className="h-4 w-4 text-[var(--color-primary)]" />
+          </div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+            Laboratory
+          </span>
+        </div>
 
-      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-        {/* Step 1: find patient */}
-        <p className="mb-2 text-sm font-bold text-gray-800">1. Find Patient</p>
-        <form onSubmit={handlePatientSearch} className="flex gap-2">
-          <input
-            required
-            placeholder="Patient phone number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="input flex-1"
-          />
-          <button
-            type="submit"
-            disabled={searchPatient.isPending}
-            className="flex items-center gap-1 rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-          >
-            <Search className="h-4 w-4" />
-            Search
-          </button>
-        </form>
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark)] sm:text-3xl">
+          Send Test Referral
+        </h1>
 
-        {patientNotFound && (
-          <p className="mt-2 text-sm text-red-600">
-            No patient found with this phone number.
-          </p>
-        )}
+        <p className="mt-1 text-sm text-gray-500">
+          Refer patients to certified diagnostic centers for tests and diagnostics.
+        </p>
+      </div>
 
-        {patient && (
-          <div className="mt-3 flex items-center justify-between rounded-xl bg-[var(--color-bg-soft)] px-4 py-3">
-            <div>
-              <p className="text-sm font-semibold text-gray-800">
-                {patient.name} {patient.isGuest && "(Guest)"}
-              </p>
-              <p className="text-xs text-gray-500">
-                {patient.phone} {patient.age ? "· " + patient.age + "y" : ""}
-              </p>
+      {/* =====================================================
+          CREATE REFERRAL CARD
+      ====================================================== */}
+      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
+        <div className="h-1 bg-[var(--color-primary)]" />
+
+        <div className="p-5 sm:p-6 space-y-6">
+          {/* STEP 1: FIND PATIENT */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+                1
+              </span>
+              <h2 className="text-sm font-bold text-gray-800">Find Patient</h2>
             </div>
-            <button
-              type="button"
-              onClick={() => setPatient(null)}
-              className="text-gray-400 hover:text-red-500"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
 
-        {/* Step 2: find center */}
-        <p className="mb-2 mt-6 text-sm font-bold text-gray-800">2. Find Diagnostic Center</p>
-        <form onSubmit={handleCenterSearch} className="flex gap-2">
-          <input
-            required
-            placeholder="Diagnostic center name"
-            value={centerQuery}
-            onChange={(e) => setCenterQuery(e.target.value)}
-            className="input flex-1"
-          />
-          <button
-            type="submit"
-            disabled={searchCenters.isPending}
-            className="flex items-center gap-1 rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-          >
-            <Search className="h-4 w-4" />
-            Search
-          </button>
-        </form>
-
-        {centers.length > 0 && !selectedCenter && (
-          <div className="mt-3 space-y-1.5">
-            {centers.map((c) => (
+            <form onSubmit={handlePatientSearch} className="flex gap-2">
+              <input
+                required
+                placeholder="Enter patient phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={inputClasses}
+              />
               <button
-                key={c.id}
-                type="button"
-                onClick={() => setSelectedCenter(c)}
-                className="block w-full rounded-xl border border-gray-100 px-4 py-2.5 text-left text-sm hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)]"
+                type="submit"
+                disabled={searchPatient.isPending}
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <span className="font-semibold text-gray-800">{c.centerName}</span>
-                {c.city && <span className="text-gray-500"> · {c.city}</span>}
+                {searchPatient.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+                Search
               </button>
-            ))}
-          </div>
-        )}
+            </form>
 
-        {selectedCenter && (
-          <div className="mt-3 flex items-center justify-between rounded-xl bg-[var(--color-bg-soft)] px-4 py-3">
-            <p className="text-sm font-semibold text-gray-800">
-              {selectedCenter.centerName}
-              {selectedCenter.city && (
-                <span className="font-normal text-gray-500"> · {selectedCenter.city}</span>
-              )}
-            </p>
-            <button
-              type="button"
-              onClick={() => setSelectedCenter(null)}
-              className="text-gray-400 hover:text-red-500"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
+            {patientNotFound && (
+              <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-600">
+                No patient found with this phone number.
+              </div>
+            )}
 
-        {/* Step 3: tests + notes */}
-        <p className="mb-2 mt-6 text-sm font-bold text-gray-800">3. Tests</p>
-        <div className="flex gap-2">
-          <input
-            placeholder="e.g. CBC, Blood Sugar"
-            value={testInput}
-            onChange={(e) => setTestInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addTest();
-              }
-            }}
-            className="input flex-1"
-          />
+            {patient && (
+              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                    <User className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">
+                      {patient.name}{" "}
+                      {patient.isGuest && (
+                        <span className="ml-1 rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                          Guest
+                        </span>
+                      )}
+                    </p>
+                    <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <Phone className="h-3 w-3" />
+                        {patient.phone}
+                      </span>
+                      {patient.age && <span>• {patient.age} yrs</span>}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPatient(null)}
+                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* STEP 2: FIND CENTER */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+                2
+              </span>
+              <h2 className="text-sm font-bold text-gray-800">
+                Find Diagnostic Center
+              </h2>
+            </div>
+
+            <form onSubmit={handleCenterSearch} className="flex gap-2">
+              <input
+                required
+                placeholder="Search by diagnostic center name"
+                value={centerQuery}
+                onChange={(e) => setCenterQuery(e.target.value)}
+                className={inputClasses}
+              />
+              <button
+                type="submit"
+                disabled={searchCenters.isPending}
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {searchCenters.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+                Search
+              </button>
+            </form>
+
+            {centers.length > 0 && !selectedCenter && (
+              <div className="grid gap-2 pt-1">
+                {centers.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setSelectedCenter(c)}
+                    className="flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white p-3.5 text-left text-sm transition hover:border-[var(--color-primary)]/40 hover:bg-gray-50/50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-600">
+                        <Building2 className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-gray-800">
+                          {c.centerName}
+                        </span>
+                        {c.city && (
+                          <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500">
+                            <MapPin className="h-3 w-3" />
+                            {c.city}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-xs font-semibold text-[var(--color-primary)]">
+                      Select
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {selectedCenter && (
+              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                    <Building2 className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">
+                      {selectedCenter.centerName}
+                    </p>
+                    {selectedCenter.city && (
+                      <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500">
+                        <MapPin className="h-3 w-3" />
+                        {selectedCenter.city}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCenter(null)}
+                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          <hr className="border-gray-100" />
+
+          {/* STEP 3: TESTS & NOTES */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+                3
+              </span>
+              <h2 className="text-sm font-bold text-gray-800">
+                Required Tests & Notes
+              </h2>
+            </div>
+
+            <div className="flex gap-2">
+              <input
+                placeholder="e.g. CBC, Blood Sugar, Lipid Profile (Press Enter)"
+                value={testInput}
+                onChange={(e) => setTestInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addTest();
+                  }
+                }}
+                className={inputClasses}
+              />
+              <button
+                type="button"
+                onClick={addTest}
+                className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-gray-700 transition hover:bg-gray-50"
+              >
+                <Plus className="h-4 w-4" />
+                Add
+              </button>
+            </div>
+
+            {tests.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {tests.map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-primary)]/10 px-3.5 py-1.5 text-xs font-bold text-[var(--color-primary)]"
+                  >
+                    {t}
+                    <button
+                      type="button"
+                      onClick={() => removeTest(t)}
+                      className="rounded-full p-0.5 hover:bg-[var(--color-primary)]/20"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="pt-2">
+              <textarea
+                placeholder="Additional clinical notes for the diagnostic center (optional)"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className={`${inputClasses} resize-none`}
+                rows={2}
+              />
+            </div>
+          </div>
+
+          {error && (
+            <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-600">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 p-3 text-xs font-bold text-green-700">
+              <CheckCircle2 className="h-4 w-4" />
+              Referral sent successfully.
+            </div>
+          )}
+
           <button
             type="button"
-            onClick={addTest}
-            className="rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600"
+            onClick={handleSend}
+            disabled={!canSend || createReferral.isPending}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-secondary)] px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Add
+            {createReferral.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+            {createReferral.isPending ? "Sending Referral..." : "Send Referral"}
           </button>
         </div>
-
-        {tests.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {tests.map((t) => (
-              <span
-                key={t}
-                className="flex items-center gap-1.5 rounded-full bg-[var(--color-primary)]/10 px-3 py-1 text-xs font-medium text-[var(--color-primary)]"
-              >
-                {t}
-                <button type="button" onClick={() => removeTest(t)}>
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-
-        <textarea
-          placeholder="Notes (optional)"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          className="input mt-3 w-full"
-          rows={2}
-        />
-
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-        {success && <p className="mt-2 text-sm text-green-600">Referral sent.</p>}
-
-        <button
-          type="button"
-          onClick={handleSend}
-          disabled={!canSend || createReferral.isPending}
-          className="mt-4 flex items-center gap-2 rounded-full bg-[var(--color-secondary)] px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40"
-        >
-          <Send className="h-4 w-4" />
-          {createReferral.isPending ? "Sending..." : "Send Referral"}
-        </button>
       </div>
 
-      {/* Sent history */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-        <p className="mb-3 text-sm font-bold text-gray-800">Referrals Sent</p>
+      {/* =====================================================
+          SENT REFERRALS HISTORY
+      ====================================================== */}
+      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
+        <div className="h-1 bg-gray-200" />
 
-        {loadingSent && <p className="text-sm text-gray-500">Loading...</p>}
-
-        {!loadingSent && (!sent || sent.length === 0) && (
-          <p className="text-sm text-gray-400">No referrals sent yet.</p>
-        )}
-
-        <div className="space-y-2">
-          {sent?.map((r) => (
-            <div key={r.id} className="rounded-xl border border-gray-100 px-4 py-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-gray-800">
-                  {r.patient.user?.name || r.patient.name} →{" "}
-                  {r.diagnosticCenter.centerName}
-                </p>
-                <span className="text-xs text-gray-400">
-                  {new Date(r.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-gray-600">{r.testNames.join(", ")}</p>
-              {r.notes && <p className="mt-0.5 text-xs text-gray-400">{r.notes}</p>}
+        <div className="p-5 sm:p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-bold text-gray-800">
+                Sent Referrals History
+              </h2>
+              <p className="mt-0.5 text-xs text-gray-500">
+                Track all diagnostic test referrals sent to date.
+              </p>
             </div>
-          ))}
+          </div>
+
+          {loadingSent ? (
+            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50">
+              <div className="flex flex-col items-center gap-3">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                <p className="text-sm font-medium text-gray-500">
+                  Loading history...
+                </p>
+              </div>
+            </div>
+          ) : !sent || sent.length === 0 ? (
+            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
+                <FileText className="h-6 w-6 text-gray-400" />
+              </div>
+              <h3 className="mt-4 text-sm font-bold text-gray-800">
+                No referrals sent yet
+              </h3>
+              <p className="mt-1 text-xs text-gray-500">
+                Referrals you dispatch will show up right here.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-3">
+              {sent.map((r) => (
+                <div
+                  key={r.id}
+                  className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md space-y-3"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-50 pb-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                        <User className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">
+                          {r.patient.user?.name || r.patient.name}
+                        </p>
+                        <p className="text-[11px] text-gray-400">
+                          Patient Reference
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500">
+                      <CalendarDays className="h-3.5 w-3.5 text-gray-400" />
+                      {new Date(r.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
+                      <Building2 className="h-4 w-4 text-[var(--color-primary)]" />
+                      <span>Center: {r.diagnosticCenter.centerName}</span>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl bg-gray-50/70 p-3 space-y-1.5">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                      Prescribed Tests
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {r.testNames.map((test, index) => (
+                        <span
+                          key={index}
+                          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-bold text-gray-700 shadow-sm"
+                        >
+                          {test}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {r.notes && (
+                    <p className="text-xs italic text-gray-500">
+                      <span className="font-semibold not-italic text-gray-700">
+                        Notes:{" "}
+                      </span>
+                      {r.notes}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-
-      <style jsx global>{`
-        .input {
-          border-radius: 0.75rem;
-          border: 1px solid #e5e7eb;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.875rem;
-          outline: none;
-        }
-        .input:focus {
-          border-color: var(--color-primary);
-        }
-      `}</style>
     </div>
   );
 }

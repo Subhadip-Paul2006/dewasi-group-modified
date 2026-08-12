@@ -48,6 +48,7 @@ export default function ClinicReceptionistsPage() {
           setForm(EMPTY);
           setShowAdd(false);
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (err: any) =>
           setError(
             err?.response?.data?.message || "Failed to add receptionist"
@@ -329,9 +330,10 @@ function ReceptionistRow({
   const changePassword = useChangeStaffPassword();
 
   const [assigning, setAssigning] = useState(false);
-  // Safely extract assigned doctor IDs
+  // ✅ FIX 1: (a: any) ব্যবহার করে Type Error সমাধান করা হয়েছে
   const [selectedIds, setSelectedIds] = useState<string[]>(
-    receptionist.assignedDoctors?.map((a) => a.doctor?.id).filter(Boolean) ?? []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    receptionist.assignedDoctors?.map((a: any) => a.doctor?.id).filter(Boolean) ?? []
   );
 
   const [changingPw, setChangingPw] = useState(false);
@@ -366,6 +368,7 @@ function ReceptionistRow({
             setPwMessage("");
           }, 1500);
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (err: any) =>
           setPwMessage(
             err?.response?.data?.message || "Failed to update password"
@@ -467,7 +470,7 @@ function ReceptionistRow({
           </div>
         </div>
 
-        {/* Assigned Doctors Display (Fixed Key Issue) */}
+        {/* Assigned Doctors Display */}
         {(receptionist.assignedDoctors?.length ?? 0) > 0 && !assigning && (
           <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-gray-50/70 px-4 py-3">
             <Stethoscope className="mr-1 h-4 w-4 text-[var(--color-primary)]" />
@@ -475,7 +478,9 @@ function ReceptionistRow({
               Manages:
             </span>
             <div className="flex flex-wrap gap-1.5">
-              {receptionist.assignedDoctors.map((a, index) => (
+              {/* ✅ FIX 2: (a: any) ব্যবহার করে Type Error সমাধান করা হয়েছে */}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {receptionist.assignedDoctors.map((a: any, index) => (
                 <span
                   key={a.id || a.doctor?.id || index}
                   className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[10px] font-bold text-gray-700 shadow-sm"

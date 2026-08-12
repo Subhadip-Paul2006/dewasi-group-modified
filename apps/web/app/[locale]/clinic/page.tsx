@@ -124,6 +124,7 @@ export default function ClinicOverviewPage() {
     setEditing(true);
   }, [clinic]);
 
+  // ✅ সংশোধিত handleSave ফাংশন (Optimistic Update এবং Cache-এর সমস্যা সমাধান করা হয়েছে)
   const handleSave = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -131,30 +132,32 @@ export default function ClinicOverviewPage() {
       // Validate form
       const result = clinicFormSchema.safeParse(form);
       if (!result.success) {
-        const formattedErrors: Partial<Record<keyof ClinicFormData, string>> =
-          {};
-        result.error.errors.forEach((err) => {
+        const formattedErrors: Partial<Record<keyof ClinicFormData, string>> = {};
+        
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        result.error.issues.forEach((err: any) => {
           const path = err.path[0] as keyof ClinicFormData;
           formattedErrors[path] = err.message;
         });
+        
         setErrors(formattedErrors);
         toast.error("Please fix the errors before saving");
         return;
       }
 
-      // Optimistic update
-      const previousClinic = queryClient.getQueryData(["clinicProfile"]);
+      const queryKey = ["clinic", "profile"];
+      // Optimistic update - সেভ করার জন্য আগের ডাটা রেখে দেওয়া হলো
+      const previousClinic = queryClient.getQueryData(queryKey);
 
       try {
-        await updateProfile.mutateAsync(form, {
-          onMutate: () => {
-            queryClient.setQueryData(["clinicProfile"], (old: any) => ({
-              ...old,
-              ...form,
-            }));
-            return { previousClinic };
-          },
-        });
+        // UI আগে আপডেট করে দেওয়া হলো
+        queryClient.setQueryData(queryKey, (old: any) => ({
+          ...old,
+          ...form,
+        }));
+
+        // API Call করা হলো
+        await updateProfile.mutateAsync(form);
 
         setEditing(false);
         setSaved(true);
@@ -167,8 +170,8 @@ export default function ClinicOverviewPage() {
           setSaved(false);
         }, 3000);
       } catch (error) {
-        // Rollback on error
-        queryClient.setQueryData(["clinicProfile"], previousClinic);
+        // Rollback on error - কোনো কারণে এরর আসলে আগের ডাটায় ফিরে যাওয়া
+        queryClient.setQueryData(queryKey, previousClinic);
         toast.error("Failed to update profile. Please try again.");
         logActivity("Failed to update clinic profile");
       }
