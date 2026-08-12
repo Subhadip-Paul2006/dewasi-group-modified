@@ -22,15 +22,26 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const original = error.config;
-    if (error.response?.status === 401 && !original._retry) {
+    
+    // Ekhane `original.url !== "/auth/refresh"` condition-ta add kora holo jate loop na hoy
+    if (
+      error.response?.status === 401 && 
+      !original._retry && 
+      original.url !== "/auth/refresh"
+    ) {
       original._retry = true;
       try {
         const { data } = await api.post("/auth/refresh");
         setAccessToken(data.data.accessToken);
         original.headers.Authorization = "Bearer " + data.data.accessToken;
         return api(original);
-      } catch {
+      } catch (refreshError) {
+        // Refresh token fail korle token clear koro ar direct login page-e pathao
         setAccessToken(null);
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(refreshError);
       }
     }
     return Promise.reject(error);
