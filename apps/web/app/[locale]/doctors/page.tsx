@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Search, MapPin, Stethoscope, Calendar, User } from "lucide-react";
 import type { Doctor } from "@doctor-contract/shared";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "@/i18n/routing";
 import { useDoctorSearch, useBookAppointment } from "@/lib/hooks/useDoctorSearch";
 
 export default function DoctorSearchPage() {
@@ -27,7 +29,7 @@ export default function DoctorSearchPage() {
   }
 
   return (
-    <div>
+    <div className="mx-auto max-w-4xl px-5 py-8">
       <form
         onSubmit={handleSearch}
         className="flex flex-col gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-sm md:flex-row"
@@ -81,6 +83,8 @@ export default function DoctorSearchPage() {
 
 function DoctorCard({ doctor }: { doctor: Doctor }) {
   const t = useTranslations("DoctorSearch");
+  const { user } = useAuth();
+  const router = useRouter();
   const [showBooking, setShowBooking] = useState(false);
   const [date, setDate] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(
@@ -89,7 +93,15 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
 
   const bookMutation = useBookAppointment();
 
-  function handleBook() {
+  function handleBookClick() {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    setShowBooking((v) => !v);
+  }
+
+  function handleConfirm() {
     if (!date) return;
     bookMutation.mutate(
       { doctorId: doctor.id, clinicId: doctor.clinicId, date },
@@ -138,7 +150,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             </p>
           )}
           <button
-            onClick={() => setShowBooking((v) => !v)}
+            onClick={handleBookClick}
             className="mt-2 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-primary-dark)]"
           >
             {t("bookButton")}
@@ -146,7 +158,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         </div>
       </div>
 
-      {showBooking && (
+      {showBooking && user && (
         <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-gray-50 pt-4">
           <div className="flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-2">
             <Calendar className="h-4 w-4 text-[var(--color-primary)]" />
@@ -158,7 +170,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             />
           </div>
           <button
-            onClick={handleBook}
+            onClick={handleConfirm}
             disabled={!date || bookMutation.isPending}
             className="rounded-lg bg-[var(--color-secondary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
           >

@@ -15,7 +15,12 @@
   --color-text: #1F2937;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
+  font-family: var(--font-sans), var(--font-sans-bn), var(--font-sans-dev), sans-serif;
 }

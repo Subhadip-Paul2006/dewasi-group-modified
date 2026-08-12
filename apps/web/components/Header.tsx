@@ -1,86 +1,155 @@
 "use client";
 
-import { Stethoscope, Menu, X, LogOut, LayoutDashboard, User } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  LayoutDashboard,
+  User,
+  ChevronDown,
+} from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+
 import { useAuth } from "@/lib/auth-context";
 import { Link, useRouter } from "@/i18n/routing";
+
 import LanguageSwitcher from "./LanguageSwitcher";
 import NotificationBell from "./NotificationBell";
 
-// Single shared header used on every page (home, login, register,
-// dashboard). Its content adapts based on auth state, but the visual
-// shell (logo, layout, colors) stays identical everywhere on purpose --
-// this is the one place that defines what "Doctor Contract" looks like
-// at the top of the screen.
 export default function Header() {
   const t = useTranslations("HomePage");
   const nav = useTranslations("Navbar");
   const dash = useTranslations("Dashboard");
+
   const { user, logout } = useAuth();
   const router = useRouter();
+
   const [open, setOpen] = useState(false);
 
   async function handleLogout() {
     await logout();
+    setOpen(false);
     router.push("/login");
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-primary)]">
-            <Stethoscope className="h-5 w-5 text-white" />
-          </span>
-          <span className="text-lg font-bold tracking-tight text-[var(--color-primary-dark)]">
-            {t("title")}
-          </span>
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex h-[78px] max-w-7xl items-center justify-between px-5 lg:px-8">
+
+        {/* ================= LOGO ================= */}
+        <Link
+          href="/"
+          className="group flex items-center gap-3.5"
+        >
+          {/* Bigger Logo */}
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-sm">
+            <Image
+              src="/logo-icon.png"
+              alt="Doctor Contract"
+              width={48}
+              height={48}
+              className="h-11 w-11 object-contain"
+              priority
+            />
+          </div>
+
+          {/* Brand */}
+          <div className="flex flex-col justify-center">
+            <span className="text-[19px] font-bold leading-none tracking-tight text-[var(--color-primary-dark)]">
+              {t("title")}
+            </span>
+
+            <span className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-gray-400">
+              Healthcare Platform
+            </span>
+          </div>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
-          <Link href="/#search" className="text-sm font-medium text-gray-600 hover:text-[var(--color-primary)]">
+        {/* ================= DESKTOP NAV ================= */}
+        <nav className="hidden items-center gap-1 md:flex">
+          <Link
+            href="/#search"
+            className="rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+          >
             {nav("findDoctor")}
           </Link>
-          <Link href="/#clinics" className="text-sm font-medium text-gray-600 hover:text-[var(--color-primary)]">
+
+          <Link
+            href="/#clinics"
+            className="rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+          >
             {nav("forClinics")}
           </Link>
+
           {user && (
-            <Link href="/dashboard" className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)]">
-              <LayoutDashboard className="h-4 w-4" /> {dash("myAppointments")}
+            <Link
+              href="/dashboard"
+              className="ml-1 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              {dash("myAppointments")}
             </Link>
           )}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        {/* ================= DESKTOP ACTIONS ================= */}
+        <div className="hidden items-center gap-2 md:flex">
           <LanguageSwitcher />
-          {user && <NotificationBell />}
-          {user ? (
+
+          {user && (
             <>
+              <div className="mx-1.5 h-7 w-px bg-gray-200" />
+
+              <NotificationBell />
+
               <Link
                 href="/dashboard/profile"
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+                className="group ml-1 flex items-center gap-2.5 rounded-xl border border-transparent px-3 py-2 transition-all hover:border-gray-100 hover:bg-gray-50"
               >
-                <User className="h-4 w-4" /> {user.name}
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                  <User className="h-4 w-4" />
+                </div>
+
+                <div className="hidden max-w-[130px] lg:block">
+                  <p className="truncate text-sm font-semibold text-gray-700">
+                    {user.name}
+                  </p>
+
+                  <p className="text-[10px] font-medium text-gray-400">
+                    My Profile
+                  </p>
+                </div>
+
+                <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
               </Link>
+
               <button
+                type="button"
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-red-500 hover:bg-red-50"
+                className="ml-1 flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-500 transition-all hover:bg-red-50 hover:text-red-500"
               >
-                <LogOut className="h-4 w-4" /> {dash("logout")}
+                <LogOut className="h-4 w-4" />
+                <span className="hidden lg:inline">
+                  {dash("logout")}
+                </span>
               </button>
             </>
-          ) : (
+          )}
+
+          {!user && (
             <>
               <Link
                 href="/login"
-                className="rounded-lg px-4 py-2 text-sm font-semibold text-[var(--color-primary)] hover:bg-[var(--color-bg-soft)]"
+                className="ml-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
               >
                 {t("login")}
               </Link>
+
               <Link
                 href="/register"
-                className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-primary-dark)]"
+                className="rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--color-primary-dark)] hover:shadow-md"
               >
                 {t("register")}
               </Link>
@@ -88,40 +157,112 @@ export default function Header() {
           )}
         </div>
 
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {/* ================= MOBILE BUTTON ================= */}
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen(!open)}
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 shadow-sm transition-all hover:bg-gray-50 md:hidden"
+        >
+          {open ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </button>
       </div>
 
+      {/* ================= MOBILE MENU ================= */}
       {open && (
-        <div className="flex flex-col gap-4 border-t border-gray-100 px-5 py-4 md:hidden">
-          <Link href="/#search" onClick={() => setOpen(false)}>{nav("findDoctor")}</Link>
-          <Link href="/#clinics" onClick={() => setOpen(false)}>{nav("forClinics")}</Link>
-          {user && (
-            <Link href="/dashboard" onClick={() => setOpen(false)}>{dash("myAppointments")}</Link>
-          )}
+        <div className="border-t border-gray-100 bg-white shadow-lg md:hidden">
+          <div className="mx-auto max-w-7xl space-y-2 px-5 py-5">
 
-          {user ? (
-            <>
-              <Link href="/dashboard/profile" onClick={() => setOpen(false)}>{dash("myProfile")}</Link>
-              <button
-                onClick={handleLogout}
-                className="rounded-lg bg-red-50 py-2 text-sm font-semibold text-red-500"
+            {user && (
+              <Link
+                href="/dashboard/profile"
+                onClick={() => setOpen(false)}
+                className="mb-4 flex items-center gap-3 rounded-2xl bg-[var(--color-bg-soft)] p-4"
               >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[var(--color-primary)] shadow-sm">
+                  <User className="h-5 w-5" />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-gray-800">
+                    {user.name}
+                  </p>
+
+                  <p className="mt-0.5 text-xs text-gray-500">
+                    {dash("myProfile")}
+                  </p>
+                </div>
+
+                <ChevronDown className="h-4 w-4 rotate-[-90deg] text-gray-400" />
+              </Link>
+            )}
+
+            <Link
+              href="/#search"
+              onClick={() => setOpen(false)}
+              className="flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+            >
+              {nav("findDoctor")}
+            </Link>
+
+            <Link
+              href="/#clinics"
+              onClick={() => setOpen(false)}
+              className="flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+            >
+              {nav("forClinics")}
+            </Link>
+
+            {user && (
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                {dash("myAppointments")}
+              </Link>
+            )}
+
+            <div className="my-3 h-px bg-gray-100" />
+
+            {user ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-50 py-3.5 text-sm font-semibold text-red-500 transition hover:bg-red-100"
+              >
+                <LogOut className="h-4 w-4" />
                 {dash("logout")}
               </button>
-            </>
-          ) : (
-            <div className="flex gap-3 pt-2">
-              <Link href="/login" className="flex-1 rounded-lg border border-[var(--color-primary)] py-2 text-center text-sm font-semibold text-[var(--color-primary)]">
-                {t("login")}
-              </Link>
-              <Link href="/register" className="flex-1 rounded-lg bg-[var(--color-primary)] py-2 text-center text-sm font-semibold text-white">
-                {t("register")}
-              </Link>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
+                >
+                  {t("login")}
+                </Link>
+
+                <Link
+                  href="/register"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl bg-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--color-primary-dark)]"
+                >
+                  {t("register")}
+                </Link>
+              </div>
+            )}
+
+            <div className="flex justify-center pt-3">
+              <LanguageSwitcher />
             </div>
-          )}
-          <LanguageSwitcher />
+          </div>
         </div>
       )}
     </header>
