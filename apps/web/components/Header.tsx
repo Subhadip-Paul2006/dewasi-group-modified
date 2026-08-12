@@ -39,15 +39,11 @@ export default function Header() {
       <div className="mx-auto flex h-[78px] max-w-7xl items-center justify-between px-5 lg:px-8">
 
         {/* ================= LOGO ================= */}
-        <Link
-          href="/"
-          className="group flex items-center gap-3.5"
-        >
-          {/* Bigger Logo */}
+        <Link href="/" className="group flex items-center gap-3.5">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-sm">
             <Image
               src="/logo-icon.png"
-              alt="Doctor Contract"
+              alt="Doctor Contact"
               width={48}
               height={48}
               className="h-11 w-11 object-contain"
@@ -55,71 +51,61 @@ export default function Header() {
             />
           </div>
 
-          {/* Brand */}
           <div className="flex flex-col justify-center">
             <span className="text-[19px] font-bold leading-none tracking-tight text-[var(--color-primary-dark)]">
               {t("title")}
             </span>
-
             <span className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-gray-400">
               Healthcare Platform
             </span>
           </div>
         </Link>
 
-        {/* ================= DESKTOP NAV ================= */}
-        <nav className="hidden items-center gap-1 md:flex">
+        {/* ================= DESKTOP ACTIONS ================= */}
+        <div className="hidden items-center gap-2.5 md:flex">
           <Link
-            href="/#search"
-            className="rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+            href="/doctors"
+            className="rounded-full bg-[var(--color-secondary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
           >
-            {nav("findDoctor")}
+            {nav("availableDoctors")}
           </Link>
 
           <Link
             href="/#clinics"
-            className="rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+            className="rounded-full bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[var(--color-primary-dark)] hover:shadow-md"
           >
-            {nav("forClinics")}
+            {nav("applyForListing")}
           </Link>
 
           {user && (
             <Link
               href="/dashboard"
-              className="ml-1 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+              className="ml-1 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
             >
               <LayoutDashboard className="h-4 w-4" />
               {dash("myAppointments")}
             </Link>
           )}
-        </nav>
 
-        {/* ================= DESKTOP ACTIONS ================= */}
-        <div className="hidden items-center gap-2 md:flex">
+          <div className="mx-1 h-7 w-px bg-gray-200" />
+
           <LanguageSwitcher />
 
           {user && (
             <>
-              <div className="mx-1.5 h-7 w-px bg-gray-200" />
-
               <NotificationBell />
 
               <Link
                 href="/dashboard/profile"
-                className="group ml-1 flex items-center gap-2.5 rounded-xl border border-transparent px-3 py-2 transition-all hover:border-gray-100 hover:bg-gray-50"
+                className="group ml-1 flex items-center gap-2.5 rounded-full border border-transparent px-3 py-2 transition-all hover:border-gray-100 hover:bg-gray-50"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
                   <User className="h-4 w-4" />
                 </div>
 
                 <div className="hidden max-w-[130px] lg:block">
-                  <p className="truncate text-sm font-semibold text-gray-700">
-                    {user.name}
-                  </p>
-
-                  <p className="text-[10px] font-medium text-gray-400">
-                    My Profile
-                  </p>
+                  <p className="truncate text-sm font-semibold text-gray-700">{user.name}</p>
+                  <p className="text-[10px] font-medium text-gray-400">My Profile</p>
                 </div>
 
                 <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
@@ -128,12 +114,10 @@ export default function Header() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="ml-1 flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-500 transition-all hover:bg-red-50 hover:text-red-500"
+                className="ml-1 flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-gray-500 transition-all hover:bg-red-50 hover:text-red-500"
               >
                 <LogOut className="h-4 w-4" />
-                <span className="hidden lg:inline">
-                  {dash("logout")}
-                </span>
+                <span className="hidden lg:inline">{dash("logout")}</span>
               </button>
             </>
           )}
@@ -142,14 +126,14 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="ml-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
+                className="ml-1 rounded-full border border-[var(--color-primary)]/25 px-5 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
               >
                 {t("login")}
               </Link>
 
               <Link
                 href="/register"
-                className="rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--color-primary-dark)] hover:shadow-md"
+                className="rounded-full border border-[var(--color-primary)]/25 px-5 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-all hover:bg-[var(--color-bg-soft)]"
               >
                 {t("register")}
               </Link>
@@ -164,11 +148,7 @@ export default function Header() {
           onClick={() => setOpen(!open)}
           className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 shadow-sm transition-all hover:bg-gray-50 md:hidden"
         >
-          {open ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
@@ -186,35 +166,28 @@ export default function Header() {
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[var(--color-primary)] shadow-sm">
                   <User className="h-5 w-5" />
                 </div>
-
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-gray-800">
-                    {user.name}
-                  </p>
-
-                  <p className="mt-0.5 text-xs text-gray-500">
-                    {dash("myProfile")}
-                  </p>
+                  <p className="truncate text-sm font-semibold text-gray-800">{user.name}</p>
+                  <p className="mt-0.5 text-xs text-gray-500">{dash("myProfile")}</p>
                 </div>
-
                 <ChevronDown className="h-4 w-4 rotate-[-90deg] text-gray-400" />
               </Link>
             )}
 
             <Link
-              href="/#search"
+              href="/doctors"
               onClick={() => setOpen(false)}
-              className="flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+              className="flex items-center justify-center rounded-full bg-[var(--color-secondary)] px-4 py-3.5 text-sm font-semibold text-white"
             >
-              {nav("findDoctor")}
+              {nav("availableDoctors")}
             </Link>
 
             <Link
               href="/#clinics"
               onClick={() => setOpen(false)}
-              className="flex items-center rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 transition hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+              className="flex items-center justify-center rounded-full bg-[var(--color-primary)] px-4 py-3.5 text-sm font-semibold text-white"
             >
-              {nav("forClinics")}
+              {nav("applyForListing")}
             </Link>
 
             {user && (
@@ -234,7 +207,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-50 py-3.5 text-sm font-semibold text-red-500 transition hover:bg-red-100"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-red-50 py-3.5 text-sm font-semibold text-red-500 transition hover:bg-red-100"
               >
                 <LogOut className="h-4 w-4" />
                 {dash("logout")}
@@ -244,15 +217,14 @@ export default function Header() {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
+                  className="rounded-full border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
                 >
                   {t("login")}
                 </Link>
-
                 <Link
                   href="/register"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl bg-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--color-primary-dark)]"
+                  className="rounded-full border border-[var(--color-primary)] py-3.5 text-center text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-bg-soft)]"
                 >
                   {t("register")}
                 </Link>

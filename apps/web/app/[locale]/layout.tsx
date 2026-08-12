@@ -27,7 +27,7 @@ const notoSansDevanagari = Noto_Sans_Devanagari({
 });
 
 export const metadata: Metadata = {
-  title: "Doctor Contract",
+  title: "Doctor contract",
   description: "Doctor Appointment & Clinic Management System",
 };
 

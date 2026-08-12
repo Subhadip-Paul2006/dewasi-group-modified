@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Doctor Contract",
+    "title": "Doctor Contact",
     "subtitle": "Doctor Appointment & Clinic Management System",
     "login": "Login",
     "register": "Register"
@@ -8,7 +8,9 @@
   "Navbar": {
     "findDoctor": "Find a Doctor",
     "forClinics": "For Clinics",
-    "howItWorks": "How it Works"
+    "howItWorks": "How it Works",
+    "availableDoctors": "Available Doctors",
+"applyForListing": "Apply for Listing"
   },
   "Hero": {
     "badge": "VERIFIED DOCTORS - REAL-TIME QUEUE",
@@ -21,7 +23,8 @@
     "statDoctors": "Verified Doctors",
     "statClinics": "Partner Clinics",
     "statQueue": "Queue Tracking",
-    "statQueueValue": "Live"
+    "statQueueValue": "Live",
+    "searchUnifiedPlaceholder": "Search by name or location..."
   },
   "Specialties": {
     "heading": "Search by Specialty",
@@ -34,7 +37,7 @@
     "generalPhysician": "General Physician"
   },
   "HowItWorks": {
-    "heading": "How Doctor Contract Works",
+    "heading": "How Doctor Contrct Works",
     "step1Title": "Find a doctor",
     "step1Desc": "Search by name, specialty, or clinic near you.",
     "step2Title": "Book your slot",
@@ -53,7 +56,7 @@
     "companyHeading": "Company",
     "helpHeading": "Need Help?",
     "aboutUs": "About Us",
-    "contact": "Contact",
+    "contract": "contract",
     "privacyPolicy": "Privacy Policy",
     "termsConditions": "Terms & Conditions",
     "copyright": "All rights reserved."
@@ -140,7 +143,8 @@
     "bookingLoading": "Booking...",
     "bookSuccess": "Appointment booked! Your token is",
     "bookError": "Could not book this appointment. Please try again.",
-    "viewDoctors": "See Doctors"
+    "viewDoctors": "See Doctors",
+    "experienceShort": "Yrs Exp"
   },
   "Notifications": {
     "heading": "Notifications",

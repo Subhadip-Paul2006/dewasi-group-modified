@@ -12,28 +12,20 @@ export default function DoctorGrid({ query }: { query: string }) {
   const t = useTranslations("DoctorSearch");
   const { data: doctors, isLoading } = useDoctorSearch(query);
 
-  if (isLoading) {
-    return <p className="text-center text-sm text-gray-500">...</p>;
-  }
-
-  if (doctors?.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
-        <p className="text-sm text-gray-500">{t("noResults")}</p>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2
-                 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-                 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:pb-0 lg:grid-cols-3"
-    >
-      {doctors?.map((doctor) => (
-        <div key={doctor.id} className="w-[82%] shrink-0 snap-center sm:w-auto sm:shrink">
-          <DoctorCard doctor={doctor} />
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {isLoading && (
+        <p className="col-span-full text-center text-sm text-gray-500">...</p>
+      )}
+
+      {!isLoading && doctors?.length === 0 && (
+        <div className="col-span-full rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center">
+          <p className="text-sm text-gray-500">{t("noResults")}</p>
         </div>
+      )}
+
+      {doctors?.map((doctor) => (
+        <DoctorCard key={doctor.id} doctor={doctor} />
       ))}
     </div>
   );

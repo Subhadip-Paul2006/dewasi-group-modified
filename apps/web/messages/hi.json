@@ -8,7 +8,10 @@
   "Navbar": {
     "findDoctor": "डॉक्टर खोजें",
     "forClinics": "क्लिनिक के लिए",
-    "howItWorks": "यह कैसे काम करता है"
+    "howItWorks": "यह कैसे काम करता है",
+    "availableDoctors": "उपलब्ध डॉक्टर",
+"applyForListing": "लिस्टिंग के लिए आवेदन करें"
+
   },
   "Hero": {
     "badge": "सत्यापित डॉक्टर - रीयल-टाइम कतार",
@@ -21,7 +24,8 @@
     "statDoctors": "सत्यापित डॉक्टर",
     "statClinics": "साझेदार क्लिनिक",
     "statQueue": "कतार ट्रैकिंग",
-    "statQueueValue": "लाइव"
+    "statQueueValue": "लाइव",
+    "searchUnifiedPlaceholder": "नाम या स्थान से खोजें..."
   },
   "Specialties": {
     "heading": "विशेषज्ञता के अनुसार खोजें",
@@ -53,7 +57,7 @@
     "companyHeading": "कंपनी",
     "helpHeading": "मदद चाहिए?",
     "aboutUs": "हमारे बारे में",
-    "contact": "संपर्क करें",
+    "contract": "संपर्क करें",
     "privacyPolicy": "गोपनीयता नीति",
     "termsConditions": "नियम व शर्तें",
     "copyright": "सर्वाधिकार सुरक्षित।"
@@ -147,6 +151,7 @@
     "bookingLoading": "बुक हो रहा है...",
     "bookSuccess": "अपॉइंटमेंट बुक हो गई! आपका टोकन",
     "bookError": "बुक नहीं हो सका। दोबारा कोशिश करें।",
-    "viewDoctors": "डॉक्टर देखें"
+    "viewDoctors": "डॉक्टर देखें",
+    "experienceShort": "वर्षों का अनुभव"
   }
 }

@@ -17,7 +17,7 @@ export default function Footer() {
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-primary)]">
               <Stethoscope className="h-4 w-4 text-white" />
             </span>
-            <span className="font-bold text-[var(--color-primary-dark)]">Doctor Contract</span>
+            <span className="font-bold text-[var(--color-primary-dark)]">Doctor Contact</span>
           </div>
           <p className="mt-3 text-sm text-gray-500">{t("tagline")}</p>
         </div>
@@ -25,7 +25,7 @@ export default function Footer() {
         <FooterCol title={t("platformHeading")} links={[nav("findDoctor"), nav("forClinics"), nav("howItWorks")]} />
         <FooterCol
           title={t("companyHeading")}
-          links={[t("aboutUs"), t("contact"), t("privacyPolicy"), t("termsConditions")]}
+          links={[t("aboutUs"), t("contract"), t("privacyPolicy"), t("termsConditions")]}
         />
 
         <div>
@@ -41,7 +41,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-8 flex max-w-6xl flex-col items-center gap-3 border-t border-gray-100 pt-6 text-xs text-gray-400 sm:flex-row sm:justify-between">
-        <span>&copy; {year} Doctor Contract. All rights reserved.</span>
+        <span>&copy; {year} Doctor Contact. All rights reserved.</span>
 
         <span className="flex flex-col items-center gap-1.5 sm:flex-row sm:gap-3">
           <span>

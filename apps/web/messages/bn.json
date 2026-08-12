@@ -8,7 +8,9 @@
   "Navbar": {
     "findDoctor": "ডাক্তার খুঁজুন",
     "forClinics": "ক্লিনিকদের জন্য",
-    "howItWorks": "কীভাবে কাজ করে"
+    "howItWorks": "কীভাবে কাজ করে",
+    "availableDoctors": "উপলব্ধ ডাক্তার",
+"applyForListing": "তালিকাভুক্তির জন্য আবেদন করুন"
   },
   "Hero": {
     "badge": "ভেরিফায়েড ডাক্তার - রিয়েল-টাইম কিউ",
@@ -21,7 +23,8 @@
     "statDoctors": "ভেরিফায়েড ডাক্তার",
     "statClinics": "পার্টনার ক্লিনিক",
     "statQueue": "কিউ ট্র্যাকিং",
-    "statQueueValue": "লাইভ"
+    "statQueueValue": "লাইভ",
+    "searchUnifiedPlaceholder": "নাম বা লোকেশন দিয়ে খুঁজুন..."
   },
   "Specialties": {
     "heading": "স্পেশালিটি অনুযায়ী খুঁজুন",
@@ -53,7 +56,7 @@
     "companyHeading": "কোম্পানি",
     "helpHeading": "সাহায্য দরকার?",
     "aboutUs": "আমাদের সম্পর্কে",
-    "contact": "যোগাযোগ",
+    "contract": "যোগাযোগ",
     "privacyPolicy": "প্রাইভেসি পলিসি",
     "termsConditions": "শর্তাবলী",
     "copyright": "সর্বস্বত্ব সংরক্ষিত।"
@@ -147,6 +150,7 @@
     "bookingLoading": "বুক হচ্ছে...",
     "bookSuccess": "অ্যাপয়েন্টমেন্ট বুক হয়েছে! আপনার টোকেন",
     "bookError": "বুক করা যায়নি। আবার চেষ্টা করুন।",
-    "viewDoctors": "ডাক্তার দেখুন"
+    "viewDoctors": "ডাক্তার দেখুন",
+    "experienceShort": "বছরের অভিজ্ঞতা"
   }
 }
