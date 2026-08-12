@@ -7,8 +7,10 @@
 */
 :root {
   --color-primary: #1B3A8C;
+  --color-primary-rgb: 27, 58, 140;
   --color-primary-dark: #12295E;
   --color-secondary: #22C55E;
+  --color-secondary-dark: #15803D;
   --color-secondary-light: #DCFCE7;
   --color-bg: #FFFFFF;
   --color-bg-soft: #F4F7FE;

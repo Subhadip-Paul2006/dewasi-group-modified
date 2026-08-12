@@ -523,7 +523,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
 
           <button
             type="button"
-            onClick={() => router.push(`/doctors/${doctor.id}`)}
+            onClick={handleBookClick}
             className="
               flex items-center justify-center
               rounded-xl

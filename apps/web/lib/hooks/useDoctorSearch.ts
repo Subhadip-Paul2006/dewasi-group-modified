@@ -7,7 +7,7 @@ export function useDoctorSearch(query: string, city?: string) {
     queryKey: ["doctors", "search", query, city ?? ""],
     queryFn: async () => {
       const params: Record<string, string> = {};
-      if (query) params.q = query;
+      if (query) params.doctorName = query;
       if (city) params.city = city;
       const { data } = await api.get("/appointments/doctors/search", { params });
       return data.data.doctors;
