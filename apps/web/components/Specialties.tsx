@@ -17,10 +17,10 @@ export default function Specialties() {
 
   return (
     <section className="mx-auto max-w-6xl px-5 py-16">
-      <h2 className="text-center text-2xl font-bold text-[var(--color-primary-dark)]">
+      <h2 className="text-center text-2xl font-bold text-[var(--color-primary-dark-text)]">
         {t("heading")}
       </h2>
-      <p className="mx-auto mt-2 max-w-md text-center text-sm text-gray-500">
+      <p className="mx-auto mt-2 max-w-md text-center text-sm text-gray-500 dark:text-ink-500">
         {t("subtitle")}
       </p>
 
@@ -28,12 +28,12 @@ export default function Specialties() {
         {specialties.map(({ icon: Icon, label }) => (
           <button
             key={label}
-            className="group flex flex-col items-center gap-3 rounded-xl border border-gray-100 bg-white p-5 transition hover:-translate-y-1 hover:border-[var(--color-primary)] hover:shadow-md"
+            className="group flex flex-col items-center gap-3 rounded-xl border border-gray-100 bg-white p-5 transition hover:-translate-y-1 hover:border-[var(--color-primary)] hover:shadow-md dark:border-soft-300 dark:bg-surface"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-secondary-light)] transition group-hover:bg-[var(--color-primary)]">
-              <Icon className="h-6 w-6 text-[var(--color-primary)] transition group-hover:text-white" />
+              <Icon className="h-6 w-6 text-[var(--color-primary-text)] transition group-hover:text-white dark:text-[var(--color-primary-text)]" />
             </span>
-            <span className="text-center text-xs font-medium text-gray-700">{label}</span>
+            <span className="text-center text-xs font-medium text-gray-700 dark:text-ink-700">{label}</span>
           </button>
         ))}
       </div>
