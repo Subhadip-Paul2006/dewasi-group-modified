@@ -27,7 +27,7 @@ const EMPTY = { name: "", email: "", password: "", phone: "" };
 
 // Replaces global <style jsx> to match the premium design language
 const inputClasses =
-  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15";
+  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300";
 
 export default function ClinicReceptionistsPage() {
   const { data: receptionists, isLoading } = useClinicReceptionists();
@@ -71,16 +71,16 @@ export default function ClinicReceptionistsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)]">
-              <Users className="h-4 w-4 text-[var(--color-primary)]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
+              <Users className="h-4 w-4 text-[var(--color-primary-text)]" />
             </div>
 
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
               Front Desk
             </span>
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark)] sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
             Receptionists
           </h1>
 
@@ -99,11 +99,11 @@ export default function ClinicReceptionistsPage() {
               setError("");
             }
           }}
-          className={
-            showAdd
-              ? "inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50"
-              : "inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          }
+            className={
+              showAdd
+                ? "inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface dark:text-ink-600 dark:hover:bg-soft-50"
+                : "inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            }
         >
           {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
           {showAdd ? "Cancel" : "Add Receptionist"}
@@ -116,7 +116,7 @@ export default function ClinicReceptionistsPage() {
       {showAdd && (
         <form
           onSubmit={handleAdd}
-          className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]"
+          className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface"
         >
           {/* Top border accent matching Clinic Overview */}
           <div className="h-1 bg-[var(--color-primary)]" />
@@ -124,12 +124,12 @@ export default function ClinicReceptionistsPage() {
           <div className="p-5 sm:p-6">
             <div className="mb-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)]">
-                  <UserRound className="h-5 w-5 text-[var(--color-primary)]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+                  <UserRound className="h-5 w-5 text-[var(--color-primary-text)]" />
                 </div>
 
                 <div>
-                  <h2 className="text-base font-bold text-gray-800">
+                  <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
                     Add New Receptionist
                   </h2>
                   <p className="mt-0.5 text-xs text-gray-500">
@@ -188,7 +188,7 @@ export default function ClinicReceptionistsPage() {
             </div>
 
             {error && (
-              <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+              <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
                 {error}
               </div>
             )}
@@ -210,7 +210,7 @@ export default function ClinicReceptionistsPage() {
               <button
                 type="button"
                 onClick={closeAddForm}
-                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
+                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
               >
                 Cancel
               </button>
@@ -223,7 +223,7 @@ export default function ClinicReceptionistsPage() {
           LOADING
       ====================================================== */}
       {isLoading && (
-        <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
+        <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
           <div className="flex flex-col items-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-[var(--color-primary)] border-t-transparent" />
             <p className="text-sm font-medium text-gray-500">
@@ -237,12 +237,12 @@ export default function ClinicReceptionistsPage() {
           EMPTY STATE
       ====================================================== */}
       {!isLoading && (!receptionists || receptionists.length === 0) && (
-        <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-10 text-center shadow-sm">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)]">
-            <Users className="h-7 w-7 text-[var(--color-primary)]" />
+        <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-10 text-center shadow-sm dark:border-soft-300 dark:bg-surface">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+            <Users className="h-7 w-7 text-[var(--color-primary-text)]" />
           </div>
 
-          <h2 className="mt-4 text-base font-bold text-[var(--color-primary-dark)]">
+          <h2 className="mt-4 text-base font-bold text-[var(--color-primary-dark-text)]">
             No receptionists yet
           </h2>
 
@@ -307,7 +307,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-bold text-gray-600">
+      <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
         {label}
         {required && <span className="ml-1 text-red-500">*</span>}
       </span>
@@ -378,13 +378,13 @@ function ReceptionistRow({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
+    <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] dark:border-soft-300 dark:bg-surface">
       <div className="p-4 sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex min-w-0 items-center gap-3">
             {/* Avatar */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)]">
-              <span className="text-base font-bold text-[var(--color-primary)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+              <span className="text-base font-bold text-[var(--color-primary-text)]">
                 {getInitials(receptionist.user.name)}
               </span>
             </div>
@@ -392,17 +392,17 @@ function ReceptionistRow({
             {/* Basic info */}
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="truncate text-sm font-bold text-[var(--color-primary-dark)] sm:text-base">
+                <p className="truncate text-sm font-bold text-[var(--color-primary-dark-text)] sm:text-base">
                   {receptionist.user.name}
                 </p>
 
                 {receptionist.user.isActive ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/10 dark:text-green-400">
                     <CheckCircle2 className="h-3 w-3" />
                     Active
                   </span>
                 ) : (
-                  <span className="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold text-red-600">
+                  <span className="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
                     Inactive
                   </span>
                 )}
@@ -437,8 +437,8 @@ function ReceptionistRow({
               }}
               className={
                 assigning
-                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600"
-                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary)] transition hover:bg-[var(--color-primary)]/10"
+                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600"
+                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary-text)] transition hover:bg-[var(--color-primary)]/10 dark:border-soft-300 dark:bg-soft-100"
               }
             >
               {assigning ? (
@@ -456,8 +456,8 @@ function ReceptionistRow({
               }}
               className={
                 changingPw
-                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600"
-                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary)] transition hover:bg-[var(--color-primary)]/10"
+                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600"
+                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary-text)] transition hover:bg-[var(--color-primary)]/10 dark:border-soft-300 dark:bg-soft-100"
               }
             >
               {changingPw ? (
@@ -472,9 +472,9 @@ function ReceptionistRow({
 
         {/* Assigned Doctors Display */}
         {(receptionist.assignedDoctors?.length ?? 0) > 0 && !assigning && (
-          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-gray-50/70 px-4 py-3">
-            <Stethoscope className="mr-1 h-4 w-4 text-[var(--color-primary)]" />
-            <span className="text-xs font-semibold text-gray-600">
+          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-gray-50/70 px-4 py-3 dark:bg-soft-50/70">
+            <Stethoscope className="mr-1 h-4 w-4 text-[var(--color-primary-text)]" />
+            <span className="text-xs font-semibold text-gray-600 dark:text-ink-600">
               Manages:
             </span>
             <div className="flex flex-wrap gap-1.5">
@@ -483,7 +483,7 @@ function ReceptionistRow({
               {receptionist.assignedDoctors.map((a: any, index) => (
                 <span
                   key={a.id || a.doctor?.id || index}
-                  className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[10px] font-bold text-gray-700 shadow-sm"
+                  className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[10px] font-bold text-gray-700 shadow-sm dark:border-soft-300 dark:bg-surface dark:text-ink-700"
                 >
                   {a.doctor?.user?.name || "Unknown"}
                 </span>
@@ -496,11 +496,11 @@ function ReceptionistRow({
             ASSIGN DOCTORS PANEL
         ================================================== */}
         {assigning && (
-          <div className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4">
-            <h3 className="text-sm font-bold text-[var(--color-primary-dark)]">
+          <div className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 dark:border-soft-300 dark:bg-soft-50/50">
+            <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
               Assign Doctors
             </h3>
-            <p className="mb-3 mt-1 text-xs text-gray-500">
+            <p className="mb-3 mt-1 text-xs text-gray-500 dark:text-ink-500">
               Select which doctors this receptionist can manage appointments for.
             </p>
 
@@ -514,7 +514,7 @@ function ReceptionistRow({
                     "rounded-xl border px-3 py-2 text-xs font-bold transition-all " +
                     (selectedIds.includes(d.id)
                       ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-white shadow-sm"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[var(--color-primary)]/40")
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[var(--color-primary)]/40 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600")
                   }
                 >
                   {d.user.name}
@@ -544,12 +544,12 @@ function ReceptionistRow({
         {changingPw && (
           <form
             onSubmit={handleChangePassword}
-            className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4"
+            className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 dark:border-soft-300 dark:bg-soft-50/50"
           >
-            <h3 className="text-sm font-bold text-[var(--color-primary-dark)]">
+            <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
               Update Password
             </h3>
-            <p className="mb-3 mt-1 text-xs text-gray-500">
+            <p className="mb-3 mt-1 text-xs text-gray-500 dark:text-ink-500">
               Change the login password for {receptionist.user.name}.
             </p>
 
@@ -578,8 +578,8 @@ function ReceptionistRow({
                 <div
                   className={`mt-1 rounded-xl px-3 py-2 text-xs font-semibold ${
                     pwMessage.includes("successfully")
-                      ? "bg-green-50 text-green-700"
-                      : "bg-red-50 text-red-600"
+                      ? "bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400"
+                      : "bg-red-50 text-red-600 dark:bg-red-500/15 dark:text-red-400"
                   }`}
                 >
                   {pwMessage}
