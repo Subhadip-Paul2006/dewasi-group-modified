@@ -157,27 +157,27 @@ export default function ClinicRequestsPage() {
               {sent.map((r) => (
                 <div
                   key={r.id}
-                  className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-surface"
                 >
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-50">
-                      <span className="text-sm font-bold text-gray-500">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-50 dark:bg-soft-100">
+                      <span className="text-sm font-bold text-gray-500 dark:text-ink-500">
                         {getInitials(r.doctor?.user?.name ?? "Doctor")}
                       </span>
                     </div>
 
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-gray-800">
+                      <p className="truncate text-sm font-bold text-gray-800 dark:text-ink-800">
                         {r.doctor?.user?.name ?? "Unknown Doctor"}
                       </p>
                       {r.dayOfWeek && (
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500">
+                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500 dark:text-ink-500">
                           <div className="flex items-center gap-1.5">
-                            <CalendarDays className="h-3.5 w-3.5 text-gray-400" />
+                            <CalendarDays className="h-3.5 w-3.5 text-gray-400 dark:text-ink-400" />
                             <span>{r.dayOfWeek}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <Clock className="h-3.5 w-3.5 text-gray-400" />
+                            <Clock className="h-3.5 w-3.5 text-gray-400 dark:text-ink-400" />
                             <span>
                               {r.startTime} – {r.endTime}
                             </span>
@@ -213,27 +213,27 @@ function IncomingRow({
   busy: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-[var(--color-primary)]/10 bg-[var(--color-primary)]/5 p-4 transition hover:bg-[var(--color-primary)]/10 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-4 rounded-2xl border border-[var(--color-primary)]/10 bg-[var(--color-primary)]/5 p-4 transition hover:bg-[var(--color-primary)]/10 sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-soft-50/50 dark:hover:bg-soft-100/50">
       <div className="flex min-w-0 items-center gap-3">
         {/* Avatar */}
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-          <span className="text-sm font-bold text-[var(--color-primary)]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-surface">
+          <span className="text-sm font-bold text-[var(--color-primary-text)]">
             {getInitials(request.doctor?.user?.name ?? "Doctor")}
           </span>
         </div>
 
         <div className="min-w-0">
-          <p className="truncate text-sm font-bold text-[var(--color-primary-dark)]">
+          <p className="truncate text-sm font-bold text-[var(--color-primary-dark-text)]">
             {request.doctor?.user?.name ?? "Unknown Doctor"}
           </p>
           {request.dayOfWeek && (
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-gray-600">
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-gray-600 dark:text-ink-600">
               <div className="flex items-center gap-1.5">
-                <CalendarDays className="h-3.5 w-3.5 text-[var(--color-primary)]" />
+                <CalendarDays className="h-3.5 w-3.5 text-[var(--color-primary-text)]" />
                 <span>{request.dayOfWeek}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-[var(--color-primary)]" />
+                <Clock className="h-3.5 w-3.5 text-[var(--color-primary-text)]" />
                 <span>
                   {request.startTime} – {request.endTime}
                 </span>
@@ -258,7 +258,7 @@ function IncomingRow({
           type="button"
           disabled={busy}
           onClick={() => onRespond("REJECT")}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-white px-4 py-2 text-xs font-bold text-red-600 shadow-sm transition hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-white px-4 py-2 text-xs font-bold text-red-600 shadow-sm transition hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-500/30 dark:bg-surface-100 dark:text-red-400 dark:hover:bg-red-500/15"
         >
           <X className="h-4 w-4" />
           Reject
@@ -274,7 +274,7 @@ function IncomingRow({
 function StatusBadge({ status }: { status: string }) {
   if (status === "APPROVED") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-700">
+      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-700 dark:bg-green-500/15 dark:text-green-400">
         <CheckCircle2 className="h-3.5 w-3.5" />
         Approved
       </span>
@@ -283,7 +283,7 @@ function StatusBadge({ status }: { status: string }) {
   
   if (status === "REJECTED") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700">
+      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700 dark:bg-red-500/15 dark:text-red-400">
         <XCircle className="h-3.5 w-3.5" />
         Rejected
       </span>
@@ -292,7 +292,7 @@ function StatusBadge({ status }: { status: string }) {
 
   // PENDING or other
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
       <Clock3 className="h-3.5 w-3.5" />
       Pending
     </span>
