@@ -20,7 +20,7 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 p-1 shadow-sm">
+    <div className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 p-1 shadow-sm dark:border-soft-300 dark:bg-soft-50">
       {locales.map((l) => {
         const isActive = locale === l.code;
 
@@ -36,7 +36,7 @@ export default function LanguageSwitcher() {
               ${
                 isActive
                   ? "bg-[var(--color-primary)] text-white shadow-sm"
-                  : "text-gray-500 hover:bg-white hover:text-gray-800"
+                  : "text-gray-500 hover:bg-white hover:text-gray-800 dark:text-ink-500 dark:hover:bg-surface dark:hover:text-ink-800"
               }
             `}
           >
