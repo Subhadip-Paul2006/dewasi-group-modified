@@ -48,20 +48,20 @@ export default function ClinicReportsPage() {
 
       <div>
         <div className="mb-2 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)]">
-            <BarChart3 className="h-4 w-4 text-[var(--color-primary)]" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
+            <BarChart3 className="h-4 w-4 text-[var(--color-primary-text)]" />
           </div>
 
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
             Clinic Analytics
           </span>
         </div>
 
-        <h1 className="text-2xl font-bold text-[var(--color-primary-dark)] sm:text-3xl">
+        <h1 className="text-2xl font-bold text-[var(--color-primary-dark-text)] sm:text-3xl">
           Analytics & Reports
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
           Understand your clinic performance, patients, revenue and growth.
         </p>
       </div>
@@ -167,16 +167,16 @@ function PeriodReportCard() {
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-bg-soft)]">
-              <CalendarDays className="h-5 w-5 text-[var(--color-primary)]" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+              <CalendarDays className="h-5 w-5 text-[var(--color-primary-text)]" />
             </div>
 
             <div>
-              <h2 className="text-base font-bold text-gray-800">
+              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
                 Patient Report
               </h2>
 
-              <p className="mt-0.5 text-xs text-gray-500">
+              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
                 View appointments and patient performance by period.
               </p>
             </div>
@@ -190,7 +190,7 @@ function PeriodReportCard() {
                   handleDownload("pdf")
                 }
                 disabled={download.isPending}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)] disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary-text)] disabled:opacity-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
               >
                 {download.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -207,7 +207,7 @@ function PeriodReportCard() {
                   handleDownload("excel")
                 }
                 disabled={download.isPending}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)] disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary-text)] disabled:opacity-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
               >
                 {download.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -239,7 +239,7 @@ function PeriodReportCard() {
                 className={
                   period === p.value
                     ? "rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition"
-                    : "rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]"
+                    : "rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold text-gray-600 transition hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary-text)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
                 }
               >
                 {p.label}
@@ -409,7 +409,7 @@ function PeriodReportCard() {
                 Doctor-wise Breakdown
               </SectionTitle>
 
-              <div className="overflow-hidden rounded-2xl border border-gray-100">
+              <div className="overflow-hidden rounded-2xl border border-gray-100 dark:border-soft-300">
                 {Object.entries(
                   report.byDoctor
                 ).map(
@@ -419,21 +419,21 @@ function PeriodReportCard() {
                       className={
                         "flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between " +
                         (index > 0
-                          ? "border-t border-gray-100"
+                          ? "border-t border-gray-100 dark:border-soft-100"
                           : "")
                       }
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-soft)]">
-                          <Stethoscope className="h-4 w-4 text-[var(--color-primary)]" />
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+                          <Stethoscope className="h-4 w-4 text-[var(--color-primary-text)]" />
                         </div>
 
                         <div>
-                          <p className="text-sm font-bold text-gray-800">
+                          <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                             {doctorName}
                           </p>
 
-                          <p className="mt-0.5 text-[11px] text-gray-400">
+                          <p className="mt-0.5 text-[11px] text-gray-400 dark:text-ink-400">
                             {doctor.totalAppointments}{" "}
                             appointments
                           </p>
@@ -441,15 +441,15 @@ function PeriodReportCard() {
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-                        <span className="rounded-lg bg-gray-50 px-2.5 py-1.5 text-gray-600">
+                        <span className="rounded-lg bg-gray-50 px-2.5 py-1.5 text-gray-600 dark:bg-soft-100 dark:text-ink-600">
                           {doctor.totalAppointments} total
                         </span>
 
-                        <span className="rounded-lg bg-green-50 px-2.5 py-1.5 text-green-700">
+                        <span className="rounded-lg bg-green-50 px-2.5 py-1.5 text-green-700 dark:bg-green-500/15 dark:text-green-400">
                           {doctor.completed} completed
                         </span>
 
-                        <span className="rounded-lg bg-[var(--color-bg-soft)] px-2.5 py-1.5 text-[var(--color-primary)]">
+                        <span className="rounded-lg bg-[var(--color-bg-soft)] px-2.5 py-1.5 text-[var(--color-primary-text)] dark:bg-soft-100">
                           ₹{doctor.revenue}
                         </span>
                       </div>
@@ -461,9 +461,9 @@ function PeriodReportCard() {
                   report.byDoctor
                 ).length === 0 && (
                   <div className="p-8 text-center">
-                    <Stethoscope className="mx-auto h-7 w-7 text-gray-300" />
+                    <Stethoscope className="mx-auto h-7 w-7 text-gray-300 dark:text-ink-300" />
 
-                    <p className="mt-2 text-xs font-medium text-gray-400">
+                    <p className="mt-2 text-xs font-medium text-gray-400 dark:text-ink-400">
                       No appointments in this period.
                     </p>
                   </div>
@@ -760,7 +760,7 @@ function SectionTitle({
   children: React.ReactNode;
 }) {
   return (
-    <p className="mb-3 text-xs font-bold uppercase tracking-wide text-gray-500">
+    <p className="mb-3 text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-ink-500">
       {children}
     </p>
   );
@@ -776,18 +776,18 @@ function ReportStat({
   value: string | number;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] p-4">
+    <div className="rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] p-4 dark:border-soft-300 dark:bg-surface">
       <div className="flex items-center justify-between gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-          <Icon className="h-4 w-4 text-[var(--color-primary)]" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-soft-100">
+          <Icon className="h-4 w-4 text-[var(--color-primary-text)]" />
         </div>
       </div>
 
-      <p className="mt-3 text-xl font-bold text-[var(--color-primary-dark)]">
+      <p className="mt-3 text-xl font-bold text-[var(--color-primary-dark-text)]">
         {value}
       </p>
 
-      <p className="mt-0.5 text-[11px] font-medium text-gray-500">
+      <p className="mt-0.5 text-[11px] font-medium text-gray-500 dark:text-ink-500">
         {label}
       </p>
     </div>
@@ -802,16 +802,16 @@ function GrowthStat({
   value: string | number;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] p-4">
-      <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400">
+    <div className="rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] p-4 dark:border-soft-300 dark:bg-surface">
+      <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400 dark:text-ink-400">
         {label}
       </p>
 
-      <p className="mt-2 text-xl font-bold text-[var(--color-primary-dark)]">
+      <p className="mt-2 text-xl font-bold text-[var(--color-primary-dark-text)]">
         {value}
       </p>
 
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white">
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white dark:bg-soft-100">
         <div className="h-full w-2/3 rounded-full bg-[var(--color-primary)]" />
       </div>
     </div>
@@ -836,33 +836,33 @@ function StatusCard({
 
   let icon = Users;
   let iconClass =
-    "text-[var(--color-primary)]";
+    "text-[var(--color-primary-text)]";
   let bgClass =
-    "bg-[var(--color-bg-soft)]";
+    "bg-[var(--color-bg-soft)] dark:bg-soft-100";
   let textClass =
-    "text-[var(--color-primary)]";
+    "text-[var(--color-primary-text)]";
 
   if (isCancelled) {
     icon = XCircle;
-    iconClass = "text-red-500";
-    bgClass = "bg-red-50";
-    textClass = "text-red-600";
+    iconClass = "text-red-500 dark:text-red-400";
+    bgClass = "bg-red-50 dark:bg-red-500/15";
+    textClass = "text-red-600 dark:text-red-400";
   } else if (isAbsent) {
     icon = UserX;
-    iconClass = "text-amber-600";
-    bgClass = "bg-amber-50";
-    textClass = "text-amber-700";
+    iconClass = "text-amber-600 dark:text-amber-400";
+    bgClass = "bg-amber-50 dark:bg-amber-500/15";
+    textClass = "text-amber-700 dark:text-amber-400";
   } else if (isCompleted) {
     icon = CheckCircle2;
-    iconClass = "text-green-600";
-    bgClass = "bg-green-50";
-    textClass = "text-green-700";
+    iconClass = "text-green-600 dark:text-green-400";
+    bgClass = "bg-green-50 dark:bg-green-500/15";
+    textClass = "text-green-700 dark:text-green-400";
   }
 
   const Icon = icon;
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-3.5">
+    <div className="rounded-2xl border border-gray-100 bg-white p-3.5 dark:border-soft-300 dark:bg-surface">
       <div className="flex items-center gap-3">
         <div
           className={
@@ -892,7 +892,7 @@ function StatusCard({
                   .toLowerCase()}
           </p>
 
-          <p className="mt-0.5 text-lg font-bold text-gray-800">
+          <p className="mt-0.5 text-lg font-bold text-gray-800 dark:text-ink-800">
             {count}
           </p>
         </div>
@@ -927,5 +927,11 @@ function StatusCard({
   .report-input:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .dark .report-input {
+    border-color: var(--surface-300);
+    background: var(--surface-white);
+    color: var(--ink-800);
   }
 `}</style>
