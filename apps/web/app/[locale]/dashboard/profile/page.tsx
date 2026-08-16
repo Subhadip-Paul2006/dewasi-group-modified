@@ -68,49 +68,49 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-xl">
       <Link
         href="/dashboard"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[var(--color-primary)]"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[var(--color-primary-text)] dark:text-ink-500"
       >
         <ArrowLeft className="h-4 w-4" /> {t("backToDashboard")}
       </Link>
 
-      <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">{t("editProfile")}</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-primary-dark-text)]">{t("editProfile")}</h1>
 
-      <div className="mt-4 rounded-xl border border-gray-100 bg-white p-5">
-        <div className="flex items-center gap-3 text-sm text-gray-600">
-          <User className="h-4 w-4 text-[var(--color-primary)]" />
+      <div className="mt-4 rounded-xl border border-gray-100 bg-white p-5 dark:border-soft-300 dark:bg-surface">
+        <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-ink-600">
+          <User className="h-4 w-4 text-[var(--color-primary-text)]" />
           <span>{t("profileName")}: {user?.name}</span>
         </div>
-        <div className="mt-2 flex items-center gap-3 text-sm text-gray-600">
-          <Mail className="h-4 w-4 text-[var(--color-primary)]" />
+        <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-ink-600">
+          <Mail className="h-4 w-4 text-[var(--color-primary-text)]" />
           <span>{t("profileEmail")}: {user?.email}</span>
         </div>
-        <div className="mt-2 flex items-center gap-3 text-sm text-gray-600">
-          <Phone className="h-4 w-4 text-[var(--color-primary)]" />
+        <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-ink-600">
+          <Phone className="h-4 w-4 text-[var(--color-primary-text)]" />
           <span>{t("profilePhone")}: {user?.phone || t("profileNotSet")}</span>
         </div>
       </div>
 
       {isLoading ? (
-        <p className="mt-6 text-sm text-gray-500">{t("loadingAppointments")}</p>
+        <p className="mt-6 text-sm text-gray-500 dark:text-ink-500">{t("loadingAppointments")}</p>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-4 rounded-xl border border-gray-100 bg-white p-5"
+          className="mt-4 rounded-xl border border-gray-100 bg-white p-5 dark:border-soft-300 dark:bg-surface"
         >
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">{t("profileDob")}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("profileDob")}</label>
             <input
               {...register("dob")}
               type="date"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800"
             />
           </div>
 
           <div className="mt-4">
-            <label className="mb-1 block text-sm font-medium text-gray-700">{t("profileGender")}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("profileGender")}</label>
             <select
               {...register("gender")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800"
             >
               <option value="">{t("selectGender")}</option>
               <option value="MALE">{t("genderMale")}</option>
@@ -120,26 +120,26 @@ export default function ProfilePage() {
           </div>
 
           <div className="mt-4">
-            <label className="mb-1 block text-sm font-medium text-gray-700">{t("profileBloodGroup")}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("profileBloodGroup")}</label>
             <input
               {...register("bloodGroup")}
               placeholder={t("bloodGroupPlaceholder")}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
             />
           </div>
 
           <div className="mt-4">
-            <label className="mb-1 block text-sm font-medium text-gray-700">Address</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">Address</label>
             <textarea
               {...register("address")}
               placeholder={t("addressPlaceholder")}
               rows={2}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
             />
           </div>
 
-          {serverError && <p className="mt-3 text-sm text-red-600">{serverError}</p>}
-          {success && <p className="mt-3 text-sm text-green-600">{t("profileUpdated")}</p>}
+          {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{serverError}</p>}
+          {success && <p className="mt-3 text-sm text-green-600 dark:text-green-400">{t("profileUpdated")}</p>}
 
           <button
             type="submit"
