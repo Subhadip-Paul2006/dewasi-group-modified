@@ -50,16 +50,16 @@ export default function DoctorGrid({
 
       {/* Empty State */}
       {!isLoading && doctors?.length === 0 && (
-        <div className="col-span-full rounded-3xl border border-dashed border-gray-200 bg-gray-50/70 p-14 text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-gray-100">
-            <Clock className="h-7 w-7 text-gray-400" />
+        <div className="col-span-full rounded-3xl border border-dashed border-gray-200 bg-gray-50/70 p-14 text-center dark:border-soft-300 dark:bg-soft-50/70">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 dark:bg-surface dark:ring-soft-300">
+            <Clock className="h-7 w-7 text-gray-400 dark:text-ink-400" />
           </div>
 
-          <p className="text-lg font-bold text-gray-800">
+          <p className="text-lg font-bold text-gray-800 dark:text-ink-800">
             {t("noResults")}
           </p>
 
-          <p className="mt-1.5 text-sm text-gray-500">
+          <p className="mt-1.5 text-sm text-gray-500 dark:text-ink-500">
             Try adjusting your search or filters
           </p>
         </div>
@@ -215,6 +215,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         hover:-translate-y-1
         hover:border-gray-300
         hover:shadow-[0_18px_45px_rgba(0,0,0,0.09)]
+        dark:border-soft-300
+        dark:bg-surface
+        dark:hover:border-soft-300
       "
       role="article"
       aria-label={`Doctor profile: ${doctor.user.name}`}
@@ -242,6 +245,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               text-[var(--color-secondary-dark)]
               shadow-sm
               backdrop-blur
+              dark:border-soft-300
+              dark:bg-surface/95
+              dark:text-[var(--color-secondary-dark-text)]
             "
           >
             <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
@@ -271,6 +277,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
           hover:border-gray-200
           hover:shadow-md
           active:scale-95
+          dark:border-soft-300
+          dark:bg-surface/95
         "
         aria-label={
           isFavorite
@@ -282,7 +290,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
           className={`h-[17px] w-[17px] transition-colors ${
             isFavorite
               ? "fill-red-500 text-red-500"
-              : "text-gray-400 group-hover:text-gray-500"
+              : "text-gray-400 group-hover:text-gray-500 dark:text-ink-400 dark:group-hover:text-ink-500"
           }`}
         />
       </button>
@@ -309,11 +317,12 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 from-[var(--color-bg-soft)]
                 to-[var(--color-primary)]/10
                 text-lg font-bold
-                text-[var(--color-primary)]
+                text-[var(--color-primary-text)]
                 shadow-sm
                 ring-1 ring-gray-100
                 transition-transform duration-300
                 group-hover:scale-[1.03]
+                dark:ring-soft-300
               "
             >
               {initials(doctor.user.name)}
@@ -330,6 +339,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 border-[3px] border-white
                 bg-green-500
                 shadow-sm
+                dark:border-surface
               "
             >
               <span className="sr-only">Available</span>
@@ -346,9 +356,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                   text-[17px]
                   font-bold
                   tracking-[-0.01em]
-                  text-[var(--color-primary-dark)]
+                  text-[var(--color-primary-dark-text)]
                   transition-colors
-                  group-hover:text-[var(--color-primary)]
+                  group-hover:text-[var(--color-primary-text)]
                 "
               >
                 {doctor.user.name}
@@ -357,19 +367,19 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               <CheckCircle2
                 className="
                   h-4 w-4 shrink-0
-                  text-[var(--color-primary)]
+                  text-[var(--color-primary-text)]
                 "
               />
             </div>
 
             {doctor.qualification && (
-              <p className="mt-0.5 truncate text-sm font-semibold text-gray-700">
+              <p className="mt-0.5 truncate text-sm font-semibold text-gray-700 dark:text-ink-700">
                 {doctor.qualification}
               </p>
             )}
 
             {doctor.specialization && (
-              <p className="mt-0.5 truncate text-xs font-medium text-gray-500">
+              <p className="mt-0.5 truncate text-xs font-medium text-gray-500 dark:text-ink-500">
                 {doctor.specialization}
               </p>
             )}
@@ -390,11 +400,11 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 ))}
               </div>
 
-              <span className="text-xs font-semibold text-gray-700">
+              <span className="text-xs font-semibold text-gray-700 dark:text-ink-700">
                 4.5
               </span>
 
-              <span className="text-[11px] text-gray-400">
+              <span className="text-[11px] text-gray-400 dark:text-ink-400">
                 Excellent
               </span>
             </div>
@@ -405,7 +415,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             Divider
         ==================================================== */}
 
-        <div className="my-5 h-px bg-gray-100" />
+        <div className="my-5 h-px bg-gray-100 dark:bg-soft-100" />
 
         {/* ===================================================
             Clinic / Fee
@@ -424,12 +434,15 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               px-3 py-2
               text-xs font-semibold
               text-gray-600
+              dark:border-soft-300
+              dark:bg-soft-50
+              dark:text-ink-600
             "
           >
             <MapPin
               className="
                 h-3.5 w-3.5 shrink-0
-                text-[var(--color-primary)]
+                text-[var(--color-primary-text)]
               "
             />
 
@@ -450,6 +463,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 px-3 py-2
                 text-xs font-bold
                 text-green-700
+                dark:border-green-500/20
+                dark:bg-green-500/10
+                dark:text-green-400
               "
             >
               <DollarSign className="h-3.5 w-3.5" />
@@ -470,6 +486,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             border border-[var(--color-primary)]/10
             bg-[var(--color-bg-soft)]/60
             px-3.5 py-3
+            dark:border-soft-300
+            dark:bg-soft-50/60
           "
         >
           <div className="flex items-center gap-2">
@@ -479,22 +497,23 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 rounded-lg
                 bg-white
                 shadow-sm
+                dark:bg-surface
               "
             >
               <Clock
                 className="
                   h-4 w-4
-                  text-[var(--color-primary)]
+                  text-[var(--color-primary-text)]
                 "
               />
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 dark:text-ink-400">
                 Next available
               </p>
 
-              <p className="mt-0.5 text-xs font-bold text-gray-700">
+              <p className="mt-0.5 text-xs font-bold text-gray-700 dark:text-ink-700">
                 Tomorrow, 10:00 AM
               </p>
             </div>
@@ -508,6 +527,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               text-[10px] font-bold
               text-green-700
               sm:inline-flex
+              dark:bg-green-500/20
+              dark:text-green-300
             "
           >
             Available
@@ -535,8 +556,12 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               transition-all duration-200
               hover:border-[var(--color-primary)]/30
               hover:bg-[var(--color-bg-soft)]
-              hover:text-[var(--color-primary)]
+              hover:text-[var(--color-primary-text)]
               active:scale-[0.98]
+              dark:border-soft-300
+              dark:bg-surface
+              dark:text-ink-700
+              dark:hover:bg-soft-50
             "
             aria-label={`View full profile of ${doctor.user.name}`}
           >
@@ -583,15 +608,15 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
 
         {showBooking && user && (
           <div className="animate-in slide-in-from-top-2 fade-in duration-200">
-            <div className="mt-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4">
+            <div className="mt-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 dark:border-soft-300 dark:bg-soft-50/80">
               {/* Booking Header */}
 
               <div className="mb-3">
-                <p className="text-sm font-bold text-gray-800">
+                <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                   Book an appointment
                 </p>
 
-                <p className="mt-0.5 text-xs text-gray-500">
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
                   Select your preferred date and time.
                 </p>
               </div>
@@ -612,12 +637,14 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                     focus-within:border-[var(--color-primary)]
                     focus-within:ring-2
                     focus-within:ring-[var(--color-primary)]/10
+                    dark:border-soft-300
+                    dark:bg-surface
                   "
                 >
                   <Calendar
                     className="
                       h-4 w-4 shrink-0
-                      text-[var(--color-primary)]
+                      text-[var(--color-primary-text)]
                     "
                   />
 
@@ -637,6 +664,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                       text-xs font-medium
                       text-gray-700
                       outline-none
+                      dark:text-ink-700
                     "
                     aria-label="Select appointment date"
                   />
@@ -655,12 +683,14 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                     focus-within:border-[var(--color-primary)]
                     focus-within:ring-2
                     focus-within:ring-[var(--color-primary)]/10
+                    dark:border-soft-300
+                    dark:bg-surface
                   "
                 >
                   <Clock
                     className="
                       h-4 w-4 shrink-0
-                      text-[var(--color-primary)]
+                      text-[var(--color-primary-text)]
                     "
                   />
 
@@ -680,6 +710,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                       text-xs font-medium
                       text-gray-700
                       outline-none
+                      dark:text-ink-700
                     "
                     aria-label="Select appointment time"
                   />
@@ -744,8 +775,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 <div
                   className={`mt-3 rounded-xl border p-3 text-xs ${
                     message.type === "success"
-                      ? "border-green-200 bg-green-50 text-green-700"
-                      : "border-red-200 bg-red-50 text-red-700"
+                      ? "border-green-200 bg-green-50 text-green-700 dark:border-green-500/20 dark:bg-green-500/10 dark:text-green-400"
+                      : "border-red-200 bg-red-50 text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
                   }`}
                   role="alert"
                 >
