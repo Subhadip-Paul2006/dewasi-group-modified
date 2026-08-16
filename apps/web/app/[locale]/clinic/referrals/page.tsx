@@ -124,19 +124,19 @@ export default function ClinicReferralsPage() {
       ====================================================== */}
       <div className="flex flex-col gap-1">
         <div className="mb-2 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)]">
-            <FlaskConical className="h-4 w-4 text-[var(--color-primary)]" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
+            <FlaskConical className="h-4 w-4 text-[var(--color-primary-text)]" />
           </div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
             Laboratory
           </span>
         </div>
 
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark)] sm:text-3xl">
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
           Send Test Referral
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
           Refer patients to certified diagnostic centers for tests and diagnostics.
         </p>
       </div>
@@ -144,17 +144,17 @@ export default function ClinicReferralsPage() {
       {/* =====================================================
           CREATE REFERRAL CARD
       ====================================================== */}
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
+      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
         <div className="h-1 bg-[var(--color-primary)]" />
 
         <div className="p-5 sm:p-6 space-y-6">
           {/* STEP 1: FIND PATIENT */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100">
                 1
               </span>
-              <h2 className="text-sm font-bold text-gray-800">Find Patient</h2>
+              <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">Find Patient</h2>
             </div>
 
             <form onSubmit={handlePatientSearch} className="flex gap-2">
@@ -180,22 +180,22 @@ export default function ClinicReferralsPage() {
             </form>
 
             {patientNotFound && (
-              <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-600">
+              <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-600 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
                 No patient found with this phone number.
               </div>
             )}
 
             {patient && (
-              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4 dark:border-soft-300 dark:bg-soft-50/70">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary-text)] dark:bg-soft-100">
                     <User className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                       {patient.name}{" "}
                       {patient.isGuest && (
-                        <span className="ml-1 rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                        <span className="ml-1 rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-500/15 dark:text-amber-400">
                           Guest
                         </span>
                       )}
@@ -220,15 +220,15 @@ export default function ClinicReferralsPage() {
             )}
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-gray-100 dark:border-soft-100" />
 
           {/* STEP 2: FIND CENTER */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100">
                 2
               </span>
-              <h2 className="text-sm font-bold text-gray-800">
+              <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
                 Find Diagnostic Center
               </h2>
             </div>
@@ -262,25 +262,25 @@ export default function ClinicReferralsPage() {
                     key={c.id}
                     type="button"
                     onClick={() => setSelectedCenter(c)}
-                    className="flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white p-3.5 text-left text-sm transition hover:border-[var(--color-primary)]/40 hover:bg-gray-50/50"
+                    className="flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white p-3.5 text-left text-sm transition hover:border-[var(--color-primary)]/40 hover:bg-gray-50/50 dark:border-soft-300 dark:bg-surface-100 dark:hover:bg-soft-50/50"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-600">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-600 dark:bg-soft-100 dark:text-ink-600">
                         <Building2 className="h-4 w-4" />
                       </div>
                       <div>
-                        <span className="font-bold text-gray-800">
+                        <span className="font-bold text-gray-800 dark:text-ink-800">
                           {c.centerName}
                         </span>
                         {c.city && (
-                          <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500">
+                          <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500 dark:text-ink-500">
                             <MapPin className="h-3 w-3" />
                             {c.city}
                           </p>
                         )}
                       </div>
                     </div>
-                    <span className="text-xs font-semibold text-[var(--color-primary)]">
+                    <span className="text-xs font-semibold text-[var(--color-primary-text)]">
                       Select
                     </span>
                   </button>
@@ -289,17 +289,17 @@ export default function ClinicReferralsPage() {
             )}
 
             {selectedCenter && (
-              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+              <div className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/70 p-4 dark:border-soft-300 dark:bg-soft-50/70">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] text-[var(--color-primary-text)] dark:bg-soft-100">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                       {selectedCenter.centerName}
                     </p>
                     {selectedCenter.city && (
-                      <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500">
+                      <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500 dark:text-ink-500">
                         <MapPin className="h-3 w-3" />
                         {selectedCenter.city}
                       </p>
@@ -309,7 +309,7 @@ export default function ClinicReferralsPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedCenter(null)}
-                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500"
+                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500 dark:text-ink-400 dark:hover:bg-surface dark:hover:text-red-400"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -317,15 +317,15 @@ export default function ClinicReferralsPage() {
             )}
           </div>
 
-          <hr className="border-gray-100" />
+          <hr className="border-gray-100 dark:border-soft-100" />
 
           {/* STEP 3: TESTS & NOTES */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary)]">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100">
                 3
               </span>
-              <h2 className="text-sm font-bold text-gray-800">
+              <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
                 Required Tests & Notes
               </h2>
             </div>
@@ -346,7 +346,7 @@ export default function ClinicReferralsPage() {
               <button
                 type="button"
                 onClick={addTest}
-                className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-gray-700 transition hover:bg-gray-50"
+                className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-gray-700 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-700 dark:hover:bg-soft-100"
               >
                 <Plus className="h-4 w-4" />
                 Add
@@ -358,7 +358,7 @@ export default function ClinicReferralsPage() {
                 {tests.map((t) => (
                   <span
                     key={t}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-primary)]/10 px-3.5 py-1.5 text-xs font-bold text-[var(--color-primary)]"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-primary)]/10 px-3.5 py-1.5 text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100"
                   >
                     {t}
                     <button
@@ -416,39 +416,39 @@ export default function ClinicReferralsPage() {
       {/* =====================================================
           SENT REFERRALS HISTORY
       ====================================================== */}
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
-        <div className="h-1 bg-gray-200" />
+      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
+        <div className="h-1 bg-gray-200 dark:bg-soft-300" />
 
         <div className="p-5 sm:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-gray-800">
+              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
                 Sent Referrals History
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500">
+              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
                 Track all diagnostic test referrals sent to date.
               </p>
             </div>
           </div>
 
           {loadingSent ? (
-            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50">
+            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50 dark:border-soft-300 dark:bg-soft-50/50">
               <div className="flex flex-col items-center gap-3">
-                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-                <p className="text-sm font-medium text-gray-500">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-ink-400" />
+                <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
                   Loading history...
                 </p>
               </div>
             </div>
           ) : !sent || sent.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
-                <FileText className="h-6 w-6 text-gray-400" />
+            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center dark:border-soft-300 dark:bg-soft-50">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-surface">
+                <FileText className="h-6 w-6 text-gray-400 dark:text-ink-400" />
               </div>
-              <h3 className="mt-4 text-sm font-bold text-gray-800">
+              <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
                 No referrals sent yet
               </h3>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
                 Referrals you dispatch will show up right here.
               </p>
             </div>
@@ -457,45 +457,45 @@ export default function ClinicReferralsPage() {
               {sent.map((r) => (
                 <div
                   key={r.id}
-                  className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md space-y-3"
+                  className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md space-y-3 dark:border-soft-300 dark:bg-surface"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-50 pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-50 pb-3 dark:border-soft-100">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] text-[var(--color-primary)]">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] text-[var(--color-primary-text)] dark:bg-soft-100">
                         <User className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-gray-800">
+                        <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                           {r.patient.user?.name || r.patient.name}
                         </p>
-                        <p className="text-[11px] text-gray-400">
+                        <p className="text-[11px] text-gray-400 dark:text-ink-400">
                           Patient Reference
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-                      <CalendarDays className="h-3.5 w-3.5 text-gray-400" />
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-ink-500">
+                      <CalendarDays className="h-3.5 w-3.5 text-gray-400 dark:text-ink-400" />
                       {new Date(r.createdAt).toLocaleDateString()}
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
-                      <Building2 className="h-4 w-4 text-[var(--color-primary)]" />
+                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-600 dark:text-ink-600">
+                      <Building2 className="h-4 w-4 text-[var(--color-primary-text)]" />
                       <span>Center: {r.diagnosticCenter.centerName}</span>
                     </div>
                   </div>
 
-                  <div className="rounded-xl bg-gray-50/70 p-3 space-y-1.5">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                  <div className="rounded-xl bg-gray-50/70 p-3 space-y-1.5 dark:bg-soft-50/70">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-ink-400">
                       Prescribed Tests
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {r.testNames.map((test, index) => (
                         <span
                           key={index}
-                          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-bold text-gray-700 shadow-sm"
+                          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-bold text-gray-700 shadow-sm dark:border-soft-300 dark:bg-surface-100 dark:text-ink-700"
                         >
                           {test}
                         </span>
@@ -504,8 +504,8 @@ export default function ClinicReferralsPage() {
                   </div>
 
                   {r.notes && (
-                    <p className="text-xs italic text-gray-500">
-                      <span className="font-semibold not-italic text-gray-700">
+                    <p className="text-xs italic text-gray-500 dark:text-ink-500">
+                      <span className="font-semibold not-italic text-gray-700 dark:text-ink-700">
                         Notes:{" "}
                       </span>
                       {r.notes}
