@@ -7,11 +7,11 @@ import { Link } from "@/i18n/routing";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 
 const STATUS_STYLES: Record<string, string> = {
-  WAITING: "bg-amber-50 text-amber-700 border-amber-200",
-  CHECKED_IN: "bg-blue-50 text-blue-700 border-blue-200",
-  ABSENT: "bg-gray-100 text-gray-600 border-gray-200",
-  COMPLETED: "bg-green-50 text-green-700 border-green-200",
-  CANCELLED: "bg-red-50 text-red-700 border-red-200",
+  WAITING: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/25",
+  CHECKED_IN: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/25",
+  ABSENT: "bg-gray-100 text-gray-600 border-gray-200 dark:bg-soft-100 dark:text-ink-600 dark:border-soft-300",
+  COMPLETED: "bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/25",
+  CANCELLED: "bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/25",
 };
 
 const STATUS_LABEL_KEYS: Record<string, string> = {
@@ -34,24 +34,24 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
+      <h1 className="text-2xl font-bold text-[var(--color-primary-dark-text)]">
         {t("welcome")}, {user?.name}
       </h1>
-      <p className="mt-1 text-sm text-gray-500">{t("subtitle")}</p>
+      <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">{t("subtitle")}</p>
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:max-w-sm">
-        <div className="rounded-xl border border-gray-100 bg-white p-4">
-          <p className="text-2xl font-bold text-[var(--color-primary)]">{upcoming.length}</p>
-          <p className="text-xs text-gray-500">{t("upcomingCount")}</p>
+        <div className="rounded-xl border border-gray-100 bg-white p-4 dark:border-soft-300 dark:bg-surface">
+          <p className="text-2xl font-bold text-[var(--color-primary-text)]">{upcoming.length}</p>
+          <p className="text-xs text-gray-500 dark:text-ink-500">{t("upcomingCount")}</p>
         </div>
-        <div className="rounded-xl border border-gray-100 bg-white p-4">
-          <p className="text-2xl font-bold text-[var(--color-primary)]">{total}</p>
-          <p className="text-xs text-gray-500">{t("totalCount")}</p>
+        <div className="rounded-xl border border-gray-100 bg-white p-4 dark:border-soft-300 dark:bg-surface">
+          <p className="text-2xl font-bold text-[var(--color-primary-text)]">{total}</p>
+          <p className="text-xs text-gray-500 dark:text-ink-500">{t("totalCount")}</p>
         </div>
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-800">{t("myAppointments")}</h2>
+        <h2 className="font-semibold text-gray-800 dark:text-ink-800">{t("myAppointments")}</h2>
         <Link
           href="/#search"
           className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-primary-dark)]"
@@ -61,11 +61,11 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-4 space-y-3">
-        {isLoading && <p className="text-sm text-gray-500">{t("loadingAppointments")}</p>}
+        {isLoading && <p className="text-sm text-gray-500 dark:text-ink-500">{t("loadingAppointments")}</p>}
 
         {!isLoading && appointments?.length === 0 && (
-          <div className="rounded-xl border border-dashed border-gray-200 bg-white p-8 text-center">
-            <p className="text-sm text-gray-500">{t("noAppointments")}</p>
+          <div className="rounded-xl border border-dashed border-gray-200 bg-white p-8 text-center dark:border-soft-300 dark:bg-surface">
+            <p className="text-sm text-gray-500 dark:text-ink-500">{t("noAppointments")}</p>
             <Link
               href="/#search"
               className="mt-3 inline-block rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
@@ -76,16 +76,16 @@ export default function DashboardPage() {
         )}
 
         {appointments?.map((appt) => (
-          <div key={appt.id} className="rounded-xl border border-gray-100 bg-white p-5">
+          <div key={appt.id} className="rounded-xl border border-gray-100 bg-white p-5 dark:border-soft-300 dark:bg-surface">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-semibold text-gray-800">
+                <p className="font-semibold text-gray-800 dark:text-ink-800">
                   {appt.doctor?.user?.name ?? "Doctor"}
                 </p>
-                <p className="mt-0.5 flex items-center gap-1 text-sm text-gray-500">
+                <p className="mt-0.5 flex items-center gap-1 text-sm text-gray-500 dark:text-ink-500">
                   <MapPin className="h-3.5 w-3.5" /> {appt.clinic?.clinicName}
                 </p>
-                <p className="mt-0.5 flex items-center gap-1 text-sm text-gray-500">
+                <p className="mt-0.5 flex items-center gap-1 text-sm text-gray-500 dark:text-ink-500">
                   <Calendar className="h-3.5 w-3.5" /> {new Date(appt.date).toLocaleDateString()}
                 </p>
               </div>
@@ -100,16 +100,16 @@ export default function DashboardPage() {
               </span>
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-4 border-t border-gray-50 pt-3 text-sm">
-              <span className="font-medium text-[var(--color-primary)]">
+            <div className="mt-3 flex flex-wrap items-center gap-4 border-t border-gray-50 pt-3 text-sm dark:border-soft-100">
+              <span className="font-medium text-[var(--color-primary-text)]">
                 {t("token")} #{appt.token}
               </span>
 
               {appt.queueMode === "PRIVATE" ? (
-                <span className="text-xs text-gray-400">{t("privateQueue")}</span>
+                <span className="text-xs text-gray-400 dark:text-ink-400">{t("privateQueue")}</span>
               ) : (
                 appt.status === "WAITING" && (
-                  <span className="flex items-center gap-1 text-xs text-gray-500">
+                  <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-ink-500">
                     <Users className="h-3.5 w-3.5" />
                     {appt.patientsAhead} {t("patientsAhead")}
                     {appt.estimatedWaitMinutes != null && (
