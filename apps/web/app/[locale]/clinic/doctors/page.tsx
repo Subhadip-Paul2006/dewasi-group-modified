@@ -125,7 +125,7 @@ export default function ClinicDoctorsPage() {
           }
         >
           {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-          {showAdd ? "Cancel" : tDoc("addDoctor")}
+          {showAdd ? tDoc("cancel") : tDoc("addDoctor")}
         </button>
       </div>
 
@@ -148,18 +148,18 @@ export default function ClinicDoctorsPage() {
 
                 <div>
                   <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
-                    Add New Doctor
+                    {tDoc("addNewDoctor")}
                   </h2>
 
-                  <p className="mt-0.5 text-xs text-gray-500">
-                    Create a doctor account and add their clinic details.
+                  <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+                    {tDoc("addDoctorSub")}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field label="Doctor Name" required>
+              <Field label={tDoc("name")} required>
                 <input
                   required
                   type="text"
@@ -170,7 +170,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Email" required>
+              <Field label={tDoc("email")} required>
                 <input
                   required
                   type="email"
@@ -181,7 +181,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Password" required>
+              <Field label={tDoc("password")} required>
                 <input
                   required
                   type="password"
@@ -193,7 +193,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Phone">
+              <Field label={tDoc("phone")}>
                 <input
                   type="tel"
                   value={form.phone}
@@ -203,7 +203,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Specialization">
+              <Field label={tDoc("specialization")}>
                 <input
                   type="text"
                   value={form.specialization}
@@ -215,7 +215,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Qualification">
+              <Field label={tDoc("qualification")}>
                 <input
                   type="text"
                   value={form.qualification}
@@ -227,7 +227,7 @@ export default function ClinicDoctorsPage() {
                 />
               </Field>
 
-              <Field label="Experience">
+              <Field label={tDoc("experience")}>
                 <div className="relative">
                   <input
                     type="number"
@@ -240,12 +240,12 @@ export default function ClinicDoctorsPage() {
                     placeholder="Years"
                   />
                   <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400">
-                    years
+                    {tDoc("years")}
                   </span>
                 </div>
               </Field>
 
-              <Field label="Consultation Fee">
+              <Field label={tDoc("fee")}>
                 <div className="relative">
                   <IndianRupee className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
@@ -259,7 +259,7 @@ export default function ClinicDoctorsPage() {
                 </div>
               </Field>
 
-              <Field label="Start Time">
+              <Field label={tDoc("startTime")}>
                 <input
                   type="time"
                   value={form.startTime}
@@ -286,7 +286,7 @@ export default function ClinicDoctorsPage() {
                 {addDoctor.isPending && (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 )}
-                {addDoctor.isPending ? "Creating..." : "Create Doctor Account"}
+                {addDoctor.isPending ? tDoc("creating") : tDoc("createAccount")}
               </button>
 
               <button
@@ -294,7 +294,7 @@ export default function ClinicDoctorsPage() {
                 onClick={closeAddForm}
                 className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
               >
-                Cancel
+                {tDoc("cancel")}
               </button>
             </div>
           </div>
@@ -308,8 +308,8 @@ export default function ClinicDoctorsPage() {
         <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
           <div className="flex flex-col items-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-[var(--color-primary)] border-t-transparent" />
-            <p className="text-sm font-medium text-gray-500">
-              Loading doctors...
+            <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
+              {tDoc("loadingDoctors")}
             </p>
           </div>
         </div>
@@ -325,11 +325,11 @@ export default function ClinicDoctorsPage() {
           </div>
 
           <h2 className="mt-4 text-base font-bold text-[var(--color-primary-dark-text)]">
-            No doctors yet
+            {tDoc("noDoctorsTitle")}
           </h2>
 
-          <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
-            Add your first doctor to start managing your clinic's medical team.
+          <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-ink-500">
+            {tDoc("noDoctorsSub")}
           </p>
 
           {!showAdd && (
@@ -339,7 +339,7 @@ export default function ClinicDoctorsPage() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
               <Plus className="h-4 w-4" />
-              Add Doctor
+              {tDoc("addDoctor")}
             </button>
           )}
         </div>
@@ -351,10 +351,9 @@ export default function ClinicDoctorsPage() {
       {!isLoading && doctors && doctors.length > 0 && (
         <div className="space-y-4">
           <div>
-            <h2 className="text-sm font-bold text-gray-800">Your Doctors</h2>
-            <p className="mt-0.5 text-xs text-gray-500">
-              {doctors.length} doctor{doctors.length === 1 ? "" : "s"} added to
-              your clinic
+            <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">{tDoc("yourDoctors")}</h2>
+            <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+              {doctors.length} {tDoc("doctorsAdded")}
             </p>
           </div>
 
@@ -396,6 +395,7 @@ function Field({
 // Doctor Row Component
 // ============================================================
 function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
+  const tDoc = useTranslations("ClinicDoctors");
   const editDoctor = useEditDoctor();
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
@@ -445,17 +445,17 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 {doctor.user.isActive ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/10 dark:text-green-400">
                     <CheckCircle2 className="h-3 w-3" />
-                    Active
+                    {tDoc("active")}
                   </span>
                 ) : (
                   <span className="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
-                    Inactive
+                    {tDoc("inactive")}
                   </span>
                 )}
               </div>
 
-              <div className="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-gray-500">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+              <div className="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-gray-500 dark:text-ink-500">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-ink-400" />
                 <span className="truncate">{doctor.user.email}</span>
               </div>
             </div>
@@ -475,30 +475,30 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
             ) : (
               <Pencil className="h-3.5 w-3.5" />
             )}
-            {editing ? "Close" : "Edit"}
+            {editing ? tDoc("close") : tDoc("edit")}
           </button>
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <InfoItem
             icon={BriefcaseMedical}
-            label="Specialization"
-            value={doctor.specialization || "Not set"}
+            label={tDoc("specialization")}
+            value={doctor.specialization || tDoc("notSet")}
           />
           <InfoItem
             icon={GraduationCap}
-            label="Qualification"
-            value={doctor.qualification || "Not set"}
+            label={tDoc("qualification")}
+            value={doctor.qualification || tDoc("notSet")}
           />
           <InfoItem
             icon={Clock3}
-            label="Start Time"
-            value={doctor.startTime || "Not set"}
+            label={tDoc("startTime")}
+            value={doctor.startTime || tDoc("notSet")}
           />
           <InfoItem
             icon={IndianRupee}
-            label="Consult Fee"
-            value={doctor.fee != null ? `₹${doctor.fee}` : "Not set"}
+            label={tDoc("fee")}
+            value={doctor.fee != null ? `₹${doctor.fee}` : tDoc("notSet")}
           />
         </div>
 
@@ -507,12 +507,14 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
             {doctor.experience != null && (
               <div className="flex items-center gap-1.5">
                 <BriefcaseMedical className="h-4 w-4 text-[var(--color-primary)]" />
-                <span>{doctor.experience} years experience</span>
+                <span>
+                  {doctor.experience} {tDoc("yearsExperience")}
+                </span>
               </div>
             )}
 
             {doctor.experience != null && doctor.user.phone && (
-              <span className="text-gray-300">•</span>
+              <span className="text-gray-300 dark:text-ink-400">•</span>
             )}
 
             {doctor.user.phone && (
@@ -530,19 +532,19 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
         {editing && (
           <form
             onSubmit={handleSave}
-            className="mt-5 border-t border-gray-100 pt-5"
+            className="mt-5 border-t border-gray-100 pt-5 dark:border-soft-100"
           >
             <div className="mb-4">
               <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
-                Edit Doctor Details
+                {tDoc("editDoctorDetails")}
               </h3>
-              <p className="mt-1 text-xs text-gray-500">
-                Update the clinic-specific information for this doctor.
+              <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
+                {tDoc("editDoctorSub")}
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field label="Specialization">
+              <Field label={tDoc("specialization")}>
                 <input
                   value={form.specialization}
                   onChange={(e) =>
@@ -553,7 +555,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 />
               </Field>
 
-              <Field label="Qualification">
+              <Field label={tDoc("qualification")}>
                 <input
                   value={form.qualification}
                   onChange={(e) =>
@@ -564,7 +566,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 />
               </Field>
 
-              <Field label="Experience">
+              <Field label={tDoc("experience")}>
                 <div className="relative">
                   <input
                     type="number"
@@ -577,12 +579,12 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                     placeholder="Years"
                   />
                   <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400">
-                    years
+                    {tDoc("years")}
                   </span>
                 </div>
               </Field>
 
-              <Field label="Consultation Fee">
+              <Field label={tDoc("fee")}>
                 <div className="relative">
                   <IndianRupee className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
@@ -596,7 +598,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 </div>
               </Field>
 
-              <Field label="Start Time">
+              <Field label={tDoc("startTime")}>
                 <input
                   type="time"
                   value={form.startTime}
@@ -617,7 +619,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 {editDoctor.isPending && (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 )}
-                {editDoctor.isPending ? "Saving..." : "Save Changes"}
+                {editDoctor.isPending ? tDoc("saving") : tDoc("saveChanges")}
               </button>
 
               <button
@@ -625,7 +627,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                 onClick={() => setEditing(false)}
                 className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
               >
-                Cancel
+                {tDoc("cancel")}
               </button>
             </div>
           </form>

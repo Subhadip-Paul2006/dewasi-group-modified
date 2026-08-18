@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Search,
   X,
@@ -27,9 +28,10 @@ import {
 
 // Replaces global <style jsx> to match the clean layout design language
 const inputClasses =
-  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15";
+  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300";
 
 export default function ClinicReferralsPage() {
+  const t = useTranslations("ClinicReferrals");
   const { data: sent, isLoading: loadingSent } = useSentReferrals();
 
   // Patient search
@@ -75,15 +77,15 @@ export default function ClinicReferralsPage() {
   }
 
   function addTest() {
-    const t = testInput.trim();
-    if (t && !tests.includes(t)) {
-      setTests([...tests, t]);
+    const text = testInput.trim();
+    if (text && !tests.includes(text)) {
+      setTests([...tests, text]);
       setTestInput("");
     }
   }
 
-  function removeTest(t: string) {
-    setTests(tests.filter((x) => x !== t));
+  function removeTest(text: string) {
+    setTests(tests.filter((x) => x !== text));
   }
 
   function handleSend() {
@@ -128,16 +130,16 @@ export default function ClinicReferralsPage() {
             <FlaskConical className="h-4 w-4 text-[var(--color-primary-text)]" />
           </div>
           <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
-            Laboratory
+            {t("tagline")}
           </span>
         </div>
 
         <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
-          Send Test Referral
+          {t("heading")}
         </h1>
 
         <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
-          Refer patients to certified diagnostic centers for tests and diagnostics.
+          {t("subtitle")}
         </p>
       </div>
 
@@ -154,13 +156,15 @@ export default function ClinicReferralsPage() {
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-bg-soft)] text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100">
                 1
               </span>
-              <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">Find Patient</h2>
+              <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
+                {t("step1Title")}
+              </h2>
             </div>
 
             <form onSubmit={handlePatientSearch} className="flex gap-2">
               <input
                 required
-                placeholder="Enter patient phone number"
+                placeholder={t("phonePlaceholder")}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className={inputClasses}
@@ -175,13 +179,13 @@ export default function ClinicReferralsPage() {
                 ) : (
                   <Search className="h-4 w-4" />
                 )}
-                Search
+                {t("searchBtn")}
               </button>
             </form>
 
             {patientNotFound && (
               <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-600 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
-                No patient found with this phone number.
+                {t("patientNotFound")}
               </div>
             )}
 
@@ -196,23 +200,27 @@ export default function ClinicReferralsPage() {
                       {patient.name}{" "}
                       {patient.isGuest && (
                         <span className="ml-1 rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-500/15 dark:text-amber-400">
-                          Guest
+                          {t("guestBadge")}
                         </span>
                       )}
                     </p>
-                    <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-500">
+                    <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-500 dark:text-ink-500">
                       <span className="flex items-center gap-1">
                         <Phone className="h-3 w-3" />
                         {patient.phone}
                       </span>
-                      {patient.age && <span>• {patient.age} yrs</span>}
+                      {patient.age && (
+                        <span>
+                          • {patient.age} {t("yrs")}
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setPatient(null)}
-                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500"
+                  className="rounded-lg p-2 text-gray-400 transition hover:bg-white hover:text-red-500 dark:text-ink-400 dark:hover:bg-surface-100 dark:hover:text-red-400"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -229,14 +237,14 @@ export default function ClinicReferralsPage() {
                 2
               </span>
               <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
-                Find Diagnostic Center
+                {t("step2Title")}
               </h2>
             </div>
 
             <form onSubmit={handleCenterSearch} className="flex gap-2">
               <input
                 required
-                placeholder="Search by diagnostic center name"
+                placeholder={t("centerPlaceholder")}
                 value={centerQuery}
                 onChange={(e) => setCenterQuery(e.target.value)}
                 className={inputClasses}
@@ -251,7 +259,7 @@ export default function ClinicReferralsPage() {
                 ) : (
                   <Search className="h-4 w-4" />
                 )}
-                Search
+                {t("searchBtn")}
               </button>
             </form>
 
@@ -281,7 +289,7 @@ export default function ClinicReferralsPage() {
                       </div>
                     </div>
                     <span className="text-xs font-semibold text-[var(--color-primary-text)]">
-                      Select
+                      {t("selectBtn")}
                     </span>
                   </button>
                 ))}
@@ -326,13 +334,13 @@ export default function ClinicReferralsPage() {
                 3
               </span>
               <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
-                Required Tests & Notes
+                {t("step3Title")}
               </h2>
             </div>
 
             <div className="flex gap-2">
               <input
-                placeholder="e.g. CBC, Blood Sugar, Lipid Profile (Press Enter)"
+                placeholder={t("testsPlaceholder")}
                 value={testInput}
                 onChange={(e) => setTestInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -349,21 +357,21 @@ export default function ClinicReferralsPage() {
                 className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-gray-700 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-700 dark:hover:bg-soft-100"
               >
                 <Plus className="h-4 w-4" />
-                Add
+                {t("addBtn")}
               </button>
             </div>
 
             {tests.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
-                {tests.map((t) => (
+                {tests.map((tItem) => (
                   <span
-                    key={t}
+                    key={tItem}
                     className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-primary)]/10 px-3.5 py-1.5 text-xs font-bold text-[var(--color-primary-text)] dark:bg-soft-100"
                   >
-                    {t}
+                    {tItem}
                     <button
                       type="button"
-                      onClick={() => removeTest(t)}
+                      onClick={() => removeTest(tItem)}
                       className="rounded-full p-0.5 hover:bg-[var(--color-primary)]/20"
                     >
                       <X className="h-3 w-3" />
@@ -375,7 +383,7 @@ export default function ClinicReferralsPage() {
 
             <div className="pt-2">
               <textarea
-                placeholder="Additional clinical notes for the diagnostic center (optional)"
+                placeholder={t("notesPlaceholder")}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 className={`${inputClasses} resize-none`}
@@ -393,7 +401,7 @@ export default function ClinicReferralsPage() {
           {success && (
             <div className="flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 p-3 text-xs font-bold text-green-700">
               <CheckCircle2 className="h-4 w-4" />
-              Referral sent successfully.
+              {t("successMsg")}
             </div>
           )}
 
@@ -408,7 +416,7 @@ export default function ClinicReferralsPage() {
             ) : (
               <Send className="h-4 w-4" />
             )}
-            {createReferral.isPending ? "Sending Referral..." : "Send Referral"}
+            {createReferral.isPending ? t("sendingBtn") : t("sendBtn")}
           </button>
         </div>
       </div>
@@ -423,10 +431,10 @@ export default function ClinicReferralsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
-                Sent Referrals History
+                {t("historyTitle")}
               </h2>
               <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
-                Track all diagnostic test referrals sent to date.
+                {t("historySub")}
               </p>
             </div>
           </div>
@@ -436,7 +444,7 @@ export default function ClinicReferralsPage() {
               <div className="flex flex-col items-center gap-3">
                 <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-ink-400" />
                 <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
-                  Loading history...
+                  {t("loadingHistory")}
                 </p>
               </div>
             </div>
@@ -446,10 +454,10 @@ export default function ClinicReferralsPage() {
                 <FileText className="h-6 w-6 text-gray-400 dark:text-ink-400" />
               </div>
               <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
-                No referrals sent yet
+                {t("noReferralsTitle")}
               </h3>
               <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
-                Referrals you dispatch will show up right here.
+                {t("noReferralsSub")}
               </p>
             </div>
           ) : (
@@ -469,7 +477,7 @@ export default function ClinicReferralsPage() {
                           {r.patient.user?.name || r.patient.name}
                         </p>
                         <p className="text-[11px] text-gray-400 dark:text-ink-400">
-                          Patient Reference
+                          {t("patientRef")}
                         </p>
                       </div>
                     </div>
@@ -483,13 +491,15 @@ export default function ClinicReferralsPage() {
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-2 text-xs font-semibold text-gray-600 dark:text-ink-600">
                       <Building2 className="h-4 w-4 text-[var(--color-primary-text)]" />
-                      <span>Center: {r.diagnosticCenter.centerName}</span>
+                      <span>
+                        {t("centerLabel")} {r.diagnosticCenter.centerName}
+                      </span>
                     </div>
                   </div>
 
                   <div className="rounded-xl bg-gray-50/70 p-3 space-y-1.5 dark:bg-soft-50/70">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-ink-400">
-                      Prescribed Tests
+                      {t("prescribedTests")}
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {r.testNames.map((test, index) => (
@@ -506,7 +516,7 @@ export default function ClinicReferralsPage() {
                   {r.notes && (
                     <p className="text-xs italic text-gray-500 dark:text-ink-500">
                       <span className="font-semibold not-italic text-gray-700 dark:text-ink-700">
-                        Notes:{" "}
+                        {t("notesLabel")}{" "}
                       </span>
                       {r.notes}
                     </p>

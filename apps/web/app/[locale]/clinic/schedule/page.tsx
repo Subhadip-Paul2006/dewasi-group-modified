@@ -172,7 +172,7 @@ export default function ClinicSchedulePage() {
               <div className="flex flex-col items-center gap-3">
                 <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-[var(--color-primary)] border-t-transparent" />
                 <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
-                  Loading schedule...
+                  {tSched("loadingSchedule")}
                 </p>
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function ClinicSchedulePage() {
                             className={`${inputClasses} w-[110px] border-none !bg-white !py-2 !px-3 shadow-sm dark:!bg-surface-100 dark:!text-ink-800`}
                           />
                           <span className="text-xs font-bold text-gray-400 dark:text-ink-400">
-                            to
+                            {tSched("to")}
                           </span>
                           <input
                             type="time"
@@ -291,13 +291,13 @@ export default function ClinicSchedulePage() {
               {setHours.isPending && (
                 <Loader2 className="h-4 w-4 animate-spin" />
               )}
-              {setHours.isPending ? "Saving..." : "Save Weekly Routine"}
+              {setHours.isPending ? tSched("saving") : tSched("saveWeeklyRoutine")}
             </button>
 
             {saved && (
               <div className="flex items-center gap-1.5 rounded-xl bg-green-50 px-4 py-3 text-xs font-bold text-green-700 dark:bg-green-500/15 dark:text-green-400">
                 <CheckCircle2 className="h-4 w-4" />
-                Working hours updated successfully.
+                {tSched("hoursSuccess")}
               </div>
             )}
           </div>
@@ -317,10 +317,10 @@ export default function ClinicSchedulePage() {
             </div>
             <div>
               <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
-                Special Holidays
+                {tSched("holidaysHeading")}
               </h2>
               <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
-                Block off specific dates when the entire clinic will be closed.
+                {tSched("holidaysSub")}
               </p>
             </div>
           </div>
@@ -333,7 +333,7 @@ export default function ClinicSchedulePage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-[180px_1fr_auto] sm:items-end">
               <label className="block">
                 <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
-                  Select Date
+                  {tSched("selectDate")}
                 </span>
                 <input
                   type="date"
@@ -346,9 +346,9 @@ export default function ClinicSchedulePage() {
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
-                  Reason / Occasion
+                  {tSched("reasonLabel")}
                   <span className="ml-1 font-medium text-gray-400 dark:text-ink-400">
-                    (optional)
+                    {tSched("optional")}
                   </span>
                 </span>
                 <input
@@ -356,7 +356,7 @@ export default function ClinicSchedulePage() {
                   value={holidayReason}
                   onChange={(e) => setHolidayReason(e.target.value)}
                   className={`${inputClasses} w-full`}
-                  placeholder="e.g. Independence Day, Maintenance"
+                  placeholder={tSched("reasonPlaceholder")}
                 />
               </label>
 
@@ -370,7 +370,7 @@ export default function ClinicSchedulePage() {
                 ) : (
                   <Plus className="h-4 w-4" />
                 )}
-                {addHoliday.isPending ? "Adding..." : "Add Holiday"}
+                {addHoliday.isPending ? tSched("adding") : tSched("addHoliday")}
               </button>
             </div>
           </form>
@@ -383,10 +383,10 @@ export default function ClinicSchedulePage() {
                   <CalendarDays className="h-6 w-6 text-gray-400 dark:text-ink-400" />
                 </div>
                 <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
-                  No upcoming holidays
+                  {tSched("noHolidaysTitle")}
                 </h3>
                 <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
-                  Your clinic is scheduled to run on its regular weekly routine.
+                  {tSched("noHolidaysSub")}
                 </p>
               </div>
             ) : (
@@ -421,7 +421,7 @@ export default function ClinicSchedulePage() {
 
                         <div className="min-w-0">
                           <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
-                            {holiday.reason || "Clinic Closed"}
+                            {holiday.reason || tSched("defaultReason")}
                           </p>
                           <p className="mt-0.5 text-xs font-semibold text-gray-400 dark:text-ink-400">
                             {year}
