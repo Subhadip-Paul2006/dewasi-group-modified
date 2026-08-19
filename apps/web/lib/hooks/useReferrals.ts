@@ -31,8 +31,12 @@ export type SentReferral = {
 export function useSearchPatientByPhone() {
   return useMutation({
     mutationFn: async (phone: string) => {
-      const { data } = await api.get("/patient/search", { params: { phone } });
-      return data.data.patient as PatientLookup | null;
+      try {
+        const { data } = await api.get("/patient/search", { params: { phone } });
+        return (data?.data?.patient ?? data?.data ?? null) as PatientLookup | null;
+      } catch {
+        return null;
+      }
     },
   });
 }
@@ -40,8 +44,12 @@ export function useSearchPatientByPhone() {
 export function useSearchDiagnosticCenters() {
   return useMutation({
     mutationFn: async (name: string) => {
-      const { data } = await api.get("/diagnostic-centers/search", { params: { name } });
-      return data.data.centers as DiagnosticCenterLookup[];
+      try {
+        const { data } = await api.get("/diagnostic-centers/search", { params: { name } });
+        return (data?.data?.centers ?? data?.data ?? []) as DiagnosticCenterLookup[];
+      } catch {
+        return [];
+      }
     },
   });
 }
@@ -55,7 +63,10 @@ export function useCreateReferral() {
       testNames: string[];
       notes?: string;
       appointmentId?: string;
-    }) => (await api.post("/test-referrals", payload)).data.data.referral,
+    }) => {
+      const res = await api.post("/test-referrals", payload);
+      return res.data?.data?.referral ?? res.data?.data;
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["referrals", "sent"] }),
   });
 }
@@ -63,6 +74,18 @@ export function useCreateReferral() {
 export function useSentReferrals() {
   return useQuery<SentReferral[]>({
     queryKey: ["referrals", "sent"],
-    queryFn: async () => (await api.get("/test-referrals/sent")).data.data.referrals,
+    queryFn: async () => {
+      try {
+        const res = await api.get("/test-referrals/sent");
+        return (
+          res.data?.data?.referrals ??
+          res.data?.data ??
+          res.data?.referrals ??
+          []
+        );
+      } catch {
+        return [];
+      }
+    },
   });
 }
