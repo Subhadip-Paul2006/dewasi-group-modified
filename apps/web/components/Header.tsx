@@ -30,10 +30,19 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Clinics land on /clinic and don't have a patient-style profile page.
+  // Clinics land on /clinic, Doctors on /doctor/dashboard.
   const isClinic = user?.role === "CLINIC";
-  const dashboardHref = isClinic ? "/clinic" : "/dashboard";
-  const dashboardLabel = isClinic ? "Clinic Panel" : "Dashboard";
+  const isDoctor = user?.role === "DOCTOR";
+  const dashboardHref = isClinic
+    ? "/clinic"
+    : isDoctor
+      ? "/doctor/dashboard"
+      : "/dashboard";
+  const dashboardLabel = isClinic
+    ? "Clinic Panel"
+    : isDoctor
+      ? "Doctor Panel"
+      : "Dashboard";
 
   async function handleLogout() {
     await logout();
@@ -135,7 +144,7 @@ export default function Header() {
                   </Link>
 
                   {/* Profile — patients only */}
-                  {!isClinic && (
+                  {!isClinic && !isDoctor && (
                     <Link
                       href="/dashboard/profile"
                       onClick={() => setShowUserMenu(false)}

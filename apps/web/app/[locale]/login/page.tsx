@@ -35,8 +35,9 @@ export default function LoginPage() {
         case "CLINIC":
           router.push("/clinic");
           break;
-        // DOCTOR, RECEPTIONIST, ADMIN, SUPER_ADMIN dashboards aren't built
-        // yet — sending them home for now instead of a 404.
+        case "DOCTOR":
+          router.push("/doctor/dashboard");
+          break;
         default:
           router.push("/");
       }
