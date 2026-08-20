@@ -1,9 +1,14 @@
 "use client";
 
 import { Calendar } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 export function DashboardHeader() {
-  const currentDateFormatted = new Date().toLocaleDateString("en-US", {
+  const t = useTranslations("DoctorDashboard");
+  const locale = useLocale();
+
+  const localeCode = locale === "bn" ? "bn-BD" : locale === "hi" ? "hi-IN" : "en-US";
+  const currentDateFormatted = new Date().toLocaleDateString(localeCode, {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -14,10 +19,10 @@ export function DashboardHeader() {
     <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl">
-          Doctor Dashboard
+          {t("title")}
         </h1>
         <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-          Overview of today&apos;s appointments, patient queue, and clinic activity.
+          {t("subtitle")}
         </p>
       </div>
 
