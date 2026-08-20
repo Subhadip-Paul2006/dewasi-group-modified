@@ -1,6 +1,7 @@
 "use client";
 
 import { Building2, Calendar, RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ClinicOption {
   id: string;
@@ -29,6 +30,8 @@ export function QueueHeader({
   isFetching = false,
   onRefresh,
 }: QueueHeaderProps) {
+  const t = useTranslations("DoctorQueue");
+
   // Format status badge color based on API value
   const getStatusBadge = (rawStatus?: string) => {
     const s = (rawStatus || "UNKNOWN").toUpperCase();
@@ -36,7 +39,7 @@ export function QueueHeader({
       return (
         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-950/40 dark:text-emerald-400 dark:ring-emerald-500/30">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          ● LIVE
+          ● {t("live")}
         </span>
       );
     }
@@ -44,7 +47,7 @@ export function QueueHeader({
       return (
         <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 ring-1 ring-amber-600/20 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-500/30">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-          ● PAUSED
+          ● {t("paused")}
         </span>
       );
     }
@@ -52,7 +55,7 @@ export function QueueHeader({
       return (
         <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 ring-1 ring-rose-600/20 dark:bg-rose-950/40 dark:text-rose-400 dark:ring-rose-500/30">
           <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
-          ● CLOSED
+          ● {t("closed")}
         </span>
       );
     }
@@ -70,12 +73,12 @@ export function QueueHeader({
       <div className="space-y-1">
         <div className="flex items-center gap-3">
           <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Queue Management
+            {t("title")}
           </h1>
           {getStatusBadge(status)}
         </div>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Control live patient token sequence, issue updates, and direct room consultations.
+          {t("subtitle")}
         </p>
       </div>
 
@@ -119,7 +122,7 @@ export function QueueHeader({
           title="Refresh Queue Data"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`} />
-          <span>Refresh</span>
+          <span>{t("refresh")}</span>
         </button>
       </div>
     </div>
