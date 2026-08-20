@@ -230,3 +230,175 @@ export type DoctorSettings = {
   defaultConsultationFee: number | null;
   digitalSignatureUrl?: string | null;
 };
+
+// ============================================================
+// PHASE 04 — ADMIN / SUPER ADMIN CONTRACT TYPES
+// ============================================================
+
+export type AdminPlatformStats = {
+  totalUsers: number;
+  totalClinics: number;
+  approvedClinics: number;
+  pendingClinics: number;
+  totalDoctors: number;
+  verifiedDoctors: number;
+  unverifiedDoctors: number;
+  totalPatients: number;
+};
+
+export type AdminUserRecord = {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  role: Role;
+  isActive: boolean;
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+export type AdminClinicRecord = {
+  id: string;
+  userId: string;
+  clinicName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  isApproved: boolean;
+  latitude?: number | null;
+  longitude?: number | null;
+  logo?: string | null;
+  onlineConsultationEnabled?: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+  };
+};
+
+export type AdminDoctorRecord = {
+  id: string;
+  userId: string;
+  clinicId: string;
+  specialization: string | null;
+  qualification: string | null;
+  experience: number | null;
+  fee: number | null;
+  isVerified: boolean;
+  isFeatured?: boolean;
+  featuredOrder?: number;
+  queueMode?: string;
+  startTime?: string | null;
+  profilePhoto?: string | null;
+  avgConsultationMinutes?: number | null;
+  createdAt: string;
+  updatedAt?: string;
+  user: {
+    name: string;
+    email?: string;
+    phone?: string | null;
+  };
+  clinic: {
+    clinicName: string;
+    city?: string | null;
+  };
+};
+
+export type AdminDiagnosticCenterRecord = {
+  id: string;
+  userId: string;
+  centerName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  isApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+  };
+};
+
+export type PlatformSettingsRecord = {
+  id: string;
+  bookingWindowMinutes: number;
+  updatedAt: string;
+};
+
+export type AdminStatsResponse = {
+  stats: AdminPlatformStats;
+};
+
+export type AdminUsersResponse = {
+  users: AdminUserRecord[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type AdminClinicsResponse = {
+  clinics: AdminClinicRecord[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type AdminDoctorsUnverifiedResponse = {
+  doctors: AdminDoctorRecord[];
+};
+
+export type AdminDoctorsFeaturedResponse = {
+  doctors: AdminDoctorRecord[];
+};
+
+export type AdminDiagnosticCentersResponse = {
+  centers: AdminDiagnosticCenterRecord[];
+};
+
+export type AdminSettingsResponse = {
+  settings: PlatformSettingsRecord;
+};
+
+export type CreateClinicInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  clinicName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type CreateDiagnosticCenterInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  centerName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type SetFeaturedDoctorInput = {
+  doctorId: string;
+  isFeatured: boolean;
+  featuredOrder?: number;
+};
+
+export type UpdatePlatformSettingsInput = {
+  bookingWindowMinutes: number;
+};
+
