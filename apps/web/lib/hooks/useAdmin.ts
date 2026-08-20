@@ -1,0 +1,276 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import type {
+  AdminPlatformStats,
+  AdminUserRecord,
+  AdminClinicRecord,
+  AdminDoctorRecord,
+  AdminDiagnosticCenterRecord,
+  PlatformSettingsRecord,
+  AdminUsersResponse,
+  AdminClinicsResponse,
+  CreateClinicInput,
+  CreateDiagnosticCenterInput,
+  SetFeaturedDoctorInput,
+  UpdatePlatformSettingsInput,
+} from "@doctor-contract/shared";
+
+// ============================================================
+// 1. Platform Statistics
+// ============================================================
+
+export function useAdminStats() {
+  return useQuery<AdminPlatformStats>({
+    queryKey: ["admin", "stats"],
+    queryFn: async () => {
+      const res = await api.get("/admin/stats");
+      return res.data.data.stats;
+    },
+  });
+}
+
+// ============================================================
+// 2. User Management
+// ============================================================
+
+export type AdminUsersFilterParams = {
+  role?: string;
+  page?: number;
+  limit?: number;
+};
+
+export function useAdminUsers(params: AdminUsersFilterParams = {}) {
+  return useQuery<AdminUsersResponse>({
+    queryKey: ["admin", "users", params],
+    queryFn: async () => {
+      const res = await api.get("/admin/users", { params });
+      return res.data.data;
+    },
+  });
+}
+
+
+export function useToggleUserStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ userId, isActive }: { userId: string; isActive: boolean }) => {
+      const res = await api.patch(`/admin/users/${userId}/status`, { isActive });
+      return res.data.data.user as AdminUserRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+  });
+}
+
+// ============================================================
+// 3. Clinic Management
+// ============================================================
+
+export type AdminClinicsFilterParams = {
+  isApproved?: boolean;
+  page?: number;
+  limit?: number;
+};
+
+export function useAdminClinics(params: AdminClinicsFilterParams = {}) {
+  return useQuery<AdminClinicsResponse>({
+    queryKey: ["admin", "clinics", params],
+    queryFn: async () => {
+      const queryParams: Record<string, unknown> = {};
+      if (params.isApproved !== undefined) {
+        queryParams.isApproved = params.isApproved;
+      }
+      if (params.page) queryParams.page = params.page;
+      if (params.limit) queryParams.limit = params.limit;
+
+      const res = await api.get("/admin/clinics", { params: queryParams });
+      return res.data.data;
+    },
+  });
+}
+
+export function useCreateClinic() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: CreateClinicInput) => {
+      const res = await api.post("/admin/clinics", payload);
+      return res.data.data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "clinics"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+    },
+  });
+}
+
+export function useApproveClinic() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (clinicId: string) => {
+      const res = await api.patch(`/admin/clinics/${clinicId}/approve`);
+      return res.data.data.clinic as AdminClinicRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "clinics"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+    },
+  });
+}
+
+export function useRevokeClinic() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (clinicId: string) => {
+      const res = await api.patch(`/admin/clinics/${clinicId}/revoke`);
+      return res.data.data.clinic as AdminClinicRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "clinics"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+    },
+  });
+}
+
+// ============================================================
+// 4. Doctor Verification & Featured Doctors
+// ============================================================
+
+export function useUnverifiedDoctors() {
+  return useQuery<AdminDoctorRecord[]>({
+    queryKey: ["admin", "doctors", "unverified"],
+    queryFn: async () => {
+      const res = await api.get("/admin/doctors/unverified");
+      return res.data.data.doctors;
+    },
+  });
+}
+
+export function useVerifyDoctor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (doctorId: string) => {
+      const res = await api.patch(`/admin/doctors/${doctorId}/verify`);
+      return res.data.data.doctor as AdminDoctorRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "doctors", "unverified"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+    },
+  });
+}
+
+export function useFeaturedDoctors() {
+  return useQuery<AdminDoctorRecord[]>({
+    queryKey: ["admin", "doctors", "featured"],
+    queryFn: async () => {
+      const res = await api.get("/admin/doctors/featured");
+      return res.data.data.doctors;
+    },
+  });
+}
+
+export function useSetFeaturedDoctor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ doctorId, isFeatured, featuredOrder }: SetFeaturedDoctorInput) => {
+      const res = await api.patch(`/admin/doctors/${doctorId}/featured`, {
+        isFeatured,
+        featuredOrder,
+      });
+      return res.data.data.doctor as AdminDoctorRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "doctors", "featured"] });
+    },
+  });
+}
+
+// ============================================================
+// 5. Diagnostic Center Management
+// ============================================================
+
+export type AdminDiagnosticCentersFilterParams = {
+  isApproved?: boolean;
+};
+
+export function useAdminDiagnosticCenters(params: AdminDiagnosticCentersFilterParams = {}) {
+  return useQuery<AdminDiagnosticCenterRecord[]>({
+    queryKey: ["admin", "diagnostic-centers", params],
+    queryFn: async () => {
+      const queryParams: Record<string, unknown> = {};
+      if (params.isApproved !== undefined) {
+        queryParams.isApproved = params.isApproved ? "true" : "false";
+      }
+
+      const res = await api.get("/admin/diagnostic-centers", { params: queryParams });
+      return res.data.data.centers;
+    },
+  });
+}
+
+export function useCreateDiagnosticCenter() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: CreateDiagnosticCenterInput) => {
+      const res = await api.post("/admin/diagnostic-centers", payload);
+      return res.data.data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "diagnostic-centers"] });
+    },
+  });
+}
+
+export function useApproveDiagnosticCenter() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (centerId: string) => {
+      const res = await api.patch(`/admin/diagnostic-centers/${centerId}/approve`);
+      return res.data.data.center as AdminDiagnosticCenterRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "diagnostic-centers"] });
+    },
+  });
+}
+
+export function useRevokeDiagnosticCenter() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (centerId: string) => {
+      const res = await api.patch(`/admin/diagnostic-centers/${centerId}/revoke`);
+      return res.data.data.center as AdminDiagnosticCenterRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "diagnostic-centers"] });
+    },
+  });
+}
+
+// ============================================================
+// 6. Platform Settings
+// ============================================================
+
+export function usePlatformSettings() {
+  return useQuery<PlatformSettingsRecord>({
+    queryKey: ["admin", "settings"],
+    queryFn: async () => {
+      const res = await api.get("/admin/settings");
+      return res.data.data.settings;
+    },
+  });
+}
+
+export function useUpdatePlatformSettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: UpdatePlatformSettingsInput) => {
+      const res = await api.patch("/admin/settings", payload);
+      return res.data.data.settings as PlatformSettingsRecord;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "settings"] });
+    },
+  });
+}
