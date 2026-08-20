@@ -9,6 +9,7 @@ import {
   Stethoscope,
   Activity,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useDoctorDashboard } from "@/lib/hooks/useDoctor";
 import { DashboardHeader } from "./components/DashboardHeader";
 import { StatCard } from "./components/StatCard";
@@ -16,6 +17,7 @@ import { DashboardSkeleton } from "./components/DashboardSkeleton";
 import { DashboardError } from "./components/DashboardError";
 
 export default function DoctorDashboardPage() {
+  const t = useTranslations("DoctorDashboard");
   const { data: stats, isLoading, isError, error, refetch } = useDoctorDashboard();
 
   if (isLoading) {
@@ -45,10 +47,10 @@ export default function DoctorDashboardPage() {
 
             <div>
               <p className="text-xs font-bold text-slate-900 dark:text-white">
-                Queue Status: <span className="uppercase text-blue-600 dark:text-blue-400">{activeQueueStatus}</span>
+                {t("queueStatus")} <span className="uppercase text-blue-600 dark:text-blue-400">{activeQueueStatus}</span>
               </p>
               <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
-                Live updates active for current patient consultations
+                {t("liveUpdatesActive")}
               </p>
             </div>
           </div>
@@ -58,54 +60,54 @@ export default function DoctorDashboardPage() {
       {/* Statistics Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
-          title="Today's Appointments"
+          title={t("todayAppointments")}
           value={stats?.totalAppointmentsToday}
-          subtitle="Total scheduled for today"
+          subtitle={t("todayAppointmentsSub")}
           icon={CalendarDays}
           colorScheme="blue"
         />
 
         <StatCard
-          title="Completed Today"
+          title={t("completedToday")}
           value={stats?.completedToday}
-          subtitle="Consultations finished"
+          subtitle={t("completedTodaySub")}
           icon={CheckCircle2}
           colorScheme="emerald"
         />
 
         <StatCard
-          title="Waiting Patients"
+          title={t("waitingPatients")}
           value={stats?.waitingToday}
-          subtitle="Currently in queue"
+          subtitle={t("waitingPatientsSub")}
           icon={Clock}
           colorScheme="amber"
         />
 
         <StatCard
-          title="Pending Requests"
+          title={t("pendingRequests")}
           value={stats?.pendingRequestsCount}
-          subtitle="Clinic & association requests"
+          subtitle={t("pendingRequestsSub")}
           icon={Inbox}
           colorScheme="indigo"
         />
 
         <StatCard
-          title="Associated Clinics"
+          title={t("associatedClinics")}
           value={stats?.associatedClinicsCount}
-          subtitle="Connected medical centers"
+          subtitle={t("associatedClinicsSub")}
           icon={Building2}
           colorScheme="cyan"
         />
 
         <StatCard
-          title="Avg Consultation Time"
+          title={t("avgConsultationTime")}
           value={
             stats?.avgConsultationMinutes !== undefined &&
             stats?.avgConsultationMinutes !== null
-              ? `${stats.avgConsultationMinutes} mins`
+              ? `${stats.avgConsultationMinutes} ${t("mins")}`
               : undefined
           }
-          subtitle="Estimated time per patient"
+          subtitle={t("avgConsultationTimeSub")}
           icon={Stethoscope}
           colorScheme="purple"
         />
@@ -114,10 +116,10 @@ export default function DoctorDashboardPage() {
       {/* Operational Summary */}
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
         <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
-          Practice Operational Overview
+          {t("practiceOverviewTitle")}
         </h2>
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          All metrics above are synchronized directly from your live clinic database. Select sections from the sidebar to manage specific queues, schedules, or clinic association requests.
+          {t("practiceOverviewDesc")}
         </p>
       </div>
     </div>
