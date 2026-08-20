@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname, Link, useRouter } from "@/i18n/routing";
 import {
   LayoutDashboard,
@@ -19,61 +20,68 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
-const NAV = [
+interface NavItem {
+  href: string;
+  key: "dashboard" | "queue" | "schedule" | "patients" | "prescriptions" | "earnings" | "requests" | "clinics" | "notifications" | "referrals" | "profile";
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+}
+
+const NAV: NavItem[] = [
   {
     href: "/doctor/dashboard",
-    label: "Dashboard",
+    key: "dashboard",
     icon: LayoutDashboard,
     exact: true,
   },
   {
     href: "/doctor/queue",
-    label: "Queue",
+    key: "queue",
     icon: ListOrdered,
   },
   {
     href: "/doctor/schedule",
-    label: "Schedule",
+    key: "schedule",
     icon: CalendarClock,
   },
   {
     href: "/doctor/patients",
-    label: "Patients",
+    key: "patients",
     icon: Users,
   },
   {
     href: "/doctor/prescriptions",
-    label: "Prescriptions",
+    key: "prescriptions",
     icon: FileText,
   },
   {
     href: "/doctor/earnings",
-    label: "Earnings",
+    key: "earnings",
     icon: TrendingUp,
   },
   {
     href: "/doctor/requests",
-    label: "Requests",
+    key: "requests",
     icon: Inbox,
   },
   {
     href: "/doctor/clinics",
-    label: "Clinics",
+    key: "clinics",
     icon: Building2,
   },
   {
     href: "/doctor/notifications",
-    label: "Notifications",
+    key: "notifications",
     icon: Bell,
   },
   {
     href: "/doctor/referrals",
-    label: "Referrals",
+    key: "referrals",
     icon: FlaskConical,
   },
   {
     href: "/doctor/profile",
-    label: "Profile",
+    key: "profile",
     icon: User,
   },
 ];
@@ -83,6 +91,7 @@ export default function DoctorLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const tNav = useTranslations("DoctorNav");
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -107,7 +116,7 @@ export default function DoctorLayout({
               border-t-transparent
             "
           />
-          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Loading Doctor Portal...</p>
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{tNav("loadingPortal")}</p>
         </div>
       </div>
     );
@@ -129,7 +138,7 @@ export default function DoctorLayout({
 
               <div className="min-w-0 flex-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                  Doctor Portal
+                  {tNav("doctorPortal")}
                 </span>
                 <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
                   {user.name || "Doctor"}
@@ -141,7 +150,7 @@ export default function DoctorLayout({
           {/* Navigation */}
           <nav className="rounded-xl border border-slate-200 bg-white p-1.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
             <div className="space-y-0.5">
-              {NAV.map(({ href, label, icon: Icon, exact }) => {
+              {NAV.map(({ href, key, icon: Icon, exact }) => {
                 const active = exact
                   ? pathname === href
                   : pathname.startsWith(href);
@@ -160,7 +169,7 @@ export default function DoctorLayout({
                       className={
                         active
                           ? "flex h-7 w-7 items-center justify-center rounded-md bg-white/15"
-                          : "flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 transition-colors group-hover:bg-slate-200/70 dark:bg-slate-800 dark:group-hover:bg-slate-700/60"
+                          : "flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 transition-colors group-hover:bg-slate-200/70 dark:bg-slate-800 dark:group-hover:bg-slate-750"
                       }
                     >
                       <Icon
@@ -172,7 +181,7 @@ export default function DoctorLayout({
                       />
                     </span>
 
-                    <span className="flex-1">{label}</span>
+                    <span className="flex-1">{tNav(key)}</span>
 
                     {active && (
                       <ChevronRight className="h-3.5 w-3.5 text-white/70" />
@@ -195,7 +204,7 @@ export default function DoctorLayout({
       ====================================================== */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-1.5 pb-[env(safe-area-inset-bottom)] pt-1.5 shadow-sm backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
         <div className="flex items-center justify-around">
-          {NAV.map(({ href, label, icon: Icon, exact }) => {
+          {NAV.map(({ href, key, icon: Icon, exact }) => {
             const active = exact
               ? pathname === href
               : pathname.startsWith(href);
@@ -226,7 +235,7 @@ export default function DoctorLayout({
                   />
                 </span>
 
-                <span className="max-w-full truncate">{label}</span>
+                <span className="max-w-full truncate">{tNav(key)}</span>
               </Link>
             );
           })}
