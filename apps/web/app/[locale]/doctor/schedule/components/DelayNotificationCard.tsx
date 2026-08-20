@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AlertCircle, Loader2, Send, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useNotifyDoctorDelay } from "@/lib/hooks/useDoctor";
 import toast from "react-hot-toast";
 
@@ -18,6 +19,7 @@ export function DelayNotificationCard({
   clinicId,
   clinicName,
 }: DelayNotificationCardProps) {
+  const t = useTranslations("DoctorSchedule");
   const [selectedDelay, setSelectedDelay] = useState<number | "">("");
   const [customDelay, setCustomDelay] = useState<string>("");
 
@@ -61,7 +63,7 @@ export function DelayNotificationCard({
         clinicId,
         delayMinutes: minutes,
       });
-      toast.success("Delay notification sent successfully.");
+      toast.success(t("delaySuccess"));
       setSelectedDelay("");
       setCustomDelay("");
     } catch (err: unknown) {
@@ -89,10 +91,10 @@ export function DelayNotificationCard({
             </div>
             <div>
               <h2 className="text-sm font-bold text-slate-900 dark:text-white">
-                Broadcast Delay Notification
+                {t("delayTitle")}
               </h2>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Notify waiting patients and reception of doctor arrival delays
+                {t("delaySub")}
               </p>
             </div>
           </div>
@@ -101,9 +103,7 @@ export function DelayNotificationCard({
         {/* Informational Message */}
         <div className="mt-4 rounded-lg bg-amber-50/70 p-3.5 dark:bg-amber-950/20 dark:border dark:border-amber-900/30">
           <p className="text-xs text-amber-800 dark:text-amber-300">
-            Broadcasting an expected delay will notify the queue management system for{" "}
-            <span className="font-bold">{clinicName || "this clinic"}</span> to recalculate
-            patient estimated waiting times.
+            {t("delayInfo")}
           </p>
         </div>
 
@@ -111,7 +111,7 @@ export function DelayNotificationCard({
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <div>
             <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Select Delay Duration (Minutes)
+              {t("selectDelayDuration")}
             </label>
             <div className="mt-2 flex flex-wrap gap-2">
               {PRESET_DELAYS.map((mins) => {
@@ -142,7 +142,7 @@ export function DelayNotificationCard({
                 type="number"
                 min="1"
                 step="1"
-                placeholder="Custom delay (e.g. 25 minutes)"
+                placeholder={t("customDelayPlaceholder")}
                 value={customDelay}
                 onChange={handleCustomChange}
                 disabled={isPending}
@@ -163,7 +163,7 @@ export function DelayNotificationCard({
               ) : (
                 <Send className="h-3.5 w-3.5" />
               )}
-              <span>Send Delay Notification</span>
+              <span>{t("sendDelayNotification")}</span>
             </button>
           </div>
         </form>
