@@ -2,6 +2,7 @@
 
 import type { QueueToken } from "@doctor-contract/shared";
 import { User, Clock, Calendar, Stethoscope } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface CurrentPatientCardProps {
   currentPatientToken?: QueueToken;
@@ -12,6 +13,7 @@ export function CurrentPatientCard({
   currentPatientToken,
   currentTokenNumber = 0,
 }: CurrentPatientCardProps) {
+  const t = useTranslations("DoctorQueue");
   const hasCurrentPatient =
     Boolean(currentPatientToken) || (currentTokenNumber > 0);
 
@@ -34,12 +36,12 @@ export function CurrentPatientCard({
           <div className="flex items-center gap-2">
             <Stethoscope className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <h2 className="text-sm font-bold text-slate-900 dark:text-white">
-              Current Patient Token
+              {t("currentPatientTitle")}
             </h2>
           </div>
           {hasCurrentPatient && (
             <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-700 dark:bg-blue-950/60 dark:text-blue-400">
-              Active Call
+              {t("activeCall")}
             </span>
           )}
         </div>
@@ -50,10 +52,10 @@ export function CurrentPatientCard({
               <User className="h-6 w-6" />
             </div>
             <p className="mt-3 text-xs font-bold text-slate-700 dark:text-slate-300">
-              No patient is currently being served.
+              {t("noPatientServing")}
             </p>
             <p className="mt-1 max-w-xs text-[11px] text-slate-500 dark:text-slate-400">
-              Use the control panel to call the next patient token from the waiting list.
+              {t("useControlPanel")}
             </p>
           </div>
         ) : (
@@ -61,7 +63,7 @@ export function CurrentPatientCard({
             <div className="flex items-center justify-between rounded-xl bg-blue-50/70 p-4 transition-colors dark:bg-blue-950/40">
               <div>
                 <p className="text-[11px] font-medium text-blue-600 dark:text-blue-400">
-                  Serving Token Number
+                  {t("servingTokenNumber")}
                 </p>
                 <p className="mt-0.5 text-3xl font-black tracking-tight text-slate-900 dark:text-white">
                   {formatTokenDisplay(currentPatientToken?.token ?? currentTokenNumber)}
@@ -74,7 +76,7 @@ export function CurrentPatientCard({
 
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center justify-between border-b border-slate-100 py-1.5 dark:border-slate-800/60">
-                <span className="text-slate-500 dark:text-slate-400">Patient Name</span>
+                <span className="text-slate-500 dark:text-slate-400">{t("patientName")}</span>
                 <span className="font-bold text-slate-900 dark:text-white">
                   {currentPatientToken?.patientName || `Patient #${currentPatientToken?.token ?? currentTokenNumber}`}
                 </span>
@@ -83,7 +85,7 @@ export function CurrentPatientCard({
               {(currentPatientToken?.patientAge !== undefined && currentPatientToken?.patientAge !== null) ||
               currentPatientToken?.patientGender ? (
                 <div className="flex items-center justify-between border-b border-slate-100 py-1.5 dark:border-slate-800/60">
-                  <span className="text-slate-500 dark:text-slate-400">Demographics</span>
+                  <span className="text-slate-500 dark:text-slate-400">{t("demographics")}</span>
                   <span className="font-medium text-slate-800 dark:text-slate-200">
                     {[
                       currentPatientToken.patientAge !== null && currentPatientToken.patientAge !== undefined
@@ -101,7 +103,7 @@ export function CurrentPatientCard({
                 <div className="flex items-center justify-between py-1.5">
                   <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                     <Clock className="h-3.5 w-3.5" />
-                    Booked At
+                    {t("bookedAt")}
                   </span>
                   <span className="font-mono text-slate-700 dark:text-slate-300">
                     {formattedBookingTime}
@@ -116,9 +118,9 @@ export function CurrentPatientCard({
       <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-[11px] text-slate-400 dark:border-slate-800">
         <span className="flex items-center gap-1">
           <Calendar className="h-3 w-3" />
-          Live Token Sequence
+          {t("liveTokenSequence")}
         </span>
-        <span>Doctor Queue System</span>
+        <span>{t("doctorQueueSystem")}</span>
       </div>
     </div>
   );
