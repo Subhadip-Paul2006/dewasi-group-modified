@@ -38,6 +38,10 @@ export default function LoginPage() {
         case "DOCTOR":
           router.push("/doctor/dashboard");
           break;
+        case "SUPER_ADMIN":
+        case "ADMIN":
+          router.push("/admin/dashboard");
+          break;
         default:
           router.push("/");
       }
