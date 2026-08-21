@@ -30,24 +30,34 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Clinics land on /clinic, Doctors on /doctor/dashboard, Admins on /admin/dashboard.
+  // Clinics land on /clinic, Doctors on /doctor/dashboard, Diagnostic Centers on /diagnosticCenter/dashboard, Staff on /diagnosticCenter/referrals, Admins on /admin/dashboard.
   const isClinic = user?.role === "CLINIC";
   const isDoctor = user?.role === "DOCTOR";
+  const isDiagnosticCenter = user?.role === "DIAGNOSTIC_CENTER";
+  const isDiagnosticStaff = user?.role === "DIAGNOSTIC_STAFF";
   const isAdmin = user?.role === "SUPER_ADMIN" || user?.role === "ADMIN";
   const dashboardHref = isClinic
     ? "/clinic"
     : isDoctor
       ? "/doctor/dashboard"
-      : isAdmin
-        ? "/admin/dashboard"
-        : "/dashboard";
+      : isDiagnosticCenter
+        ? "/diagnosticCenter/dashboard"
+        : isDiagnosticStaff
+          ? "/diagnosticCenter/referrals"
+          : isAdmin
+            ? "/admin/dashboard"
+            : "/dashboard";
   const dashboardLabel = isClinic
     ? dash("clinicPanel")
     : isDoctor
       ? dash("doctorPanel")
-      : isAdmin
-        ? (user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin Portal")
-        : dash("dashboard");
+      : isDiagnosticCenter
+        ? "Diagnostic Portal"
+        : isDiagnosticStaff
+          ? "Referrals Inbox"
+          : isAdmin
+            ? (user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin Portal")
+            : dash("dashboard");
 
   async function handleLogout() {
     await logout();
@@ -149,7 +159,7 @@ export default function Header() {
                   </Link>
 
                   {/* Profile — patients only */}
-                  {!isClinic && !isDoctor && !isAdmin && (
+                  {!isClinic && !isDoctor && !isDiagnosticCenter && !isDiagnosticStaff && !isAdmin && (
                     <Link
                       href="/dashboard/profile"
                       onClick={() => setShowUserMenu(false)}
@@ -237,11 +247,15 @@ export default function Header() {
                         ? "Clinic"
                         : isDoctor
                           ? "Doctor"
-                          : isAdmin
-                            ? user.role === "SUPER_ADMIN"
-                              ? "Super Admin"
-                              : "Admin"
-                            : "Patient"}
+                          : isDiagnosticCenter
+                            ? "Diagnostic Center"
+                            : isDiagnosticStaff
+                              ? "Diagnostic Staff"
+                              : isAdmin
+                                ? user.role === "SUPER_ADMIN"
+                                  ? "Super Admin"
+                                  : "Admin"
+                                : "Patient"}
                     </p>
                   </div>
                 </div>
@@ -275,7 +289,7 @@ export default function Header() {
                 </Link>
 
                 {/* ================= PROFILE (patients only) ================= */}
-                {!isClinic && !isDoctor && (
+                {!isClinic && !isDoctor && !isDiagnosticCenter && !isDiagnosticStaff && (
                   <Link
                     href="/dashboard/profile"
                     onClick={() => setOpen(false)}
