@@ -7,7 +7,9 @@ export type Role =
   | "CLINIC"
   | "RECEPTIONIST"
   | "DOCTOR"
-  | "PATIENT";
+  | "PATIENT"
+  | "DIAGNOSTIC_CENTER"
+  | "DIAGNOSTIC_STAFF";
 
 export type AuthUser = {
   id: string;
@@ -400,5 +402,95 @@ export type SetFeaturedDoctorInput = {
 
 export type UpdatePlatformSettingsInput = {
   bookingWindowMinutes: number;
+};
+
+// ============================================================
+// PHASE 01 — DIAGNOSTIC CENTER PORTAL CONTRACT TYPES
+// ============================================================
+
+export type DiagnosticCenter = {
+  id: string;
+  userId?: string;
+  centerName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  logo: string | null;
+  isApproved: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type DiagnosticCenterStaff = {
+  id: string;
+  userId?: string;
+  name?: string;
+  email?: string;
+  phone?: string | null;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+    createdAt?: string;
+  };
+};
+
+export type UpdateDiagnosticCenterProfileInput = {
+  centerName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type CreateDiagnosticCenterStaffInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+};
+
+export type ChangeDiagnosticCenterStaffPasswordInput = {
+  userId: string;
+  newPassword: string;
+};
+
+// ============================================================
+// PHASE 02 — DIAGNOSTIC CENTER INCOMING REFERRALS
+// ============================================================
+
+export type DiagnosticCenterIncomingReferral = {
+  id: string;
+  patientId: string;
+  appointmentId?: string | null;
+  diagnosticCenterId: string;
+  testNames: string[];
+  notes?: string | null;
+  referringClinicId?: string | null;
+  createdByUserId?: string | null;
+  createdByRole?: string | null;
+  createdAt: string;
+  updatedAt?: string;
+  patient?: {
+    id?: string;
+    name?: string;
+    address?: string | null;
+    phone?: string | null;
+    user?: {
+      name?: string;
+      phone?: string | null;
+      email?: string | null;
+    } | null;
+  } | null;
+  referringClinic?: {
+    id?: string;
+    clinicName?: string;
+  } | null;
 };
 
