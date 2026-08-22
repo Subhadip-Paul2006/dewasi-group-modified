@@ -170,7 +170,10 @@
     "empty": "No notifications yet.",
     "markAllRead": "Mark all as read",
     "viewAll": "View all",
-    "justNow": "just now"
+    "justNow": "just now",
+    "testReferral": "Test Referral",
+    "viewReferral": "View Referral",
+    "unread": "Unread"
   },
   "Theme": {
     "toggleLabel": "Toggle dark mode"
@@ -981,6 +984,18 @@
     "searchPlaceholder": "Search referrals by patient, phone, clinic, or test name...",
     "loadedCount": "Referrals on this page",
     "patientInfo": "Patient Information",
-    "referralInfo": "Referral Information"
+    "referralInfo": "Referral Information",
+    "printWorkOrder": "Print Lab Work Order",
+    "exportCsv": "Export CSV",
+    "print": "Print",
+    "labProcessing": "Laboratory Processing & Verification",
+    "technicianSignature": "Lab Technologist Signature",
+    "doctorSignature": "Pathologist / Authorized Signatory",
+    "patientDemographics": "Patient Demographics",
+    "testChecklist": "Requested Diagnostic Tests",
+    "specimenCollected": "Specimen Collected",
+    "receivedBy": "Received & Processed By",
+    "referralNotFoundNotice": "Referral record was not found on the current page.",
+    "noReferralsToExport": "No loaded referrals available for export."
   }
 }

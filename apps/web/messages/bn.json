@@ -147,7 +147,10 @@
     "empty": "এখনো কোনো বিজ্ঞপ্তি নেই।",
     "markAllRead": "সব পড়া হিসেবে চিহ্নিত করুন",
     "viewAll": "সব দেখুন",
-    "justNow": "এইমাত্র"
+    "justNow": "এইমাত্র",
+    "testReferral": "টেস্ট রেফারেল",
+    "viewReferral": "রেফারেল দেখুন",
+    "unread": "অপঠিত"
   },
   "Theme": {
     "toggleLabel": "ডার্ক মোড টগল করুন"
@@ -1047,6 +1050,18 @@
     "searchPlaceholder": "রোগীর নাম, ফোন, ক্লিনিক বা টেস্টের নাম দিয়ে খুঁজুন...",
     "loadedCount": "বর্তমান পৃষ্ঠার রেফারেল",
     "patientInfo": "রোগীর তথ্য",
-    "referralInfo": "রেফারেলের তথ্য"
+    "referralInfo": "রেফারেলের তথ্য",
+    "printWorkOrder": "ল্যাব ওয়ার্ক অর্ডার প্রিন্ট করুন",
+    "exportCsv": "CSV এক্সপোর্ট করুন",
+    "print": "প্রিন্ট করুন",
+    "labProcessing": "ল্যাবরেটরি প্রক্রিয়াকরণ ও যাচাইকরণ",
+    "technicianSignature": "ল্যাব টেকনোলজিস্টের স্বাক্ষর",
+    "doctorSignature": "প্যাথলজিস্ট / অনুমোদিত স্বাক্ষর",
+    "patientDemographics": "রোগীর বিবরণ",
+    "testChecklist": "অনুরোধকৃত ডায়াগনস্টিক টেস্ট",
+    "specimenCollected": "নমুনা সংগ্রহ করা হয়েছে",
+    "receivedBy": "গ্রহণ ও প্রস্তুত করেছেন",
+    "referralNotFoundNotice": "বর্তমান পৃষ্ঠায় রেফারেল রেকর্ডটি পাওয়া যায়নি।",
+    "noReferralsToExport": "এক্সপোর্ট করার মতো কোনো রেফারেল লোড হয়নি।"
   }
 }

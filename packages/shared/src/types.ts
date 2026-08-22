@@ -158,10 +158,12 @@ export type NotificationType =
 
 export type AppNotification = {
   id: string;
+  userId?: string;
   type: NotificationType;
   title: string;
   message: string;
   isRead: boolean;
+  meta?: Record<string, any> | null;
   createdAt: string;
 };
 

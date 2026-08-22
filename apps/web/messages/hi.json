@@ -170,7 +170,10 @@
     "empty": "अभी कोई सूचना नहीं है।",
     "markAllRead": "सभी को पढ़ा हुआ चिह्नित करें",
     "viewAll": "सभी देखें",
-    "justNow": "अभी-अभी"
+    "justNow": "अभी-अभी",
+    "testReferral": "टेस्ट रेफरल",
+    "viewReferral": "रेफरल देखें",
+    "unread": "अपठित"
   },
   "Theme": {
     "toggleLabel": "डार्क मोड टॉगल करें"
@@ -981,6 +984,18 @@
     "searchPlaceholder": "मरीज़ के नाम, फ़ोन, क्लीनिक या टेस्ट के नाम से खोजें...",
     "loadedCount": "इस पृष्ठ पर लोड किए गए रेफरल",
     "patientInfo": "मरीज़ की जानकारी",
-    "referralInfo": "रेफरल जानकारी"
+    "referralInfo": "रेफरल जानकारी",
+    "printWorkOrder": "लैब वर्क ऑर्डर प्रिंट करें",
+    "exportCsv": "CSV निर्यात करें",
+    "print": "प्रिंट करें",
+    "labProcessing": "प्रयोगशाला प्रसंस्करण एवं सत्यापन",
+    "technicianSignature": "लैब टेक्नोलॉजिस्ट के हस्ताक्षर",
+    "doctorSignature": "पैथोलॉजिस्ट / अधिकृत हस्ताक्षरकर्ता",
+    "patientDemographics": "मरीज़ का विवरण",
+    "testChecklist": "अनुरोधित डायग्नोस्टिक टेस्ट",
+    "specimenCollected": "नमूना एकत्र किया गया",
+    "receivedBy": "प्राप्तकर्ता एवं संसाधक",
+    "referralNotFoundNotice": "वर्तमान पृष्ठ पर रेफरल रिकॉर्ड नहीं मिला।",
+    "noReferralsToExport": "निर्यात के लिए कोई रेफरल लोड नहीं है।"
   }
 }

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useDiagnosticCenterIncomingReferrals } from "@/lib/hooks/useDiagnosticCenter";
 import { ReferralHeader } from "./components/ReferralHeader";
 import { ReferralList } from "./components/ReferralList";
 import { ReferralDetailsModal } from "./components/ReferralDetailsModal";
+import { PrintReferralSlipModal } from "./components/PrintReferralSlipModal";
 import { ReferralPagination } from "./components/ReferralPagination";
 import { ReferralSkeleton } from "./components/ReferralSkeleton";
 import { ReferralEmptyState } from "./components/ReferralEmptyState";
@@ -13,9 +15,14 @@ import type { DiagnosticCenterIncomingReferral } from "@doctor-contract/shared";
 
 const PAGE_LIMIT = 20;
 
-export default function DiagnosticCenterReferralsPage() {
+function DiagnosticCenterReferralsContent() {
+  const searchParams = useSearchParams();
+  const deepLinkedReferralId = searchParams.get("referralId");
+
   const [page, setPage] = useState(1);
   const [selectedReferral, setSelectedReferral] =
+    useState<DiagnosticCenterIncomingReferral | null>(null);
+  const [printReferral, setPrintReferral] =
     useState<DiagnosticCenterIncomingReferral | null>(null);
 
   const {
@@ -25,6 +32,16 @@ export default function DiagnosticCenterReferralsPage() {
     isError,
     refetch,
   } = useDiagnosticCenterIncomingReferrals({ page, limit: PAGE_LIMIT });
+
+  // Handle URL deep-linking (?referralId=<id>)
+  useEffect(() => {
+    if (deepLinkedReferralId && referrals.length > 0) {
+      const match = referrals.find((r) => r.id === deepLinkedReferralId);
+      if (match) {
+        setSelectedReferral(match);
+      }
+    }
+  }, [deepLinkedReferralId, referrals]);
 
   if (isLoading) {
     return <ReferralSkeleton />;
@@ -36,10 +53,11 @@ export default function DiagnosticCenterReferralsPage() {
 
   return (
     <div className="space-y-6">
-      {/* 1. Header */}
+      {/* 1. Header with CSV Export & Refresh */}
       <ReferralHeader
         page={page}
         count={referrals.length}
+        referrals={referrals}
         isFetching={isFetching}
         onRefresh={() => refetch()}
       />
@@ -69,7 +87,23 @@ export default function DiagnosticCenterReferralsPage() {
         isOpen={!!selectedReferral}
         referral={selectedReferral}
         onClose={() => setSelectedReferral(null)}
+        onPrint={(ref) => setPrintReferral(ref)}
+      />
+
+      {/* 4. Printable Diagnostic Lab Work Order Modal */}
+      <PrintReferralSlipModal
+        isOpen={!!printReferral}
+        referral={printReferral}
+        onClose={() => setPrintReferral(null)}
       />
     </div>
+  );
+}
+
+export default function DiagnosticCenterReferralsPage() {
+  return (
+    <Suspense fallback={<ReferralSkeleton />}>
+      <DiagnosticCenterReferralsContent />
+    </Suspense>
   );
 }

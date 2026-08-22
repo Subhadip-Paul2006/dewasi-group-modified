@@ -11,9 +11,9 @@ import {
   Calendar,
   FlaskConical,
   FileText,
-  Hash,
   Shield,
   CalendarClock,
+  Printer,
 } from "lucide-react";
 import type { DiagnosticCenterIncomingReferral } from "@doctor-contract/shared";
 
@@ -21,12 +21,14 @@ interface ReferralDetailsModalProps {
   isOpen: boolean;
   referral: DiagnosticCenterIncomingReferral | null;
   onClose: () => void;
+  onPrint?: (referral: DiagnosticCenterIncomingReferral) => void;
 }
 
 export function ReferralDetailsModal({
   isOpen,
   referral,
   onClose,
+  onPrint,
 }: ReferralDetailsModalProps) {
   const t = useTranslations("DiagnosticCenterReferrals");
   const locale = useLocale();
@@ -252,7 +254,20 @@ export function ReferralDetailsModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end border-t border-slate-100 p-4 dark:border-slate-800">
+        <div className="flex items-center justify-between border-t border-slate-100 p-4 dark:border-slate-800">
+          <div>
+            {onPrint && (
+              <button
+                type="button"
+                onClick={() => onPrint(referral)}
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-750"
+              >
+                <Printer className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                <span>{t("printWorkOrder")}</span>
+              </button>
+            )}
+          </div>
+
           <button
             type="button"
             onClick={onClose}
