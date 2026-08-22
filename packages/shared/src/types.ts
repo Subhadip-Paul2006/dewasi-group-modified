@@ -7,7 +7,9 @@ export type Role =
   | "CLINIC"
   | "RECEPTIONIST"
   | "DOCTOR"
-  | "PATIENT";
+  | "PATIENT"
+  | "DIAGNOSTIC_CENTER"
+  | "DIAGNOSTIC_STAFF";
 
 export type AuthUser = {
   id: string;
@@ -18,6 +20,15 @@ export type AuthUser = {
 };
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
+
+export type DayOfWeek =
+  | "MONDAY"
+  | "TUESDAY"
+  | "WEDNESDAY"
+  | "THURSDAY"
+  | "FRIDAY"
+  | "SATURDAY"
+  | "SUNDAY";
 
 export type PatientProfile = {
   id: string;
@@ -55,8 +66,84 @@ export type Doctor = {
   experience: number | null;
   fee: number | null;
   clinicId: string;
-  user: { name: string };
+  user: { id?: string; name: string; email?: string; phone?: string | null; isActive?: boolean };
   clinic: { id: string; clinicName: string; city: string | null; address: string | null };
+};
+
+export type DoctorRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
+
+export type DoctorRequest = {
+  id: string;
+  status: DoctorRequestStatus;
+  dayOfWeek?: DayOfWeek;
+  startTime?: string;
+  endTime?: string;
+  fee?: number | null;
+  doctorId?: string;
+  clinicId?: string;
+  doctor?: { id: string; user?: { name: string; email?: string; phone?: string | null } };
+  clinic?: { id: string; clinicName: string; city?: string | null; address?: string | null };
+  createdAt?: string;
+};
+
+export type DoctorLeave = {
+  id: string;
+  date: string; // YYYY-MM-DD
+  reason?: string | null;
+  doctorId?: string;
+  clinicId?: string;
+  createdAt?: string;
+};
+
+export type QueueStatus =
+  | "WAITING"
+  | "CHECKED_IN"
+  | "COMPLETED"
+  | "CANCELLED"
+  | "ABSENT"
+  | "PAUSED"
+  | "CLOSED";
+
+export type QueueToken = {
+  id: string;
+  token: number;
+  patientName?: string;
+  patientAge?: number | null;
+  patientGender?: Gender | null;
+  status: QueueStatus;
+  bookedAt?: string;
+};
+
+export type DoctorQueue = {
+  doctorId: string;
+  clinicId: string;
+  date: string;
+  currentToken: number;
+  lastTokenIssued: number;
+  status: string;
+  tokens?: QueueToken[];
+};
+
+export type DashboardStats = {
+  totalAppointmentsToday?: number;
+  completedToday?: number;
+  waitingToday?: number;
+  pendingRequestsCount?: number;
+  associatedClinicsCount?: number;
+  activeQueueStatus?: string;
+  avgConsultationMinutes?: number;
+  [key: string]: unknown;
+};
+
+export type ClinicSearchResult = {
+  id: string;
+  clinicName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  logo: string | null;
+  isApproved: boolean;
 };
 
 export type NotificationType =
@@ -71,9 +158,341 @@ export type NotificationType =
 
 export type AppNotification = {
   id: string;
+  userId?: string;
   type: NotificationType;
   title: string;
   message: string;
   isRead: boolean;
+  meta?: Record<string, any> | null;
   createdAt: string;
 };
+
+// ============================================================
+// PHASE 03A — DOCTOR PORTAL EXPANSION CONTRACT TYPES
+// ============================================================
+
+export type DoctorPatientRecord = {
+  id: string;
+  patientId: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  age: number | null;
+  gender: Gender | null;
+  bloodGroup: string | null;
+  totalConsultations: number;
+  lastConsultationDate: string;
+  clinicId: string;
+  clinicName: string;
+};
+
+export type PrescriptionItem = {
+  id: string;
+  medicineName: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  instructions?: string | null;
+};
+
+export type DoctorPrescription = {
+  id: string;
+  doctorId: string;
+  patientId: string;
+  clinicId: string;
+  appointmentId?: string | null;
+  patientName: string;
+  clinicName: string;
+  diagnosis: string;
+  items: PrescriptionItem[];
+  notes?: string | null;
+  createdAt: string;
+};
+
+export type ClinicEarningsBreakdown = {
+  clinicId: string;
+  clinicName: string;
+  totalCompletedConsultations: number;
+  consultationFee: number;
+  totalEarnings: number;
+};
+
+export type DoctorEarningsSummary = {
+  period: "daily" | "weekly" | "monthly" | "yearly" | "custom";
+  startDate?: string;
+  endDate?: string;
+  totalEarnings: number;
+  totalConsultations: number;
+  clinicBreakdown: ClinicEarningsBreakdown[];
+};
+
+export type DoctorSettings = {
+  doctorId: string;
+  emailNotifications: boolean;
+  smsNotifications: boolean;
+  autoAcceptClinicRequests: boolean;
+  defaultConsultationFee: number | null;
+  digitalSignatureUrl?: string | null;
+};
+
+// ============================================================
+// PHASE 04 — ADMIN / SUPER ADMIN CONTRACT TYPES
+// ============================================================
+
+export type AdminPlatformStats = {
+  totalUsers: number;
+  totalClinics: number;
+  approvedClinics: number;
+  pendingClinics: number;
+  totalDoctors: number;
+  verifiedDoctors: number;
+  unverifiedDoctors: number;
+  totalPatients: number;
+};
+
+export type AdminUserRecord = {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  role: Role;
+  isActive: boolean;
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+export type AdminClinicRecord = {
+  id: string;
+  userId: string;
+  clinicName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  isApproved: boolean;
+  latitude?: number | null;
+  longitude?: number | null;
+  logo?: string | null;
+  onlineConsultationEnabled?: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+  };
+};
+
+export type AdminDoctorRecord = {
+  id: string;
+  userId: string;
+  clinicId: string;
+  specialization: string | null;
+  qualification: string | null;
+  experience: number | null;
+  fee: number | null;
+  isVerified: boolean;
+  isFeatured?: boolean;
+  featuredOrder?: number;
+  queueMode?: string;
+  startTime?: string | null;
+  profilePhoto?: string | null;
+  avgConsultationMinutes?: number | null;
+  createdAt: string;
+  updatedAt?: string;
+  user: {
+    name: string;
+    email?: string;
+    phone?: string | null;
+  };
+  clinic: {
+    clinicName: string;
+    city?: string | null;
+  };
+};
+
+export type AdminDiagnosticCenterRecord = {
+  id: string;
+  userId: string;
+  centerName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  isApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+  };
+};
+
+export type PlatformSettingsRecord = {
+  id: string;
+  bookingWindowMinutes: number;
+  updatedAt: string;
+};
+
+export type AdminStatsResponse = {
+  stats: AdminPlatformStats;
+};
+
+export type AdminUsersResponse = {
+  users: AdminUserRecord[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type AdminClinicsResponse = {
+  clinics: AdminClinicRecord[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type AdminDoctorsUnverifiedResponse = {
+  doctors: AdminDoctorRecord[];
+};
+
+export type AdminDoctorsFeaturedResponse = {
+  doctors: AdminDoctorRecord[];
+};
+
+export type AdminDiagnosticCentersResponse = {
+  centers: AdminDiagnosticCenterRecord[];
+};
+
+export type AdminSettingsResponse = {
+  settings: PlatformSettingsRecord;
+};
+
+export type CreateClinicInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  clinicName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type CreateDiagnosticCenterInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  centerName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type SetFeaturedDoctorInput = {
+  doctorId: string;
+  isFeatured: boolean;
+  featuredOrder?: number;
+};
+
+export type UpdatePlatformSettingsInput = {
+  bookingWindowMinutes: number;
+};
+
+// ============================================================
+// PHASE 01 — DIAGNOSTIC CENTER PORTAL CONTRACT TYPES
+// ============================================================
+
+export type DiagnosticCenter = {
+  id: string;
+  userId?: string;
+  centerName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  logo: string | null;
+  isApproved: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type DiagnosticCenterStaff = {
+  id: string;
+  userId?: string;
+  name?: string;
+  email?: string;
+  phone?: string | null;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    isActive: boolean;
+    createdAt?: string;
+  };
+};
+
+export type UpdateDiagnosticCenterProfileInput = {
+  centerName: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+};
+
+export type CreateDiagnosticCenterStaffInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+};
+
+export type ChangeDiagnosticCenterStaffPasswordInput = {
+  userId: string;
+  newPassword: string;
+};
+
+// ============================================================
+// PHASE 02 — DIAGNOSTIC CENTER INCOMING REFERRALS
+// ============================================================
+
+export type DiagnosticCenterIncomingReferral = {
+  id: string;
+  patientId: string;
+  appointmentId?: string | null;
+  diagnosticCenterId: string;
+  testNames: string[];
+  notes?: string | null;
+  referringClinicId?: string | null;
+  createdByUserId?: string | null;
+  createdByRole?: string | null;
+  createdAt: string;
+  updatedAt?: string;
+  patient?: {
+    id?: string;
+    name?: string;
+    address?: string | null;
+    phone?: string | null;
+    user?: {
+      name?: string;
+      phone?: string | null;
+      email?: string | null;
+    } | null;
+  } | null;
+  referringClinic?: {
+    id?: string;
+    clinicName?: string;
+  } | null;
+};
+

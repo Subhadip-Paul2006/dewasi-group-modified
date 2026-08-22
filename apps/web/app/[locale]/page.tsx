@@ -14,7 +14,7 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white dark:bg-[var(--color-bg)]">
       <Hero />
       <FeaturedDoctors />
       <Specialties />

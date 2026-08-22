@@ -23,7 +23,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
 
   if (loading || !user || user.role !== "PATIENT") {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center text-sm text-gray-500">
+      <div className="flex min-h-[60vh] items-center justify-center text-sm text-gray-500 dark:text-ink-500">
         Loading...
       </div>
     );
@@ -43,7 +43,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
                   "flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors " +
                   (active
                     ? "bg-[var(--color-primary)] text-white"
-                    : "text-gray-600 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary)]")
+                    : "text-gray-600 hover:bg-[var(--color-bg-soft)] hover:text-[var(--color-primary-text)] dark:text-ink-600 dark:hover:bg-soft-50")
                 }
               >
                 <Icon className="h-4 w-4 shrink-0" />
@@ -55,7 +55,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
       </aside>
 
       {/* Mobile tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-gray-100 bg-white px-2 py-2 md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-gray-100 bg-white px-2 py-2 md:hidden dark:border-soft-300 dark:bg-surface">
         {NAV.map(({ href, label, icon: Icon, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href);
           return (
@@ -64,7 +64,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
               href={href}
               className={
                 "flex flex-col items-center gap-0.5 rounded-lg px-2 py-1 text-[10px] font-medium " +
-                (active ? "text-[var(--color-primary)]" : "text-gray-500")
+                (active ? "text-[var(--color-primary-text)]" : "text-gray-500 dark:text-ink-500")
               }
             >
               <Icon className="h-4 w-4" />

@@ -51,6 +51,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         hover:-translate-y-1
         hover:border-gray-300
         hover:shadow-[0_18px_45px_rgba(0,0,0,0.09)]
+        dark:border-soft-300
+        dark:bg-surface
+        dark:hover:border-soft-300
       "
     >
       {/* ====================================================
@@ -67,10 +70,6 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         "
       />
 
-      {/* ====================================================
-          Experience Badge
-      ===================================================== */}
-
       {experience > 0 && (
         <div className="absolute left-4 top-5 z-10">
           <div
@@ -81,9 +80,11 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               bg-white/95
               px-3 py-1.5
               text-[10px] font-bold
-              text-[var(--color-secondary-dark)]
+              text-[var(--color-secondary-dark-text)]
               shadow-sm
               backdrop-blur
+              dark:border-soft-300
+              dark:bg-surface/95
             "
           >
             <Award
@@ -98,10 +99,6 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         </div>
       )}
 
-      {/* ====================================================
-          Doctor Profile
-      ===================================================== */}
-
       <div
         className="
           flex flex-col items-center gap-4
@@ -113,8 +110,6 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
           md:text-left
         "
       >
-        {/* Avatar */}
-
         <div className="relative shrink-0">
           <div
             className="
@@ -125,17 +120,16 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               from-[var(--color-bg-soft)]
               to-[var(--color-primary)]/10
               text-xl font-bold
-              text-[var(--color-primary)]
+              text-[var(--color-primary-text)]
               shadow-sm
               ring-1 ring-gray-100
               transition-transform duration-300
               group-hover:scale-[1.03]
+              dark:ring-soft-300
             "
           >
             {initials(doctor.user.name)}
           </div>
-
-          {/* Available Indicator */}
 
           <span
             className="
@@ -145,11 +139,10 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               border-[3px] border-white
               bg-green-500
               shadow-sm
+              dark:border-surface
             "
           />
         </div>
-
-        {/* Doctor Info */}
 
         <div className="min-w-0 flex-1">
           <div
@@ -165,9 +158,9 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 text-[17px]
                 font-bold
                 tracking-[-0.01em]
-                text-[var(--color-primary-dark)]
+                text-[var(--color-primary-dark-text)]
                 transition-colors
-                group-hover:text-[var(--color-primary)]
+                group-hover:text-[var(--color-primary-text)]
                 md:text-lg
               "
             >
@@ -177,12 +170,10 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             <CheckCircle2
               className="
                 h-4 w-4 shrink-0
-                text-[var(--color-primary)]
+                text-[var(--color-primary-text)]
               "
             />
           </div>
-
-          {/* Qualification */}
 
           {doctor.qualification && (
             <p
@@ -190,13 +181,12 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 mt-0.5 truncate
                 text-sm font-semibold
                 text-gray-700
+                dark:text-ink-700
               "
             >
               {doctor.qualification}
             </p>
           )}
-
-          {/* Specialization */}
 
           {doctor.specialization && (
             <p
@@ -204,13 +194,12 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
                 mt-0.5 truncate
                 text-xs font-medium
                 text-gray-500
+                dark:text-ink-500
               "
             >
               {doctor.specialization}
             </p>
           )}
-
-          {/* Rating */}
 
           <div
             className="
@@ -233,26 +222,18 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               ))}
             </div>
 
-            <span className="text-xs font-semibold text-gray-700">
+            <span className="text-xs font-semibold text-gray-700 dark:text-ink-700">
               4.5
             </span>
 
-            <span className="text-[10px] text-gray-400">
+            <span className="text-[10px] text-gray-400 dark:text-ink-400">
               Excellent
             </span>
           </div>
         </div>
       </div>
 
-      {/* ====================================================
-          Divider
-      ===================================================== */}
-
-      <div className="my-5 h-px bg-gray-100" />
-
-      {/* ====================================================
-          Location
-      ===================================================== */}
+      <div className="my-5 h-px bg-gray-100 dark:bg-soft-100" />
 
       {location && (
         <div
@@ -262,12 +243,14 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             border border-gray-100
             bg-gray-50
             px-3.5 py-2.5
+            dark:border-soft-300
+            dark:bg-soft-50
           "
         >
           <MapPin
             className="
               mr-2 h-4 w-4 shrink-0
-              text-[var(--color-primary)]
+              text-[var(--color-primary-text)]
             "
           />
 
@@ -276,16 +259,13 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               truncate
               text-xs font-semibold
               text-gray-600
+              dark:text-ink-600
             "
           >
             {location}
           </span>
         </div>
       )}
-
-      {/* ====================================================
-          Bottom CTA
-      ===================================================== */}
 
       <div
         className="
@@ -301,7 +281,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         <span
           className="
             text-xs font-bold
-            text-[var(--color-primary)]
+            text-[var(--color-primary-text)]
           "
         >
           View Doctor Profile
@@ -313,7 +293,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             text-gray-400
             transition-transform duration-200
             group-hover:translate-x-1
-            group-hover:text-[var(--color-primary)]
+            group-hover:text-[var(--color-primary-text)]
+            dark:text-ink-400
           "
         >
           →
@@ -323,8 +304,6 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
   );
 }
 
-// ============================================================
-// Featured Doctors
 // ============================================================
 
 export default function FeaturedDoctors() {
@@ -511,7 +490,7 @@ export default function FeaturedDoctors() {
               mb-1
               text-[10px] font-bold
               uppercase tracking-[0.18em]
-              text-[var(--color-primary)]
+              text-[var(--color-primary-text)]
             "
           >
             Trusted Healthcare
@@ -521,7 +500,7 @@ export default function FeaturedDoctors() {
             className="
               text-xl font-bold
               tracking-tight
-              text-[var(--color-primary-dark)]
+              text-[var(--color-primary-dark-text)]
               md:text-2xl
             "
           >
@@ -537,7 +516,7 @@ export default function FeaturedDoctors() {
             bg-[var(--color-bg-soft)]
             px-3.5 py-2
             text-xs font-bold
-            text-[var(--color-primary)]
+            text-[var(--color-primary-text)]
             transition-all
             hover:border-[var(--color-primary)]/40
             hover:bg-[var(--color-primary)]/10

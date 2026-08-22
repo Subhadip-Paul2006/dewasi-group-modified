@@ -68,7 +68,7 @@ export default function HowItWorks() {
               mb-2
               text-[10px] font-bold
               uppercase tracking-[0.2em]
-              text-[var(--color-primary)]
+              text-[var(--color-primary-text)]
             "
           >
             Simple & Fast
@@ -78,14 +78,14 @@ export default function HowItWorks() {
             className="
               text-2xl font-bold
               tracking-tight
-              text-[var(--color-primary-dark)]
+              text-[var(--color-primary-dark-text)]
               md:text-3xl
             "
           >
             {t("heading")}
           </h2>
 
-          <p className="mt-3 text-sm leading-6 text-gray-500 md:text-base">
+          <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-ink-500 md:text-base">
             Find the right doctor, book your appointment, and track your
             queue — all from one simple platform.
           </p>
@@ -124,6 +124,8 @@ export default function HowItWorks() {
                 hover:-translate-y-1
                 hover:border-gray-300
                 hover:shadow-[0_18px_40px_rgba(0,0,0,0.08)]
+                dark:border-soft-300
+                dark:bg-surface
               "
             >
               {/* Step Number */}
@@ -136,6 +138,7 @@ export default function HowItWorks() {
                   text-gray-200
                   transition-colors
                   group-hover:text-[var(--color-primary)]/20
+                  dark:text-ink-300/40
                 "
               >
                 0{index + 1}
@@ -172,6 +175,7 @@ export default function HowItWorks() {
                     rounded-full
                     border-2 border-white
                     bg-[var(--color-secondary)]
+                    dark:border-surface
                   "
                 >
                   <CheckCircle2 className="h-3 w-3 text-white" />
@@ -186,7 +190,8 @@ export default function HowItWorks() {
                     text-base font-bold
                     text-gray-800
                     transition-colors
-                    group-hover:text-[var(--color-primary)]
+                    group-hover:text-[var(--color-primary-text)]
+                    dark:text-ink-800
                   "
                 >
                   {title}
@@ -198,6 +203,7 @@ export default function HowItWorks() {
                     text-sm
                     leading-6
                     text-gray-500
+                    dark:text-ink-500
                   "
                 >
                   {desc}
@@ -211,7 +217,7 @@ export default function HowItWorks() {
                   mt-5 flex items-center
                   gap-1.5
                   text-[11px] font-bold
-                  text-[var(--color-primary)]
+                  text-[var(--color-primary-text)]
                   opacity-0
                   transition-opacity duration-300
                   group-hover:opacity-100

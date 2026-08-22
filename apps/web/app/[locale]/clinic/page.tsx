@@ -21,6 +21,8 @@ import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
+import { useTranslations } from "next-intl";
+
 import {
   useClinicProfile,
   useUpdateClinicProfile,
@@ -49,6 +51,9 @@ type ClinicFormData = z.infer<typeof clinicFormSchema>;
 // ============================================================
 
 export default function ClinicOverviewPage() {
+  const t = useTranslations("ClinicOverview");
+  const tNav = useTranslations("ClinicNav");
+  const tStatus = useTranslations("Status");
   const queryClient = useQueryClient();
   const { data: clinic, isLoading } = useClinicProfile();
   const { data: doctors } = useClinicDoctors();
@@ -285,21 +290,21 @@ export default function ClinicOverviewPage() {
         {/* Header skeleton */}
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="h-4 w-32 bg-gray-200 rounded mb-2" />
-            <div className="h-8 w-48 bg-gray-200 rounded" />
-            <div className="h-4 w-64 bg-gray-200 rounded mt-2" />
+            <div className="h-4 w-32 bg-gray-200 rounded mb-2 dark:bg-soft-100" />
+            <div className="h-8 w-48 bg-gray-200 rounded dark:bg-soft-100" />
+            <div className="h-4 w-64 bg-gray-200 rounded mt-2 dark:bg-soft-100" />
           </div>
         </div>
 
         {/* Stats skeleton */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-gray-200 rounded-2xl" />
+            <div key={i} className="h-32 bg-gray-200 rounded-2xl dark:bg-soft-100" />
           ))}
         </div>
 
         {/* Main card skeleton */}
-        <div className="h-96 bg-gray-200 rounded-3xl" />
+        <div className="h-96 bg-gray-200 rounded-3xl dark:bg-soft-100" />
       </div>
     );
   }
@@ -316,21 +321,21 @@ export default function ClinicOverviewPage() {
 
       <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-primary)]">
-            Clinic Management
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-primary-text)]">
+            {tNav("overview")}
           </p>
 
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark)] sm:text-3xl">
-            Clinic Overview
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
+            {t("heading")}
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
-            Manage your clinic information, team and online consultation.
+          <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
+            {t("subtitle")}
           </p>
 
           {lastSynced && (
-            <p className="mt-1 text-[10px] text-gray-400">
-              Last synced: {lastSynced.toLocaleTimeString()}
+            <p className="mt-1 text-[10px] text-gray-400 dark:text-ink-400">
+              {t("lastSynced")}: {lastSynced.toLocaleTimeString()}
             </p>
           )}
         </div>
@@ -339,20 +344,20 @@ export default function ClinicOverviewPage() {
         <button
           type="button"
           onClick={() => {
-            toast.custom((t) => (
-              <div className="bg-white rounded-lg shadow-lg p-4 max-w-md">
+            toast.custom((tToast) => (
+              <div className="bg-white rounded-lg shadow-lg p-4 max-w-md dark:bg-surface">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-bold text-gray-800">Activity Log</h3>
-                  <button onClick={() => toast.dismiss(t.id)}>
-                    <X className="h-4 w-4 text-gray-500" />
+                  <h3 className="font-bold text-gray-800 dark:text-ink-800">{t("activityHistory")}</h3>
+                  <button onClick={() => toast.dismiss(tToast.id)}>
+                    <X className="h-4 w-4 text-gray-500 dark:text-ink-500" />
                   </button>
                 </div>
                 <div className="max-h-60 overflow-y-auto text-xs space-y-1">
                   {activityLog.length === 0 ? (
-                    <p className="text-gray-400">No recent activity</p>
+                    <p className="text-gray-400 dark:text-ink-400">No recent activity</p>
                   ) : (
                     activityLog.map((log, i) => (
-                      <p key={i} className="text-gray-600">
+                      <p key={i} className="text-gray-600 dark:text-ink-600">
                         {log}
                       </p>
                     ))
@@ -361,10 +366,10 @@ export default function ClinicOverviewPage() {
               </div>
             ));
           }}
-          className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+          className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-soft-300 dark:bg-surface dark:text-ink-600 dark:hover:bg-soft-50"
         >
           <History className="h-3.5 w-3.5" />
-          Activity
+          {t("activityHistory")}
         </button>
       </div>
 
@@ -373,14 +378,14 @@ export default function ClinicOverviewPage() {
       ====================================================== */}
 
       {!clinic.isApproved && (
-        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-amber-800">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100">
-            <Clock3 className="h-4 w-4 text-amber-700" />
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-amber-800 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-300">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-500/15">
+            <Clock3 className="h-4 w-4 text-amber-700 dark:text-amber-400" />
           </div>
 
           <div>
-            <p className="text-sm font-bold">Approval pending</p>
-            <p className="mt-0.5 text-xs leading-5 text-amber-700">
+            <p className="text-sm font-bold">{tStatus("PENDING")}</p>
+            <p className="mt-0.5 text-xs leading-5 text-amber-700 dark:text-amber-300/90">
               Your clinic is not yet approved by admin. It won't be visible in
               doctor search until it is approved.
             </p>
@@ -395,20 +400,20 @@ export default function ClinicOverviewPage() {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
         <StatCard
           icon={UserRound}
-          label="Doctors"
+          label={tNav("doctors")}
           value={doctors?.length ?? 0}
         />
 
         <StatCard
           icon={Users}
-          label="Receptionists"
+          label={tNav("receptionists")}
           value={receptionists?.length ?? 0}
         />
 
-        <div className="col-span-2 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] lg:col-span-1">
+        <div className="col-span-2 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] lg:col-span-1 dark:border-soft-300 dark:bg-surface">
           <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)]">
-              <CheckCircle2 className="h-5 w-5 text-[var(--color-primary)]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+              <CheckCircle2 className="h-5 w-5 text-[var(--color-primary-text)]" />
             </div>
 
             <span
@@ -416,17 +421,17 @@ export default function ClinicOverviewPage() {
                 rounded-full px-2.5 py-1 text-[10px] font-bold
                 ${
                   clinic.isApproved
-                    ? "bg-green-50 text-green-700"
-                    : "bg-amber-50 text-amber-700"
+                    ? "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                    : "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
                 }
               `}
             >
-              {clinic.isApproved ? "Approved" : "Pending"}
+              {tStatus(clinic.isApproved ? "APPROVED" : "PENDING")}
             </span>
           </div>
 
-          <p className="mt-4 text-lg font-bold text-gray-800">Clinic Status</p>
-          <p className="mt-0.5 text-xs font-medium text-gray-500">
+          <p className="mt-4 text-lg font-bold text-gray-800 dark:text-ink-800">{t("verifiedBadge")}</p>
+          <p className="mt-0.5 text-xs font-medium text-gray-500 dark:text-ink-500">
             {clinic.isApproved
               ? "Your clinic is visible on the platform."
               : "Waiting for admin approval."}
@@ -438,7 +443,7 @@ export default function ClinicOverviewPage() {
           CLINIC PROFILE
       ====================================================== */}
 
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)]">
+      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
         {/* Top accent */}
         <div className="h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-primary)]" />
 
@@ -455,7 +460,7 @@ export default function ClinicOverviewPage() {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadLogo.isPending}
-                className="group relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] shadow-sm transition-all duration-200 hover:border-[var(--color-primary)]/20 hover:shadow-md disabled:cursor-not-allowed"
+                className="group relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] shadow-sm transition-all duration-200 hover:border-[var(--color-primary)]/20 hover:shadow-md disabled:cursor-not-allowed dark:border-soft-300 dark:bg-soft-100"
                 aria-label="Change clinic logo"
               >
                 {logoUrl ? (
@@ -466,7 +471,7 @@ export default function ClinicOverviewPage() {
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <ImageIcon className="h-7 w-7 text-[var(--color-primary)]" />
+                  <ImageIcon className="h-7 w-7 text-[var(--color-primary-text)]" />
                 )}
 
                 {/* Upload overlay */}
@@ -491,12 +496,12 @@ export default function ClinicOverviewPage() {
 
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="truncate text-lg font-bold text-[var(--color-primary-dark)] sm:text-xl">
+                  <h2 className="truncate text-lg font-bold text-[var(--color-primary-dark-text)] sm:text-xl">
                     {clinic.clinicName}
                   </h2>
 
                   {clinic.isApproved && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-[10px] font-bold text-green-700">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/15 dark:text-green-400">
                       <CheckCircle2 className="h-3 w-3" />
                       Verified
                     </span>
@@ -504,8 +509,8 @@ export default function ClinicOverviewPage() {
                 </div>
 
                 {fullAddress && (
-                  <p className="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-gray-500">
-                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-primary)]" />
+                  <p className="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-gray-500 dark:text-ink-500">
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-primary-text)]" />
                     <span>{fullAddress}</span>
                   </p>
                 )}
@@ -518,7 +523,7 @@ export default function ClinicOverviewPage() {
               <button
                 type="button"
                 onClick={startEditing}
-                className="inline-flex items-center justify-center gap-1.5 self-start rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-4 py-2 text-xs font-bold text-[var(--color-primary)] transition-all duration-200 hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10"
+                className="inline-flex items-center justify-center gap-1.5 self-start rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-4 py-2 text-xs font-bold text-[var(--color-primary-text)] transition-all duration-200 hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 dark:bg-soft-100"
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit Profile
@@ -533,13 +538,13 @@ export default function ClinicOverviewPage() {
           {editing && (
             <form
               onSubmit={handleSave}
-              className="mt-6 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:p-5"
+              className="mt-6 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:p-5 dark:border-soft-300 dark:bg-soft-50/70"
             >
               <div className="mb-4">
-                <p className="text-sm font-bold text-gray-800">
+                <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                   Edit clinic information
                 </p>
-                <p className="mt-0.5 text-xs text-gray-500">
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
                   Update the details patients see about your clinic.
                 </p>
               </div>
@@ -553,8 +558,8 @@ export default function ClinicOverviewPage() {
                       handleFormChange("clinicName", e.target.value)
                     }
                     className={`w-full rounded-xl border ${
-                      errors.clinicName ? "border-red-300" : "border-gray-200"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15`}
+                      errors.clinicName ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
+                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
                     placeholder="Enter clinic name"
                   />
                 </Field>
@@ -564,8 +569,8 @@ export default function ClinicOverviewPage() {
                     value={form.city}
                     onChange={(e) => handleFormChange("city", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.city ? "border-red-300" : "border-gray-200"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15`}
+                      errors.city ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
+                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
                     placeholder="Enter city"
                   />
                 </Field>
@@ -575,8 +580,8 @@ export default function ClinicOverviewPage() {
                     value={form.address}
                     onChange={(e) => handleFormChange("address", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.address ? "border-red-300" : "border-gray-200"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15`}
+                      errors.address ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
+                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
                     placeholder="Street, area, locality"
                   />
                 </Field>
@@ -586,8 +591,8 @@ export default function ClinicOverviewPage() {
                     value={form.state}
                     onChange={(e) => handleFormChange("state", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.state ? "border-red-300" : "border-gray-200"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15`}
+                      errors.state ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
+                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
                     placeholder="Enter state"
                   />
                 </Field>
@@ -597,8 +602,8 @@ export default function ClinicOverviewPage() {
                     value={form.pincode}
                     onChange={(e) => handleFormChange("pincode", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.pincode ? "border-red-300" : "border-gray-200"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15`}
+                      errors.pincode ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
+                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
                     placeholder="Enter pincode"
                   />
                 </Field>
@@ -623,7 +628,7 @@ export default function ClinicOverviewPage() {
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50"
+                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
                 >
                   Cancel
                 </button>
@@ -644,7 +649,7 @@ export default function ClinicOverviewPage() {
                       toast.success("Reset to original values");
                     }
                   }}
-                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50"
+                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
                 >
                   <RefreshCw className="h-4 w-4 inline mr-1" />
                   Reset
@@ -656,7 +661,7 @@ export default function ClinicOverviewPage() {
           {/* Saved Message */}
 
           {saved && (
-            <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 px-3.5 py-3 text-xs font-semibold text-green-700">
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 px-3.5 py-3 text-xs font-semibold text-green-700 dark:border-green-500/25 dark:bg-green-500/10 dark:text-green-400">
               <CheckCircle2 className="h-4 w-4" />
               Profile updated successfully.
             </div>
@@ -666,15 +671,15 @@ export default function ClinicOverviewPage() {
               ONLINE CONSULTATION
           ================================================== */}
 
-          <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-soft-50/70">
             <div className="flex items-center gap-3">
               <div
                 className={`
                   flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors
                   ${
                     clinic.onlineConsultationEnabled
-                      ? "bg-green-100"
-                      : "bg-gray-100"
+                      ? "bg-green-100 dark:bg-green-500/15"
+                      : "bg-gray-100 dark:bg-soft-100"
                   }
                 `}
               >
@@ -683,7 +688,7 @@ export default function ClinicOverviewPage() {
                     h-5 w-5
                     ${
                       clinic.onlineConsultationEnabled
-                        ? "text-green-600"
+                        ? "text-green-600 dark:text-green-400"
                         : "text-gray-400"
                     }
                   `}
@@ -692,7 +697,7 @@ export default function ClinicOverviewPage() {
 
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-gray-800">
+                  <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
                     Online Consultation
                   </p>
 
@@ -701,8 +706,8 @@ export default function ClinicOverviewPage() {
                       rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide
                       ${
                         clinic.onlineConsultationEnabled
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-200 text-gray-500"
+                          ? "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400"
+                          : "bg-gray-200 text-gray-500 dark:bg-soft-200 dark:text-ink-500"
                       }
                     `}
                   >
@@ -710,7 +715,7 @@ export default function ClinicOverviewPage() {
                   </span>
                 </div>
 
-                <p className="mt-0.5 text-xs text-gray-500">
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
                   Allow patients to book online with your doctors.
                 </p>
               </div>
@@ -729,7 +734,7 @@ export default function ClinicOverviewPage() {
                 ${
                   clinic.onlineConsultationEnabled
                     ? "bg-[var(--color-secondary)]"
-                    : "bg-gray-300"
+                    : "bg-gray-300 dark:bg-soft-300"
                 }
               `}
             >
@@ -751,14 +756,14 @@ export default function ClinicOverviewPage() {
           ================================================== */}
 
           {confirmToggle && (
-            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
+            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-500/25 dark:bg-red-500/10">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
+                <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5 dark:text-red-400" />
                 <div>
-                  <p className="text-sm font-bold text-red-800">
+                  <p className="text-sm font-bold text-red-800 dark:text-red-300">
                     Disable Online Consultation?
                   </p>
-                  <p className="mt-1 text-xs text-red-700">
+                  <p className="mt-1 text-xs text-red-700 dark:text-red-300/90">
                     This will prevent patients from booking online appointments
                     with your doctors. Existing appointments will not be
                     affected.
@@ -778,7 +783,7 @@ export default function ClinicOverviewPage() {
                     <button
                       type="button"
                       onClick={() => setConfirmToggle(false)}
-                      className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+                      className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
                     >
                       Cancel
                     </button>
@@ -807,16 +812,16 @@ const StatCard = ({
   icon: React.ElementType;
 }) => {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)]">
-        <Icon className="h-5 w-5 text-[var(--color-primary)]" />
+    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] dark:border-soft-300 dark:bg-surface">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
+        <Icon className="h-5 w-5 text-[var(--color-primary-text)]" />
       </div>
 
-      <p className="mt-4 text-2xl font-bold tracking-tight text-[var(--color-primary-dark)]">
+      <p className="mt-4 text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)]">
         {value}
       </p>
 
-      <p className="mt-0.5 text-xs font-semibold text-gray-500">{label}</p>
+      <p className="mt-0.5 text-xs font-semibold text-gray-500 dark:text-ink-500">{label}</p>
     </div>
   );
 };
@@ -838,11 +843,11 @@ const Field = ({
 }) => {
   return (
     <label className={`block ${full ? "sm:col-span-2" : ""}`}>
-      <span className="mb-1.5 block text-xs font-bold text-gray-600">
+      <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
         {label}
       </span>
       {children}
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </label>
   );
 };

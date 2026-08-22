@@ -41,58 +41,58 @@ export default function RegisterPage() {
     <main className="flex min-h-[calc(100vh-64px)] flex-col items-center gap-6 bg-[var(--color-bg-soft)] px-4 py-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-lg shadow-blue-900/5"
+        className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-8 shadow-lg shadow-blue-900/5 dark:border-soft-300 dark:bg-surface dark:shadow-black/30"
       >
-        <h1 className="text-center text-2xl font-bold text-[var(--color-primary-dark)]">
+        <h1 className="text-center text-2xl font-bold text-[var(--color-primary-dark-text)]">
           {t("registerHeading")}
         </h1>
-        <p className="mt-1 text-center text-sm text-gray-500">{t("registerSubtitle")}</p>
+        <p className="mt-1 text-center text-sm text-gray-500 dark:text-ink-500">{t("registerSubtitle")}</p>
 
         <div className="mt-6">
-          <label className="mb-1 block text-sm font-medium text-gray-700">{t("nameLabel")}</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("nameLabel")}</label>
           <input
             {...register("name")}
             placeholder={t("namePlaceholder")}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
           />
-          {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name.message}</p>}
+          {errors.name && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.name.message}</p>}
         </div>
 
         <div className="mt-4">
-          <label className="mb-1 block text-sm font-medium text-gray-700">{t("emailLabel")}</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("emailLabel")}</label>
           <input
             {...register("email")}
             type="email"
             placeholder={t("emailPlaceholder")}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
           />
-          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>}
+          {errors.email && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.email.message}</p>}
         </div>
 
         <div className="mt-4">
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            {t("phoneLabel")} <span className="text-gray-400">{t("phoneOptional")}</span>
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">
+            {t("phoneLabel")} <span className="text-gray-400 dark:text-ink-400">{t("phoneOptional")}</span>
           </label>
           <input
             {...register("phone")}
             placeholder={t("phonePlaceholder")}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
           />
         </div>
 
         <div className="mt-4">
-          <label className="mb-1 block text-sm font-medium text-gray-700">{t("passwordLabel")}</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-ink-700">{t("passwordLabel")}</label>
           <input
             {...register("password")}
             type="password"
             placeholder={t("passwordPlaceholder")}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400"
           />
-          {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>}
+          {errors.password && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.password.message}</p>}
         </div>
 
-        {serverError && <p className="mt-3 text-sm text-red-600">{serverError}</p>}
-        {success && <p className="mt-3 text-sm text-green-600">{t("registerSuccess")}</p>}
+        {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{serverError}</p>}
+        {success && <p className="mt-3 text-sm text-green-600 dark:text-green-400">{t("registerSuccess")}</p>}
 
         <button
           type="submit"
@@ -102,21 +102,21 @@ export default function RegisterPage() {
           {isSubmitting ? t("submitRegisterLoading") : t("submitRegister")}
         </button>
 
-        <p className="mt-4 text-center text-sm text-gray-500">
+        <p className="mt-4 text-center text-sm text-gray-500 dark:text-ink-500">
           {t("haveAccount")}{" "}
-          <Link href="/login" className="font-semibold text-[var(--color-primary)]">
+          <Link href="/login" className="font-semibold text-[var(--color-primary-text)]">
             {t("loginLink")}
           </Link>
         </p>
       </form>
 
-      <div className="w-full max-w-md rounded-2xl border border-dashed border-[var(--color-primary)]/40 bg-white p-6 text-center">
-        <h2 className="font-semibold text-[var(--color-primary-dark)]">{t("clinicHeading")}</h2>
-        <p className="mt-1 text-sm text-gray-500">{t("clinicSubtitle")}</p>
+      <div className="w-full max-w-md rounded-2xl border border-dashed border-[var(--color-primary)]/40 bg-white p-6 text-center dark:border-soft-300 dark:bg-surface">
+        <h2 className="font-semibold text-[var(--color-primary-dark-text)]">{t("clinicHeading")}</h2>
+        <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">{t("clinicSubtitle")}</p>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
           <a
             href={"tel:" + CLINIC_PHONE}
-            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-primary)] hover:text-[var(--color-primary-text)] dark:border-soft-300 dark:text-ink-700"
           >
             <Phone className="h-4 w-4" /> {t("clinicCall")}
           </a>
@@ -124,13 +124,13 @@ export default function RegisterPage() {
             href={"https://wa.me/" + CLINIC_WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-secondary)] hover:text-[var(--color-secondary)]"
+            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-secondary)] hover:text-[var(--color-secondary)] dark:border-soft-300 dark:text-ink-700"
           >
             <MessageCircle className="h-4 w-4" /> {t("clinicWhatsapp")}
           </a>
           <a
             href={"mailto:" + CLINIC_EMAIL}
-            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:border-[var(--color-primary)] hover:text-[var(--color-primary-text)] dark:border-soft-300 dark:text-ink-700"
           >
             <Mail className="h-4 w-4" /> {t("clinicEmail")}
           </a>
