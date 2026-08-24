@@ -161,7 +161,7 @@ export default function Header() {
                   {/* Profile — patients only */}
                   {!isClinic && !isDoctor && !isDiagnosticCenter && !isDiagnosticStaff && !isAdmin && (
                     <Link
-                      href="/dashboard/profile"
+                      href="/patient/profile"
                       onClick={() => setShowUserMenu(false)}
                       className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-ink-700 dark:hover:bg-soft-50"
                     >

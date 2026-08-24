@@ -6,8 +6,8 @@ import { LayoutDashboard, User } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/patient", label: "Overview", icon: LayoutDashboard, exact: true },
+  { href: "/patient/profile", label: "Profile", icon: User },
 ];
 
 export default function PatientDashboardLayout({ children }: { children: React.ReactNode }) {
