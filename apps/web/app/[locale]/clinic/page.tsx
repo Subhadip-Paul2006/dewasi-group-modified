@@ -16,6 +16,13 @@ import {
   Save,
   RefreshCw,
   History,
+  Sparkles,
+  Shield,
+  ArrowRight,
+  Building2,
+  TrendingUp,
+  Award,
+  Activity,
 } from "lucide-react";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -31,6 +38,28 @@ import {
   useClinicDoctors,
   useClinicReceptionists,
 } from "@/lib/hooks/useClinic";
+
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#1e3a8a] via-[#3b82f6] to-[#8b5cf6]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3.0px] bg-gradient-to-r ${gradient} shadow-lg ${className}`}>
+      <div className="rounded-[calc(1rem-1px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 // ============================================================
 // VALIDATION SCHEMA
@@ -86,20 +115,17 @@ export default function ClinicOverviewPage() {
   // EFFECTS
   // ============================================================
 
-  // Update last synced time when clinic data changes
   useEffect(() => {
     if (clinic) {
       setLastSynced(new Date());
     }
   }, [clinic]);
 
-  // Warn user about unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges) {
         e.preventDefault();
-        e.returnValue =
-          "You have unsaved changes. Are you sure you want to leave?";
+        e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -129,18 +155,15 @@ export default function ClinicOverviewPage() {
     setEditing(true);
   }, [clinic]);
 
-  // ✅ সংশোধিত handleSave ফাংশন (Optimistic Update এবং Cache-এর সমস্যা সমাধান করা হয়েছে)
   const handleSave = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      // Validate form
       const result = clinicFormSchema.safeParse(form);
       if (!result.success) {
         const formattedErrors: Partial<Record<keyof ClinicFormData, string>> = {};
         
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        result.error.issues.forEach((err: any) => {
+        result.error.issues.forEach((err) => {
           const path = err.path[0] as keyof ClinicFormData;
           formattedErrors[path] = err.message;
         });
@@ -151,17 +174,14 @@ export default function ClinicOverviewPage() {
       }
 
       const queryKey = ["clinic", "profile"];
-      // Optimistic update - সেভ করার জন্য আগের ডাটা রেখে দেওয়া হলো
       const previousClinic = queryClient.getQueryData(queryKey);
 
       try {
-        // UI আগে আপডেট করে দেওয়া হলো
         queryClient.setQueryData(queryKey, (old: any) => ({
           ...old,
           ...form,
         }));
 
-        // API Call করা হলো
         await updateProfile.mutateAsync(form);
 
         setEditing(false);
@@ -175,7 +195,6 @@ export default function ClinicOverviewPage() {
           setSaved(false);
         }, 3000);
       } catch (error) {
-        // Rollback on error - কোনো কারণে এরর আসলে আগের ডাটায় ফিরে যাওয়া
         queryClient.setQueryData(queryKey, previousClinic);
         toast.error("Failed to update profile. Please try again.");
         logActivity("Failed to update clinic profile");
@@ -189,19 +208,16 @@ export default function ClinicOverviewPage() {
       const file = e.target.files?.[0];
       if (!file) return;
 
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File size must be less than 5MB");
         return;
       }
 
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         toast.error("Please upload an image file");
         return;
       }
 
-      // Show preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setLogoPreview(e.target?.result as string);
@@ -258,7 +274,6 @@ export default function ClinicOverviewPage() {
     (field: keyof ClinicFormData, value: string) => {
       setForm((prev) => ({ ...prev, [field]: value }));
       setHasUnsavedChanges(true);
-      // Clear error for this field as user types
       if (errors[field]) {
         setErrors((prev) => ({ ...prev, [field]: undefined }));
       }
@@ -280,6 +295,8 @@ export default function ClinicOverviewPage() {
     return logoPreview || clinic?.logo || null;
   }, [logoPreview, clinic?.logo]);
 
+  const totalStaff = (doctors?.length ?? 0) + (receptionists?.length ?? 0);
+
   // ============================================================
   // LOADING STATE
   // ============================================================
@@ -287,24 +304,21 @@ export default function ClinicOverviewPage() {
   if (isLoading || !clinic) {
     return (
       <div className="space-y-6 animate-pulse">
-        {/* Header skeleton */}
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="h-4 w-32 bg-gray-200 rounded mb-2 dark:bg-soft-100" />
-            <div className="h-8 w-48 bg-gray-200 rounded dark:bg-soft-100" />
-            <div className="h-4 w-64 bg-gray-200 rounded mt-2 dark:bg-soft-100" />
+            <div className="h-4 w-32 bg-gray-200 rounded mb-2" />
+            <div className="h-8 w-48 bg-gray-200 rounded" />
+            <div className="h-4 w-64 bg-gray-200 rounded mt-2" />
           </div>
         </div>
 
-        {/* Stats skeleton */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-gray-200 rounded-2xl dark:bg-soft-100" />
+            <div key={i} className="h-32 bg-gray-200 rounded-2xl" />
           ))}
         </div>
 
-        {/* Main card skeleton */}
-        <div className="h-96 bg-gray-200 rounded-3xl dark:bg-soft-100" />
+        <div className="h-96 bg-gray-200 rounded-3xl" />
       </div>
     );
   }
@@ -316,137 +330,187 @@ export default function ClinicOverviewPage() {
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Gradient Border
       ====================================================== */}
 
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-primary-text)]">
-            {tNav("overview")}
-          </p>
-
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
-            {t("heading")}
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
-            {t("subtitle")}
-          </p>
-
-          {lastSynced && (
-            <p className="mt-1 text-[10px] text-gray-400 dark:text-ink-400">
-              {t("lastSynced")}: {lastSynced.toLocaleTimeString()}
-            </p>
-          )}
-        </div>
-
-        {/* Activity Log Button */}
-        <button
-          type="button"
-          onClick={() => {
-            toast.custom((tToast) => (
-              <div className="bg-white rounded-lg shadow-lg p-4 max-w-md dark:bg-surface">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-bold text-gray-800 dark:text-ink-800">{t("activityHistory")}</h3>
-                  <button onClick={() => toast.dismiss(tToast.id)}>
-                    <X className="h-4 w-4 text-gray-500 dark:text-ink-500" />
-                  </button>
-                </div>
-                <div className="max-h-60 overflow-y-auto text-xs space-y-1">
-                  {activityLog.length === 0 ? (
-                    <p className="text-gray-400 dark:text-ink-400">No recent activity</p>
-                  ) : (
-                    activityLog.map((log, i) => (
-                      <p key={i} className="text-gray-600 dark:text-ink-600">
-                        {log}
-                      </p>
-                    ))
-                  )}
-                </div>
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#8b5cf6]">
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-[#1e3a8a]/30">
+                <Building2 className="h-4 w-4" />
               </div>
-            ));
-          }}
-          className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-soft-300 dark:bg-surface dark:text-ink-600 dark:hover:bg-soft-50"
-        >
-          <History className="h-3.5 w-3.5" />
-          {t("activityHistory")}
-        </button>
-      </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1e40af]">
+                {tNav("overview")}
+              </p>
+              {clinic.isApproved && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#1e40af]/10 px-2 py-1 text-[9px] font-bold text-[#1e40af]">
+                  <Shield className="h-3 w-3" />
+                  Verified
+                </span>
+              )}
+            </div>
+
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              {t("heading")}
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500">
+              {t("subtitle")}
+            </p>
+
+            {lastSynced && (
+              <p className="mt-2 flex items-center gap-1.5 text-[10px] text-slate-400">
+                <Clock3 className="h-3 w-3" />
+                {t("lastSynced")}: {lastSynced.toLocaleTimeString()}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Activity Log Button */}
+            <button
+              type="button"
+              onClick={() => {
+                toast.custom((tToast) => (
+                  <div className="bg-white rounded-2xl shadow-2xl p-5 max-w-md border border-slate-200">
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="flex items-center gap-2">
+                        <History className="h-4 w-4 text-[#1e40af]" />
+                        <h3 className="font-bold text-slate-800">{t("activityHistory")}</h3>
+                      </div>
+                      <button onClick={() => toast.dismiss(tToast.id)} className="text-slate-400 hover:text-slate-600">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="max-h-60 overflow-y-auto text-xs space-y-2">
+                      {activityLog.length === 0 ? (
+                        <p className="text-slate-400">No recent activity</p>
+                      ) : (
+                        activityLog.map((log, i) => (
+                          <div key={i} className="flex items-start gap-2">
+                            <div className="mt-1 h-1.5 w-1.5 rounded-full bg-[#1e40af] shrink-0" />
+                            <p className="text-slate-600">{log}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                ));
+              }}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-600 transition-all hover:border-[#1e40af]/30 hover:text-[#1e40af] hover:shadow-md"
+            >
+              <History className="h-4 w-4" />
+              History
+            </button>
+          </div>
+        </div>
+      </GradientCard>
 
       {/* =====================================================
-          APPROVAL WARNING
+          APPROVAL WARNING - Gradient Border
       ====================================================== */}
 
       {!clinic.isApproved && (
-        <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-amber-800 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-300">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-500/15">
-            <Clock3 className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-          </div>
+        <GradientCard gradient="from-[#f59e0b] via-[#f97316] to-[#ef4444]">
+          <div className="flex items-start gap-4 p-5">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f59e0b] to-[#f97316] text-white shadow-lg shadow-[#f59e0b]/30">
+              <Clock3 className="h-5 w-5" />
+            </div>
 
-          <div>
-            <p className="text-sm font-bold">{tStatus("PENDING")}</p>
-            <p className="mt-0.5 text-xs leading-5 text-amber-700 dark:text-amber-300/90">
-              Your clinic is not yet approved by admin. It won't be visible in
-              doctor search until it is approved.
-            </p>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-bold text-slate-800">
+                  {tStatus("PENDING")}
+                </p>
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#f59e0b]/10 px-2 py-0.5 text-[9px] font-bold text-[#f59e0b]">
+                  <Sparkles className="h-3 w-3" />
+                  Under Review
+                </span>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-slate-600">
+                Your clinic is not yet approved by admin. It won't be visible in
+                doctor search until it is approved.
+              </p>
+            </div>
+
+            <button className="inline-flex items-center gap-1 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#f97316] px-3 py-2 text-xs font-bold text-white transition-all hover:shadow-lg">
+              Contact Admin
+              <ArrowRight className="h-3 w-3" />
+            </button>
           </div>
-        </div>
+        </GradientCard>
       )}
 
       {/* =====================================================
-          STATS
+          STATS - Each with different gradient
       ====================================================== */}
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-        <StatCard
-          icon={UserRound}
-          label={tNav("doctors")}
-          value={doctors?.length ?? 0}
-        />
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {/* Doctors - Blue Gradient */}
+        <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+          <StatCard
+            icon={UserRound}
+            label={tNav("doctors")}
+            value={doctors?.length ?? 0}
+            trend="+2 this month"
+          />
+        </GradientCard>
 
-        <StatCard
-          icon={Users}
-          label={tNav("receptionists")}
-          value={receptionists?.length ?? 0}
-        />
+        {/* Receptionists - Indigo Gradient */}
+        <GradientCard gradient="from-[#4f46e5] via-[#6366f1] to-[#818cf8]">
+          <StatCard
+            icon={Users}
+            label={tNav("receptionists")}
+            value={receptionists?.length ?? 0}
+            trend="+1 this month"
+          />
+        </GradientCard>
 
-        <div className="col-span-2 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] lg:col-span-1 dark:border-soft-300 dark:bg-surface">
-          <div className="flex items-center justify-between">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <CheckCircle2 className="h-5 w-5 text-[var(--color-primary-text)]" />
+        {/* Total Staff - Purple Gradient */}
+        <GradientCard gradient="from-[#7c3aed] via-[#8b5cf6] to-[#a78bfa]">
+          <StatCard
+            icon={Activity}
+            label="Total Staff"
+            value={totalStaff}
+            trend="Team growing"
+          />
+        </GradientCard>
+
+        {/* Verified Status - Emerald Gradient */}
+        <GradientCard gradient="from-[#059669] via-[#10b981] to-[#34d399]">
+          <div className="h-full p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#059669] to-[#10b981] text-white shadow-lg shadow-[#059669]/30">
+                <Award className="h-5 w-5" />
+              </div>
+
+              <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${
+                clinic.isApproved 
+                  ? "bg-[#059669]/10 text-[#059669]"
+                  : "bg-[#f59e0b]/10 text-[#f59e0b]"
+              }`}>
+                {clinic.isApproved ? "Verified" : "Review"}
+              </span>
             </div>
 
-            <span
-              className={`
-                rounded-full px-2.5 py-1 text-[10px] font-bold
-                ${
-                  clinic.isApproved
-                    ? "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400"
-                    : "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
-                }
-              `}
-            >
-              {tStatus(clinic.isApproved ? "APPROVED" : "PENDING")}
-            </span>
+            <p className="mt-4 text-lg font-bold text-slate-900">
+              {clinic.isApproved ? "Active" : "Pending"}
+            </p>
+            <p className="mt-0.5 text-xs font-medium text-slate-500">
+              {clinic.isApproved
+                ? "Your clinic is visible"
+                : "Waiting for approval"}
+            </p>
           </div>
-
-          <p className="mt-4 text-lg font-bold text-gray-800 dark:text-ink-800">{t("verifiedBadge")}</p>
-          <p className="mt-0.5 text-xs font-medium text-gray-500 dark:text-ink-500">
-            {clinic.isApproved
-              ? "Your clinic is visible on the platform."
-              : "Waiting for admin approval."}
-          </p>
-        </div>
+        </GradientCard>
       </div>
 
       {/* =====================================================
-          CLINIC PROFILE
+          CLINIC PROFILE - Gradient Border
       ====================================================== */}
 
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
-        {/* Top accent */}
-        <div className="h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-primary)]" />
-
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#8b5cf6]">
         <div className="p-5 sm:p-6">
           {/* =================================================
               PROFILE HEADER
@@ -455,23 +519,21 @@ export default function ClinicOverviewPage() {
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex min-w-0 items-center gap-4">
               {/* Logo */}
-
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadLogo.isPending}
-                className="group relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-[var(--color-bg-soft)] shadow-sm transition-all duration-200 hover:border-[var(--color-primary)]/20 hover:shadow-md disabled:cursor-not-allowed dark:border-soft-300 dark:bg-soft-100"
+                className="group relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-[#1e40af]/20 bg-[var(--color-bg-soft)] shadow-sm transition-all duration-200 hover:border-[#1e40af]/40 hover:shadow-md disabled:cursor-not-allowed"
                 aria-label="Change clinic logo"
               >
                 {logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={logoUrl}
                     alt="Clinic logo"
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <ImageIcon className="h-7 w-7 text-[var(--color-primary-text)]" />
+                  <Building2 className="h-7 w-7 text-[#1e40af]" />
                 )}
 
                 {/* Upload overlay */}
@@ -493,15 +555,14 @@ export default function ClinicOverviewPage() {
               />
 
               {/* Clinic Info */}
-
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="truncate text-lg font-bold text-[var(--color-primary-dark-text)] sm:text-xl">
+                  <h2 className="truncate text-lg font-bold text-slate-900 sm:text-xl">
                     {clinic.clinicName}
                   </h2>
 
                   {clinic.isApproved && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/15 dark:text-green-400">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1e40af]/10 px-2 py-1 text-[10px] font-bold text-[#1e40af]">
                       <CheckCircle2 className="h-3 w-3" />
                       Verified
                     </span>
@@ -509,8 +570,8 @@ export default function ClinicOverviewPage() {
                 </div>
 
                 {fullAddress && (
-                  <p className="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-gray-500 dark:text-ink-500">
-                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--color-primary-text)]" />
+                  <p className="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-slate-500">
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1e40af]" />
                     <span>{fullAddress}</span>
                   </p>
                 )}
@@ -518,12 +579,11 @@ export default function ClinicOverviewPage() {
             </div>
 
             {/* Edit */}
-
             {!editing && (
               <button
                 type="button"
                 onClick={startEditing}
-                className="inline-flex items-center justify-center gap-1.5 self-start rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-4 py-2 text-xs font-bold text-[var(--color-primary-text)] transition-all duration-200 hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-primary)]/10 dark:bg-soft-100"
+                className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#1e3a8a]/30 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit Profile
@@ -538,13 +598,18 @@ export default function ClinicOverviewPage() {
           {editing && (
             <form
               onSubmit={handleSave}
-              className="mt-6 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:p-5 dark:border-soft-300 dark:bg-soft-50/70"
+              className="mt-6 rounded-3xl border border-[#1e40af]/10 bg-gradient-to-b from-[#1e40af]/5 to-white p-5"
             >
               <div className="mb-4">
-                <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
-                  Edit clinic information
-                </p>
-                <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1e40af]/10 text-[#1e40af]">
+                    <Pencil className="h-4 w-4" />
+                  </div>
+                  <p className="text-sm font-bold text-slate-800">
+                    Edit clinic information
+                  </p>
+                </div>
+                <p className="mt-1 ml-10 text-xs text-slate-500">
                   Update the details patients see about your clinic.
                 </p>
               </div>
@@ -558,8 +623,8 @@ export default function ClinicOverviewPage() {
                       handleFormChange("clinicName", e.target.value)
                     }
                     className={`w-full rounded-xl border ${
-                      errors.clinicName ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
+                      errors.clinicName ? "border-red-300" : "border-slate-200"
+                    } bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all placeholder:text-slate-400 hover:border-[#1e40af]/30 focus:border-[#1e40af] focus:ring-[3px] focus:ring-[#1e40af]/15`}
                     placeholder="Enter clinic name"
                   />
                 </Field>
@@ -569,8 +634,8 @@ export default function ClinicOverviewPage() {
                     value={form.city}
                     onChange={(e) => handleFormChange("city", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.city ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
+                      errors.city ? "border-red-300" : "border-slate-200"
+                    } bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all placeholder:text-slate-400 hover:border-[#1e40af]/30 focus:border-[#1e40af] focus:ring-[3px] focus:ring-[#1e40af]/15`}
                     placeholder="Enter city"
                   />
                 </Field>
@@ -580,8 +645,8 @@ export default function ClinicOverviewPage() {
                     value={form.address}
                     onChange={(e) => handleFormChange("address", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.address ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
+                      errors.address ? "border-red-300" : "border-slate-200"
+                    } bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all placeholder:text-slate-400 hover:border-[#1e40af]/30 focus:border-[#1e40af] focus:ring-[3px] focus:ring-[#1e40af]/15`}
                     placeholder="Street, area, locality"
                   />
                 </Field>
@@ -591,8 +656,8 @@ export default function ClinicOverviewPage() {
                     value={form.state}
                     onChange={(e) => handleFormChange("state", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.state ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
+                      errors.state ? "border-red-300" : "border-slate-200"
+                    } bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all placeholder:text-slate-400 hover:border-[#1e40af]/30 focus:border-[#1e40af] focus:ring-[3px] focus:ring-[#1e40af]/15`}
                     placeholder="Enter state"
                   />
                 </Field>
@@ -602,20 +667,19 @@ export default function ClinicOverviewPage() {
                     value={form.pincode}
                     onChange={(e) => handleFormChange("pincode", e.target.value)}
                     className={`w-full rounded-xl border ${
-                      errors.pincode ? "border-red-300 dark:border-red-500/50" : "border-gray-200 dark:border-soft-300"
-                    } bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300`}
+                      errors.pincode ? "border-red-300" : "border-slate-200"
+                    } bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none transition-all placeholder:text-slate-400 hover:border-[#1e40af]/30 focus:border-[#1e40af] focus:ring-[3px] focus:ring-[#1e40af]/15`}
                     placeholder="Enter pincode"
                   />
                 </Field>
               </div>
 
               {/* Form actions */}
-
               <div className="mt-5 flex flex-wrap gap-2">
                 <button
                   type="submit"
                   disabled={updateProfile.isPending}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#1e3a8a]/30 transition-all hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                 >
                   {updateProfile.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -628,7 +692,7 @@ export default function ClinicOverviewPage() {
                 <button
                   type="button"
                   onClick={handleCancelEdit}
-                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                  className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50"
                 >
                   Cancel
                 </button>
@@ -649,7 +713,7 @@ export default function ClinicOverviewPage() {
                       toast.success("Reset to original values");
                     }
                   }}
-                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                  className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50"
                 >
                   <RefreshCw className="h-4 w-4 inline mr-1" />
                   Reset
@@ -659,121 +723,90 @@ export default function ClinicOverviewPage() {
           )}
 
           {/* Saved Message */}
-
           {saved && (
-            <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 px-3.5 py-3 text-xs font-semibold text-green-700 dark:border-green-500/25 dark:bg-green-500/10 dark:text-green-400">
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#059669]/20 bg-[#059669]/10 px-4 py-3 text-xs font-semibold text-[#059669]">
               <CheckCircle2 className="h-4 w-4" />
               Profile updated successfully.
             </div>
           )}
 
           {/* =================================================
-              ONLINE CONSULTATION
+              ONLINE CONSULTATION - Gradient Border
           ================================================== */}
 
-          <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-soft-50/70">
-            <div className="flex items-center gap-3">
-              <div
-                className={`
-                  flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors
-                  ${
-                    clinic.onlineConsultationEnabled
-                      ? "bg-green-100 dark:bg-green-500/15"
-                      : "bg-gray-100 dark:bg-soft-100"
-                  }
-                `}
-              >
-                <Wifi
-                  className={`
-                    h-5 w-5
-                    ${
-                      clinic.onlineConsultationEnabled
-                        ? "text-green-600 dark:text-green-400"
-                        : "text-gray-400"
-                    }
-                  `}
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
-                    Online Consultation
-                  </p>
-
-                  <span
-                    className={`
-                      rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide
-                      ${
-                        clinic.onlineConsultationEnabled
-                          ? "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400"
-                          : "bg-gray-200 text-gray-500 dark:bg-soft-200 dark:text-ink-500"
-                      }
-                    `}
-                  >
-                    {clinic.onlineConsultationEnabled ? "On" : "Off"}
-                  </span>
+          <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#8b5cf6]" className="mt-6">
+            <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-all ${
+                  clinic.onlineConsultationEnabled
+                    ? "bg-gradient-to-br from-[#059669] to-[#10b981] text-white shadow-lg shadow-[#059669]/30"
+                    : "bg-slate-100 text-slate-400"
+                }`}>
+                  <Wifi className="h-5 w-5" />
                 </div>
 
-                <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
-                  Allow patients to book online with your doctors.
-                </p>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-bold text-slate-800">
+                      Online Consultation
+                    </p>
+                    <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide ${
+                      clinic.onlineConsultationEnabled
+                        ? "bg-[#059669]/10 text-[#059669]"
+                        : "bg-slate-200 text-slate-500"
+                    }`}>
+                      {clinic.onlineConsultationEnabled ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Allow patients to book online with your doctors.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Toggle */}
-
-            <button
-              type="button"
-              role="switch"
-              aria-checked={clinic.onlineConsultationEnabled}
-              onClick={handleToggleOnline}
-              disabled={toggleOnline.isPending}
-              className={`
-                relative h-7 w-12 shrink-0 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60
-                ${
+              <button
+                type="button"
+                role="switch"
+                aria-checked={clinic.onlineConsultationEnabled}
+                onClick={handleToggleOnline}
+                disabled={toggleOnline.isPending}
+                className={`relative h-8 w-14 shrink-0 rounded-full p-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#1e40af]/20 disabled:cursor-not-allowed disabled:opacity-60 ${
                   clinic.onlineConsultationEnabled
-                    ? "bg-[var(--color-secondary)]"
-                    : "bg-gray-300 dark:bg-soft-300"
-                }
-              `}
-            >
-              <span
-                className={`
-                  block h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200
-                  ${
-                    clinic.onlineConsultationEnabled
-                      ? "translate-x-5"
-                      : "translate-x-0"
-                  }
-                `}
-              />
-            </button>
-          </div>
+                    ? "bg-gradient-to-r from-[#059669] to-[#10b981] shadow-lg shadow-[#059669]/30"
+                    : "bg-slate-300"
+                }`}
+              >
+                <span className={`block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ${
+                  clinic.onlineConsultationEnabled ? "translate-x-6" : "translate-x-0"
+                }`} />
+              </button>
+            </div>
+          </GradientCard>
 
           {/* =================================================
               ONLINE CONSULTATION CONFIRMATION DIALOG
           ================================================== */}
 
           {confirmToggle && (
-            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-500/25 dark:bg-red-500/10">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5 dark:text-red-400" />
-                <div>
-                  <p className="text-sm font-bold text-red-800 dark:text-red-300">
+            <div className="mt-4 rounded-2xl border border-[#ef4444]/20 bg-gradient-to-r from-[#ef4444]/5 to-white p-5">
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ef4444]/10 text-[#ef4444]">
+                  <AlertTriangle className="h-5 w-5" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-slate-800">
                     Disable Online Consultation?
                   </p>
-                  <p className="mt-1 text-xs text-red-700 dark:text-red-300/90">
+                  <p className="mt-1 text-xs text-slate-600">
                     This will prevent patients from booking online appointments
-                    with your doctors. Existing appointments will not be
-                    affected.
+                    with your doctors. Existing appointments will not be affected.
                   </p>
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-4 flex gap-3">
                     <button
                       type="button"
                       onClick={confirmToggleOnline}
                       disabled={toggleOnline.isPending}
-                      className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-60"
+                      className="inline-flex items-center gap-1 rounded-xl bg-[#ef4444] px-4 py-2 text-xs font-bold text-white hover:bg-[#dc2626] disabled:opacity-60"
                     >
                       {toggleOnline.isPending && (
                         <Loader2 className="h-3 w-3 animate-spin" />
@@ -783,7 +816,7 @@ export default function ClinicOverviewPage() {
                     <button
                       type="button"
                       onClick={() => setConfirmToggle(false)}
-                      className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                      className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
                     >
                       Cancel
                     </button>
@@ -793,7 +826,7 @@ export default function ClinicOverviewPage() {
             </div>
           )}
         </div>
-      </div>
+      </GradientCard>
     </div>
   );
 }
@@ -806,22 +839,31 @@ const StatCard = ({
   label,
   value,
   icon: Icon,
+  trend,
 }: {
   label: string;
   value: string | number;
   icon: React.ElementType;
+  trend?: string;
 }) => {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] dark:border-soft-300 dark:bg-surface">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-        <Icon className="h-5 w-5 text-[var(--color-primary-text)]" />
+    <div className="h-full p-5">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1e40af] to-[#3b82f6] text-white shadow-lg shadow-[#1e40af]/30">
+        <Icon className="h-5 w-5" />
       </div>
 
-      <p className="mt-4 text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)]">
+      <p className="mt-4 text-2xl font-bold tracking-tight text-slate-900">
         {value}
       </p>
 
-      <p className="mt-0.5 text-xs font-semibold text-gray-500 dark:text-ink-500">{label}</p>
+      <p className="mt-0.5 text-xs font-semibold text-slate-500">{label}</p>
+
+      {trend && (
+        <p className="mt-2 flex items-center gap-1 text-[10px] font-medium text-[#059669]">
+          <TrendingUp className="h-3 w-3" />
+          {trend}
+        </p>
+      )}
     </div>
   );
 };
@@ -843,11 +885,13 @@ const Field = ({
 }) => {
   return (
     <label className={`block ${full ? "sm:col-span-2" : ""}`}>
-      <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
+      <span className="mb-1.5 block text-xs font-bold text-slate-600">
         {label}
       </span>
       {children}
-      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </label>
   );
 };
+
+// manual and onine in  doctor 

@@ -186,7 +186,8 @@
     "schedule": "Schedule",
     "requests": "Requests",
     "referrals": "Referrals",
-    "reports": "Reports"
+    "reports": "Reports",
+    "settings": "Settings"
   },
   "ClinicDashboard": {
     "title": "Operational Dashboard",
@@ -236,6 +237,17 @@
     "upcoming": "Upcoming",
     "pending": "Pending"
   },
+  "Settings": {
+  "title": "Settings",
+  "general": "General Settings",
+  "language": "Language & Region",
+  "notifications": "Notifications",
+  "appearance": "Appearance",
+  "security": "Security",
+  "data": "Data Management",
+  "integrations": "Integrations"
+},
+
   "ClinicOverview": {
     "heading": "Clinic Overview",
     "subtitle": "Manage your clinic profile, staff, and online consultation settings.",

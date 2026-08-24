@@ -14,6 +14,9 @@ import {
   CheckCircle2,
   Loader2,
   Stethoscope,
+  Sparkles,
+  TrendingUp,
+  Award,
 } from "lucide-react";
 import {
   useClinicReceptionists,
@@ -26,9 +29,47 @@ import {
 
 const EMPTY = { name: "", email: "", password: "", phone: "" };
 
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#667eea] via-[#764ba2] to-[#f093fb]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3px] bg-gradient-to-r ${gradient} shadow-lg ${className}`}>
+      <div className="rounded-[calc(1rem-1.5px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // Replaces global <style jsx> to match the premium design language
 const inputClasses =
   "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300";
+
+// ============================================================
+// GRADIENTS FOR RECEPTIONIST CARDS
+// ============================================================
+
+const RECEPTIONIST_GRADIENTS = [
+  "from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]", // Royal Blue
+  "from-[#059669] via-[#10b981] to-[#34d399]", // Leaf Green
+  "from-[#667eea] via-[#764ba2] to-[#f093fb]", // Blue → Purple → Pink
+  "from-[#f5576c] via-[#f093fb] to-[#fda085]", // Red → Pink → Orange
+  "from-[#4facfe] via-[#00f2fe] to-[#667eea]", // Blue → Cyan → Blue
+  "from-[#a18cd1] via-[#fbc2eb] to-[#f093fb]", // Light Purple → Pink
+  "from-[#fa709a] via-[#fee140] to-[#fa709a]", // Pink → Gold → Pink
+  "from-[#30cfd0] via-[#330867] to-[#667eea]", // Cyan → Dark Blue
+  "from-[#ff9a9e] via-[#fecfef] to-[#f093fb]", // Light Red → Pink
+];
 
 export default function ClinicReceptionistsPage() {
   const tRec = useTranslations("ClinicReceptionists");
@@ -69,73 +110,76 @@ export default function ClinicReceptionistsPage() {
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Gradient Border
       ====================================================== */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="mb-2 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <Users className="h-4 w-4 text-[var(--color-primary-text)]" />
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-2 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+                <Users className="h-4 w-4" />
+              </div>
+
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#1e40af]">
+                {tNav("receptionists")}
+              </span>
+
+              {receptionists && receptionists.length > 0 && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-2 py-0.5 text-[9px] font-bold text-white">
+                  <Sparkles className="h-3 w-3" />
+                  {receptionists.length} Active
+                </span>
+              )}
             </div>
 
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
-              {tNav("receptionists")}
-            </span>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              {tRec("heading")}
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500">
+              {tRec("subtitle")}
+            </p>
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
-            {tRec("heading")}
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
-            {tRec("subtitle")}
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => {
-            if (showAdd) {
-              closeAddForm();
-            } else {
-              setShowAdd(true);
-              setError("");
+          <button
+            type="button"
+            onClick={() => {
+              if (showAdd) {
+                closeAddForm();
+              } else {
+                setShowAdd(true);
+                setError("");
+              }
+            }}
+            className={
+              showAdd
+                ? "inline-flex items-center justify-center gap-2 rounded-xl border border-[#f5576c]/30 bg-white px-4 py-2.5 text-sm font-bold text-[#f5576c] transition hover:bg-[#f5576c]/5"
+                : "inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl"
             }
-          }}
-          className={
-            showAdd
-              ? "inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface dark:text-ink-600 dark:hover:bg-soft-50"
-              : "inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          }
-        >
-          {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-          {showAdd ? tRec("cancel") : tRec("addReceptionist")}
-        </button>
-      </div>
+          >
+            {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {showAdd ? tRec("cancel") : tRec("addReceptionist")}
+          </button>
+        </div>
+      </GradientCard>
 
       {/* =====================================================
-          ADD RECEPTIONIST FORM
+          ADD RECEPTIONIST FORM - Gradient Border
       ====================================================== */}
       {showAdd && (
-        <form
-          onSubmit={handleAdd}
-          className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface"
-        >
-          {/* Top border accent matching Clinic Overview */}
-          <div className="h-1 bg-[var(--color-primary)]" />
-
-          <div className="p-5 sm:p-6">
+        <GradientCard gradient="from-[#059669] via-[#10b981] to-[#34d399]">
+          <form onSubmit={handleAdd} className="p-5 sm:p-6">
             <div className="mb-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-                  <UserRound className="h-5 w-5 text-[var(--color-primary-text)]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#059669] to-[#10b981] text-white shadow-lg shadow-green-500/30">
+                  <UserRound className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+                  <h2 className="text-base font-bold text-slate-800">
                     {tRec("addNewReceptionist")}
                   </h2>
-                  <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+                  <p className="mt-0.5 text-xs text-slate-500">
                     {tRec("addReceptionistSub")}
                   </p>
                 </div>
@@ -191,7 +235,7 @@ export default function ClinicReceptionistsPage() {
             </div>
 
             {error && (
-              <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
+              <div className="mt-4 rounded-xl border border-[#f5576c]/20 bg-gradient-to-r from-[#f5576c]/5 to-white px-4 py-3 text-sm font-medium text-[#f5576c]">
                 {error}
               </div>
             )}
@@ -200,7 +244,7 @@ export default function ClinicReceptionistsPage() {
               <button
                 type="submit"
                 disabled={addReceptionist.isPending}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {addReceptionist.isPending && (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -213,13 +257,13 @@ export default function ClinicReceptionistsPage() {
               <button
                 type="button"
                 onClick={closeAddForm}
-                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                className="rounded-xl border border-[#1e40af]/30 bg-white px-5 py-2.5 text-sm font-semibold text-[#1e40af] transition hover:bg-[#1e40af]/5"
               >
                 {tRec("cancel")}
               </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </GradientCard>
       )}
 
       {/* =====================================================
@@ -240,52 +284,60 @@ export default function ClinicReceptionistsPage() {
           EMPTY STATE
       ====================================================== */}
       {!isLoading && (!receptionists || receptionists.length === 0) && (
-        <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-10 text-center shadow-sm dark:border-soft-300 dark:bg-surface">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-            <Users className="h-7 w-7 text-[var(--color-primary-text)]" />
+        <GradientCard gradient="from-[#f093fb] via-[#f5576c] to-[#fda085]">
+          <div className="p-10 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-[#f5576c] to-[#fda085] text-white shadow-lg shadow-pink-500/30">
+              <Users className="h-7 w-7" />
+            </div>
+
+            <h2 className="mt-4 text-base font-bold text-slate-800">
+              {tRec("noReceptionistsTitle")}
+            </h2>
+
+            <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">
+              {tRec("noReceptionistsSub")}
+            </p>
+
+            {!showAdd && (
+              <button
+                type="button"
+                onClick={() => setShowAdd(true)}
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl"
+              >
+                <Plus className="h-4 w-4" />
+                {tRec("addReceptionist")}
+              </button>
+            )}
           </div>
-
-          <h2 className="mt-4 text-base font-bold text-[var(--color-primary-dark-text)]">
-            {tRec("noReceptionistsTitle")}
-          </h2>
-
-          <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-ink-500">
-            {tRec("noReceptionistsSub")}
-          </p>
-
-          {!showAdd && (
-            <button
-              type="button"
-              onClick={() => setShowAdd(true)}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <Plus className="h-4 w-4" />
-              {tRec("addReceptionist")}
-            </button>
-          )}
-        </div>
+        </GradientCard>
       )}
 
       {/* =====================================================
-          RECEPTIONIST LIST
+          RECEPTIONIST LIST - 1 col mobile, 2 tablet, 3 desktop
       ====================================================== */}
       {!isLoading && receptionists && receptionists.length > 0 && (
-        <div className="space-y-4">
-          <div>
-            <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">
-              {tRec("frontDeskStaff")}
-            </h2>
-            <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
-              {receptionists.length} {tRec("staffAdded")}
-            </p>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-800">{tRec("frontDeskStaff")}</h2>
+              <p className="mt-0.5 text-xs text-slate-500">
+                {receptionists.length} {tRec("staffAdded")}
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-3 py-1 text-[10px] font-bold text-white">
+              <TrendingUp className="h-3 w-3" />
+              {receptionists.filter(r => r.user.isActive).length} Active
+            </div>
           </div>
 
-          <div className="grid gap-4">
-            {receptionists.map((r) => (
+          {/* ✅ 1 column mobile, 2 tablet, 3 desktop */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {receptionists.map((r, index) => (
               <ReceptionistRow
                 key={r.id}
                 receptionist={r}
                 allDoctors={doctors ?? []}
+                gradient={RECEPTIONIST_GRADIENTS[index % RECEPTIONIST_GRADIENTS.length]}
               />
             ))}
           </div>
@@ -309,7 +361,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
+      <span className="mb-1.5 block text-xs font-bold text-slate-600">
         {label}
         {required && <span className="ml-1 text-red-500">*</span>}
       </span>
@@ -319,14 +371,16 @@ function Field({
 }
 
 // ============================================================
-// Receptionist Row Component
+// Receptionist Row Component - Each with different gradient
 // ============================================================
 function ReceptionistRow({
   receptionist,
   allDoctors,
+  gradient,
 }: {
   receptionist: ClinicReceptionist;
   allDoctors: { id: string; user: { name: string } }[];
+  gradient: string;
 }) {
   const tRec = useTranslations("ClinicReceptionists");
   const assignDoctors = useAssignDoctorsToReceptionist();
@@ -380,50 +434,47 @@ function ReceptionistRow({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] dark:border-soft-300 dark:bg-surface">
+    <GradientCard gradient={gradient}>
       <div className="p-4 sm:p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex min-w-0 items-center gap-3">
             {/* Avatar */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <span className="text-base font-bold text-[var(--color-primary-text)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1e40af] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <span className="text-sm font-bold">
                 {getInitials(receptionist.user.name)}
               </span>
             </div>
 
             {/* Basic info */}
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="truncate text-sm font-bold text-[var(--color-primary-dark-text)] sm:text-base">
+              <div className="flex flex-wrap items-center gap-1">
+                <p className="truncate text-sm font-bold text-slate-900">
                   {receptionist.user.name}
                 </p>
 
                 {receptionist.user.isActive ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/10 dark:text-green-400">
-                    <CheckCircle2 className="h-3 w-3" />
-                    {tRec("active")}
+                  <span className="inline-flex items-center gap-0.5 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                    <CheckCircle2 className="h-2.5 w-2.5" />
+                    Active
                   </span>
                 ) : (
-                  <span className="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
-                    {tRec("inactive")}
+                  <span className="rounded-full bg-gradient-to-r from-[#f5576c] to-[#fda085] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                    Inactive
                   </span>
                 )}
               </div>
 
-              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 dark:text-ink-500">
-                <div className="flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-ink-400" />
+              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
+                <div className="flex items-center gap-1">
+                  <Mail className="h-3.5 w-3.5 shrink-0 text-[#3b82f6]" />
                   <span className="truncate">{receptionist.user.email}</span>
                 </div>
 
                 {receptionist.user.phone && (
-                  <>
-                    <span className="hidden text-gray-300 sm:block dark:text-ink-400">•</span>
-                    <div className="flex items-center gap-1.5">
-                      <Phone className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-ink-400" />
-                      <span className="truncate">{receptionist.user.phone}</span>
-                    </div>
-                  </>
+                  <div className="flex items-center gap-1">
+                    <Phone className="h-3.5 w-3.5 shrink-0 text-[#3b82f6]" />
+                    <span className="truncate">{receptionist.user.phone}</span>
+                  </div>
                 )}
               </div>
             </div>
@@ -439,14 +490,14 @@ function ReceptionistRow({
               }}
               className={
                 assigning
-                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600"
-                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary-text)] transition hover:bg-[var(--color-primary)]/10 dark:border-soft-300 dark:bg-soft-100"
+                  ? "inline-flex items-center gap-1.5 rounded-lg border border-[#f5576c]/30 bg-white px-2.5 py-1.5 text-[10px] font-bold text-[#f5576c]"
+                  : "inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-2.5 py-1.5 text-[10px] font-bold text-white shadow-md shadow-blue-500/30"
               }
             >
               {assigning ? (
-                <X className="h-3.5 w-3.5" />
+                <X className="h-3 w-3" />
               ) : (
-                <UserCog className="h-3.5 w-3.5" />
+                <UserCog className="h-3 w-3" />
               )}
               {tRec("assignDoctors")}
             </button>
@@ -458,14 +509,14 @@ function ReceptionistRow({
               }}
               className={
                 changingPw
-                  ? "inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600"
-                  : "inline-flex items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary-text)] transition hover:bg-[var(--color-primary)]/10 dark:border-soft-300 dark:bg-soft-100"
+                  ? "inline-flex items-center gap-1.5 rounded-lg border border-[#f5576c]/30 bg-white px-2.5 py-1.5 text-[10px] font-bold text-[#f5576c]"
+                  : "inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#059669] to-[#10b981] px-2.5 py-1.5 text-[10px] font-bold text-white shadow-md shadow-green-500/30"
               }
             >
               {changingPw ? (
-                <X className="h-3.5 w-3.5" />
+                <X className="h-3 w-3" />
               ) : (
-                <KeyRound className="h-3.5 w-3.5" />
+                <KeyRound className="h-3 w-3" />
               )}
               {tRec("changePassword")}
             </button>
@@ -474,17 +525,17 @@ function ReceptionistRow({
 
         {/* Assigned Doctors Display */}
         {(receptionist.assignedDoctors?.length ?? 0) > 0 && !assigning && (
-          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-gray-50/70 px-4 py-3 dark:bg-soft-50/70">
-            <Stethoscope className="mr-1 h-4 w-4 text-[var(--color-primary-text)]" />
-            <span className="text-xs font-semibold text-gray-600 dark:text-ink-600">
+          <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-gradient-to-r from-[#1e40af]/5 to-transparent px-3 py-2">
+            <Stethoscope className="mr-1 h-4 w-4 text-[#1e40af]" />
+            <span className="text-[11px] font-semibold text-slate-600">
               {tRec("manages")}
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1">
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {receptionist.assignedDoctors.map((a: any, index) => (
                 <span
                   key={a.id || a.doctor?.id || index}
-                  className="rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[10px] font-bold text-gray-700 shadow-sm dark:border-soft-300 dark:bg-surface dark:text-ink-700"
+                  className="rounded-full bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-2 py-0.5 text-[9px] font-bold text-white"
                 >
                   {a.doctor?.user?.name || "Unknown"}
                 </span>
@@ -497,11 +548,11 @@ function ReceptionistRow({
             ASSIGN DOCTORS PANEL
         ================================================== */}
         {assigning && (
-          <div className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 dark:border-soft-300 dark:bg-soft-50/50">
-            <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
+          <div className="mt-5 rounded-2xl border border-[#1e40af]/10 bg-gradient-to-b from-[#1e40af]/5 to-white p-4">
+            <h3 className="text-sm font-bold text-slate-800">
               {tRec("assignDoctors")}
             </h3>
-            <p className="mb-3 mt-1 text-xs text-gray-500 dark:text-ink-500">
+            <p className="mb-3 mt-1 text-xs text-slate-500">
               {tRec("assignDoctorsSub")}
             </p>
 
@@ -514,8 +565,8 @@ function ReceptionistRow({
                   className={
                     "rounded-xl border px-3 py-2 text-xs font-bold transition-all " +
                     (selectedIds.includes(d.id)
-                      ? "border-[var(--color-primary)] bg-[var(--color-primary)] text-white shadow-sm"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[var(--color-primary)]/40 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600")
+                      ? "border-[#1e40af] bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-[#1e40af]/40")
                   }
                 >
                   {d.user.name}
@@ -528,7 +579,7 @@ function ReceptionistRow({
                 type="button"
                 onClick={handleAssign}
                 disabled={selectedIds.length === 0 || assignDoctors.isPending}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {assignDoctors.isPending && (
                   <Loader2 className="h-3 w-3 animate-spin" />
@@ -545,12 +596,12 @@ function ReceptionistRow({
         {changingPw && (
           <form
             onSubmit={handleChangePassword}
-            className="mt-5 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 dark:border-soft-300 dark:bg-soft-50/50"
+            className="mt-5 rounded-2xl border border-[#059669]/10 bg-gradient-to-b from-[#059669]/5 to-white p-4"
           >
-            <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
+            <h3 className="text-sm font-bold text-slate-800">
               {tRec("updatePassword")}
             </h3>
-            <p className="mb-3 mt-1 text-xs text-gray-500 dark:text-ink-500">
+            <p className="mb-3 mt-1 text-xs text-slate-500">
               {tRec("updatePasswordSub")} {receptionist.user.name}.
             </p>
 
@@ -567,7 +618,7 @@ function ReceptionistRow({
               <button
                 type="submit"
                 disabled={changePassword.isPending}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#059669] to-[#10b981] px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-green-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {changePassword.isPending && (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -579,8 +630,8 @@ function ReceptionistRow({
                 <div
                   className={`mt-1 rounded-xl px-3 py-2 text-xs font-semibold ${
                     pwMessage.includes("successfully")
-                      ? "bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400"
-                      : "bg-red-50 text-red-600 dark:bg-red-500/15 dark:text-red-400"
+                      ? "bg-[#059669]/10 text-[#059669]"
+                      : "bg-[#f5576c]/10 text-[#f5576c]"
                   }`}
                 >
                   {pwMessage}
@@ -590,7 +641,7 @@ function ReceptionistRow({
           </form>
         )}
       </div>
-    </div>
+    </GradientCard>
   );
 }
 

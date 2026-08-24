@@ -15,6 +15,13 @@ import {
   UserRound,
   CheckCircle2,
   Loader2,
+  Activity,
+  Award,
+  Sparkles,
+  TrendingUp,
+  Star,
+  Shield,
+  BookOpen,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -38,6 +45,48 @@ const EMPTY_ADD = {
 
 const inputClasses =
   "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-800 dark:placeholder:text-ink-400 dark:hover:border-soft-300";
+
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#667eea] via-[#764ba2] to-[#f093fb]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3px] bg-gradient-to-r ${gradient} shadow-lg ${className}`}>
+      <div className="rounded-[calc(1rem-4.5px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// DOCTOR CARD GRADIENTS - Royal Blue & Leaf Green
+// ============================================================
+
+const DOCTOR_GRADIENTS = [
+  "from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]", // Royal Blue
+  "from-[#059669] via-[#10b981] to-[#34d399]", // Leaf Green
+  "from-[#1e40af] via-[#3b82f6] to-[#059669]", // Blue → Green
+  "from-[#0d9488] via-[#14b8a6] to-[#3b82f6]", // Teal → Blue
+  "from-[#1e3a8a] via-[#1d4ed8] to-[#10b981]", // Deep Blue → Green
+  "from-[#059669] via-[#0d9488] to-[#1e40af]", // Green → Blue
+  "from-[#1e3a8a] via-[#2563eb] to-[#34d399]", // Blue → Light Green
+  "from-[#0f766e] via-[#14b8a6] to-[#3b82f6]", // Teal → Blue
+  "from-[#1e40af] via-[#059669] to-[#10b981]", // Blue → Green
+];
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
 
 export default function ClinicDoctorsPage() {
   const tDoc = useTranslations("ClinicDoctors");
@@ -85,73 +134,77 @@ export default function ClinicDoctorsPage() {
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Royal Blue Gradient
       ====================================================== */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="mb-2 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <Stethoscope className="h-4 w-4 text-[var(--color-primary-text)]" />
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-2 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+                <Stethoscope className="h-4 w-4" />
+              </div>
+
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#1e40af]">
+                {tNav("doctors")}
+              </span>
+
+              {doctors && doctors.length > 0 && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-2 py-0.5 text-[9px] font-bold text-white">
+                  <Sparkles className="h-3 w-3" />
+                  {doctors.length} Active
+                </span>
+              )}
             </div>
 
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
-              {tNav("doctors")}
-            </span>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              {tDoc("heading")}
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500">
+              {tDoc("subtitle")}
+            </p>
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
-            {tDoc("heading")}
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-500">
-            {tDoc("subtitle")}
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => {
-            if (showAdd) {
-              closeAddForm();
-            } else {
-              setShowAdd(true);
-              setError("");
+          <button
+            type="button"
+            onClick={() => {
+              if (showAdd) {
+                closeAddForm();
+              } else {
+                setShowAdd(true);
+                setError("");
+              }
+            }}
+            className={
+              showAdd
+                ? "inline-flex items-center justify-center gap-2 rounded-xl border border-[#f5576c]/30 bg-white px-4 py-2.5 text-sm font-bold text-[#f5576c] transition hover:bg-[#f5576c]/5"
+                : "inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl"
             }
-          }}
-          className={
-            showAdd
-              ? "inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface dark:text-ink-600 dark:hover:bg-soft-50"
-              : "inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          }
-        >
-          {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-          {showAdd ? tDoc("cancel") : tDoc("addDoctor")}
-        </button>
-      </div>
+          >
+            {showAdd ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {showAdd ? tDoc("cancel") : tDoc("addDoctor")}
+          </button>
+        </div>
+      </GradientCard>
 
       {/* =====================================================
-          ADD DOCTOR FORM
+          ADD DOCTOR FORM - Leaf Green Gradient
       ====================================================== */}
       {showAdd && (
-        <form
-          onSubmit={handleAdd}
-          className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface"
-        >
-          <div className="h-1 bg-[var(--color-primary)]" />
-
-          <div className="p-5 sm:p-6">
+        <GradientCard gradient="from-[#059669] via-[#10b981] to-[#34d399]">
+          <form onSubmit={handleAdd} className="p-5 sm:p-6">
             <div className="mb-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-                  <UserRound className="h-5 w-5 text-[var(--color-primary-text)]" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#059669] to-[#10b981] text-white shadow-lg shadow-green-500/30">
+                  <UserRound className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+                  <h2 className="text-base font-bold text-slate-800">
                     {tDoc("addNewDoctor")}
                   </h2>
 
-                  <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+                  <p className="mt-0.5 text-xs text-slate-500">
                     {tDoc("addDoctorSub")}
                   </p>
                 </div>
@@ -272,7 +325,7 @@ export default function ClinicDoctorsPage() {
             </div>
 
             {error && (
-              <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/25 dark:bg-red-500/10 dark:text-red-400">
+              <div className="mt-4 rounded-xl border border-[#f5576c]/20 bg-gradient-to-r from-[#f5576c]/5 to-white px-4 py-3 text-sm font-medium text-[#f5576c]">
                 {error}
               </div>
             )}
@@ -281,7 +334,7 @@ export default function ClinicDoctorsPage() {
               <button
                 type="submit"
                 disabled={addDoctor.isPending}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {addDoctor.isPending && (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -292,13 +345,13 @@ export default function ClinicDoctorsPage() {
               <button
                 type="button"
                 onClick={closeAddForm}
-                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                className="rounded-xl border border-[#1e40af]/30 bg-white px-5 py-2.5 text-sm font-semibold text-[#1e40af] transition hover:bg-[#1e40af]/5"
               >
                 {tDoc("cancel")}
               </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </GradientCard>
       )}
 
       {/* =====================================================
@@ -319,47 +372,60 @@ export default function ClinicDoctorsPage() {
           EMPTY STATE
       ====================================================== */}
       {!isLoading && (!doctors || doctors.length === 0) && (
-        <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-10 text-center shadow-sm dark:border-soft-300 dark:bg-surface">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-            <Stethoscope className="h-7 w-7 text-[var(--color-primary-text)]" />
+        <GradientCard gradient="from-[#f093fb] via-[#f5576c] to-[#fda085]">
+          <div className="p-10 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-[#f5576c] to-[#fda085] text-white shadow-lg shadow-pink-500/30">
+              <Stethoscope className="h-7 w-7" />
+            </div>
+
+            <h2 className="mt-4 text-base font-bold text-slate-800">
+              {tDoc("noDoctorsTitle")}
+            </h2>
+
+            <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">
+              {tDoc("noDoctorsSub")}
+            </p>
+
+            {!showAdd && (
+              <button
+                type="button"
+                onClick={() => setShowAdd(true)}
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-xl"
+              >
+                <Plus className="h-4 w-4" />
+                {tDoc("addDoctor")}
+              </button>
+            )}
           </div>
-
-          <h2 className="mt-4 text-base font-bold text-[var(--color-primary-dark-text)]">
-            {tDoc("noDoctorsTitle")}
-          </h2>
-
-          <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-ink-500">
-            {tDoc("noDoctorsSub")}
-          </p>
-
-          {!showAdd && (
-            <button
-              type="button"
-              onClick={() => setShowAdd(true)}
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <Plus className="h-4 w-4" />
-              {tDoc("addDoctor")}
-            </button>
-          )}
-        </div>
+        </GradientCard>
       )}
 
       {/* =====================================================
-          DOCTOR LIST
+          DOCTOR LIST - 1 column mobile, 2 tablet, 3 desktop
       ====================================================== */}
       {!isLoading && doctors && doctors.length > 0 && (
-        <div className="space-y-4">
-          <div>
-            <h2 className="text-sm font-bold text-gray-800 dark:text-ink-800">{tDoc("yourDoctors")}</h2>
-            <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
-              {doctors.length} {tDoc("doctorsAdded")}
-            </p>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-800">{tDoc("yourDoctors")}</h2>
+              <p className="mt-0.5 text-xs text-slate-500">
+                {doctors.length} {tDoc("doctorsAdded")}
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-3 py-1 text-[10px] font-bold text-white">
+              <TrendingUp className="h-3 w-3" />
+              {doctors.filter(d => d.user.isActive).length} Active
+            </div>
           </div>
 
-          <div className="grid gap-4">
-            {doctors.map((doctor) => (
-              <DoctorRow key={doctor.id} doctor={doctor} />
+          {/* ✅ FIXED: 1 column on mobile, 2 on tablet, 3 on desktop */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {doctors.map((doctor, index) => (
+              <DoctorRow 
+                key={doctor.id} 
+                doctor={doctor} 
+                gradient={DOCTOR_GRADIENTS[index % DOCTOR_GRADIENTS.length]}
+              />
             ))}
           </div>
         </div>
@@ -382,7 +448,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
+      <span className="mb-1.5 block text-xs font-bold text-slate-600">
         {label}
         {required && <span className="ml-1 text-red-500">*</span>}
       </span>
@@ -392,9 +458,9 @@ function Field({
 }
 
 // ============================================================
-// Doctor Row Component
+// Doctor Card Component - Each with different gradient
 // ============================================================
-function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
+function DoctorRow({ doctor, gradient }: { doctor: ClinicDoctor; gradient: string }) {
   const tDoc = useTranslations("ClinicDoctors");
   const editDoctor = useEditDoctor();
   const [editing, setEditing] = useState(false);
@@ -426,36 +492,36 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_10px_25px_rgba(0,0,0,0.06)] dark:border-soft-300 dark:bg-surface">
+    <GradientCard gradient={gradient}>
       <div className="p-4 sm:p-5">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-2">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <span className="text-base font-bold text-[var(--color-primary-text)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1e40af] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <span className="text-sm font-bold">
                 {getInitials(doctor.user.name)}
               </span>
             </div>
 
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="truncate text-sm font-bold text-[var(--color-primary-dark-text)] sm:text-base">
+              <div className="flex flex-wrap items-center gap-1">
+                <p className="truncate text-sm font-bold text-slate-900">
                   {doctor.user.name}
                 </p>
 
                 {doctor.user.isActive ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 dark:bg-green-500/10 dark:text-green-400">
-                    <CheckCircle2 className="h-3 w-3" />
-                    {tDoc("active")}
+                  <span className="inline-flex items-center gap-0.5 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                    <CheckCircle2 className="h-2.5 w-2.5" />
+                    Active
                   </span>
                 ) : (
-                  <span className="rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
-                    {tDoc("inactive")}
+                  <span className="rounded-full bg-gradient-to-r from-[#f5576c] to-[#fda085] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                    Inactive
                   </span>
                 )}
               </div>
 
-              <div className="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-gray-500 dark:text-ink-500">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-ink-400" />
+              <div className="mt-1 flex min-w-0 items-center gap-1 text-[11px] text-slate-500">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-[#1e40af]" />
                 <span className="truncate">{doctor.user.email}</span>
               </div>
             </div>
@@ -466,20 +532,21 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
             onClick={() => setEditing((value) => !value)}
             className={
               editing
-                ? "inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-bold text-gray-600 dark:border-soft-300 dark:bg-soft-50 dark:text-ink-600"
-                : "inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-bg-soft)] px-3 py-2 text-xs font-bold text-[var(--color-primary-text)] transition hover:bg-[var(--color-primary)]/10 dark:bg-soft-100"
+                ? "inline-flex shrink-0 items-center gap-1 rounded-lg border border-[#f5576c]/30 bg-white px-2.5 py-1.5 text-[10px] font-bold text-[#f5576c]"
+                : "inline-flex shrink-0 items-center gap-1 rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-2.5 py-1.5 text-[10px] font-bold text-white shadow-md shadow-blue-500/30"
             }
           >
             {editing ? (
-              <X className="h-3.5 w-3.5" />
+              <X className="h-3 w-3" />
             ) : (
-              <Pencil className="h-3.5 w-3.5" />
+              <Pencil className="h-3 w-3" />
             )}
             {editing ? tDoc("close") : tDoc("edit")}
           </button>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* Info Grid - 2 columns always */}
+        <div className="mt-4 grid grid-cols-2 gap-2">
           <InfoItem
             icon={BriefcaseMedical}
             label={tDoc("specialization")}
@@ -502,27 +569,26 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
           />
         </div>
 
-        {(doctor.experience != null || doctor.user.phone) && (
-          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-gray-50/50 px-4 py-2.5 text-xs font-medium text-gray-600 dark:bg-soft-50/50 dark:text-ink-600">
-            {doctor.experience != null && (
-              <div className="flex items-center gap-1.5">
-                <BriefcaseMedical className="h-4 w-4 text-[var(--color-primary)]" />
-                <span>
-                  {doctor.experience} {tDoc("yearsExperience")}
-                </span>
-              </div>
-            )}
+        {/* Qualification Highlight - Deep */}
+        {doctor.qualification && (
+          <div className="mt-3 flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-3 py-2.5 shadow-md shadow-blue-500/30">
+            <BookOpen className="h-4 w-4 text-white" />
+            <div className="min-w-0">
+              <p className="text-[9px] font-bold uppercase tracking-wider text-blue-200">
+                {tDoc("qualification")}
+              </p>
+              <p className="truncate text-xs font-bold text-white">
+                {doctor.qualification}
+              </p>
+            </div>
+          </div>
+        )}
 
-            {doctor.experience != null && doctor.user.phone && (
-              <span className="text-gray-300 dark:text-ink-400">•</span>
-            )}
-
-            {doctor.user.phone && (
-              <div className="flex items-center gap-1.5">
-                <Phone className="h-4 w-4 text-[var(--color-primary)]" />
-                <span>{doctor.user.phone}</span>
-              </div>
-            )}
+        {/* Experience Banner */}
+        {doctor.experience != null && (
+          <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#059669]/5 to-[#10b981]/5 px-3 py-2 text-[11px] font-medium text-slate-600">
+            <Award className="h-4 w-4 text-[#059669]" />
+            {doctor.experience} {tDoc("yearsExperience")}
           </div>
         )}
 
@@ -532,71 +598,75 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
         {editing && (
           <form
             onSubmit={handleSave}
-            className="mt-5 border-t border-gray-100 pt-5 dark:border-soft-100"
+            className="mt-4 border-t border-[#1e40af]/10 pt-4"
           >
-            <div className="mb-4">
-              <h3 className="text-sm font-bold text-[var(--color-primary-dark-text)]">
+            <div className="mb-3">
+              <h3 className="text-sm font-bold text-slate-800">
                 {tDoc("editDoctorDetails")}
               </h3>
-              <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-0.5 text-[11px] text-slate-500">
                 {tDoc("editDoctorSub")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field label={tDoc("specialization")}>
-                <input
-                  value={form.specialization}
-                  onChange={(e) =>
-                    setForm({ ...form, specialization: e.target.value })
-                  }
-                  className={inputClasses}
-                  placeholder="e.g. Cardiology"
-                />
-              </Field>
-
-              <Field label={tDoc("qualification")}>
-                <input
-                  value={form.qualification}
-                  onChange={(e) =>
-                    setForm({ ...form, qualification: e.target.value })
-                  }
-                  className={inputClasses}
-                  placeholder="e.g. MBBS, MD"
-                />
-              </Field>
-
-              <Field label={tDoc("experience")}>
-                <div className="relative">
+            <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-2 gap-2">
+                <Field label={tDoc("specialization")}>
                   <input
-                    type="number"
-                    min={0}
-                    value={form.experience}
+                    value={form.specialization}
                     onChange={(e) =>
-                      setForm({ ...form, experience: e.target.value })
+                      setForm({ ...form, specialization: e.target.value })
                     }
-                    className={`${inputClasses} pr-16`}
-                    placeholder="Years"
+                    className={`${inputClasses} px-3 py-2 text-xs`}
+                    placeholder="e.g. Cardiology"
                   />
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400">
-                    {tDoc("years")}
-                  </span>
-                </div>
-              </Field>
+                </Field>
 
-              <Field label={tDoc("fee")}>
-                <div className="relative">
-                  <IndianRupee className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Field label={tDoc("qualification")}>
                   <input
-                    type="number"
-                    min={0}
-                    value={form.fee}
-                    onChange={(e) => setForm({ ...form, fee: e.target.value })}
-                    className={`${inputClasses} pl-9`}
-                    placeholder="Fee"
+                    value={form.qualification}
+                    onChange={(e) =>
+                      setForm({ ...form, qualification: e.target.value })
+                    }
+                    className={`${inputClasses} px-3 py-2 text-xs`}
+                    placeholder="e.g. MBBS, MD"
                   />
-                </div>
-              </Field>
+                </Field>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <Field label={tDoc("experience")}>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min={0}
+                      value={form.experience}
+                      onChange={(e) =>
+                        setForm({ ...form, experience: e.target.value })
+                      }
+                      className={`${inputClasses} px-3 py-2 pr-8 text-xs`}
+                      placeholder="Years"
+                    />
+                    <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-medium text-gray-400">
+                      {tDoc("years")}
+                    </span>
+                  </div>
+                </Field>
+
+                <Field label={tDoc("fee")}>
+                  <div className="relative">
+                    <IndianRupee className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="number"
+                      min={0}
+                      value={form.fee}
+                      onChange={(e) => setForm({ ...form, fee: e.target.value })}
+                      className={`${inputClasses} px-3 py-2 pl-6 text-xs`}
+                      placeholder="Fee"
+                    />
+                  </div>
+                </Field>
+              </div>
 
               <Field label={tDoc("startTime")}>
                 <input
@@ -605,19 +675,19 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
                   onChange={(e) =>
                     setForm({ ...form, startTime: e.target.value })
                   }
-                  className={inputClasses}
+                  className={`${inputClasses} px-3 py-2 text-xs`}
                 />
               </Field>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-3 flex gap-2">
               <button
                 type="submit"
                 disabled={editDoctor.isPending}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-3 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {editDoctor.isPending && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3 w-3 animate-spin" />
                 )}
                 {editDoctor.isPending ? tDoc("saving") : tDoc("saveChanges")}
               </button>
@@ -625,7 +695,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
               <button
                 type="button"
                 onClick={() => setEditing(false)}
-                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-soft-300 dark:bg-surface-100 dark:text-ink-600 dark:hover:bg-soft-100"
+                className="rounded-lg border border-[#1e40af]/30 bg-white px-3 py-2 text-xs font-semibold text-[#1e40af] transition hover:bg-[#1e40af]/5"
               >
                 {tDoc("cancel")}
               </button>
@@ -633,7 +703,7 @@ function DoctorRow({ doctor }: { doctor: ClinicDoctor }) {
           </form>
         )}
       </div>
-    </div>
+    </GradientCard>
   );
 }
 
@@ -650,14 +720,14 @@ function InfoItem({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-gray-50/70 p-3 transition-colors hover:bg-gray-50 dark:border-soft-300 dark:bg-soft-50/70 dark:hover:bg-soft-50">
-      <div className="flex items-center gap-1.5">
-        <Icon className="h-3.5 w-3.5 text-gray-400" />
-        <span className="truncate text-[10px] font-bold uppercase tracking-wider text-gray-500">
+    <div className="rounded-xl border border-slate-100 bg-gradient-to-b from-slate-50 to-white p-2.5 transition-colors hover:border-[#1e40af]/20 hover:bg-[#1e40af]/5">
+      <div className="flex items-center gap-1">
+        <Icon className="h-3 w-3 text-[#1e40af]" />
+        <span className="truncate text-[9px] font-bold uppercase tracking-wider text-slate-500">
           {label}
         </span>
       </div>
-      <p className="mt-1.5 truncate text-xs font-bold text-gray-800 dark:text-ink-800">{value}</p>
+      <p className="mt-1 truncate text-[11px] font-bold text-slate-800">{value}</p>
     </div>
   );
 }

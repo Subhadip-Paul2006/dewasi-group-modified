@@ -190,7 +190,8 @@
     "schedule": "সময়সূচী",
     "requests": "অনুরোধসমূহ",
     "referrals": "রেফারেল",
-    "reports": "রিপোর্ট্স"
+    "reports": "রিপোর্ট্স",
+    "settings": "Settings"
   },
   "ClinicDashboard": {
     "title": "অপারেশনাল ড্যাশবোর্ড",
