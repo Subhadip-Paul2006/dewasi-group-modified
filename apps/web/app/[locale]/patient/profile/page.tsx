@@ -107,7 +107,7 @@ export default function ProfilePage() {
           BACK LINK
       ====================================================== */}
       <Link
-        href="/dashboard"
+        href="/patient"
         className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#1e40af] transition-colors"
       >
         <ArrowLeft className="h-4 w-4" />
