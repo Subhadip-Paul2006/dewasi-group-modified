@@ -24,6 +24,7 @@ import type {
   AdminDiagnosticCenterRecord,
   CreateDiagnosticCenterInput,
 } from "@doctor-contract/shared";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 type FilterTab = "ALL" | "APPROVED" | "PENDING";
 
@@ -135,38 +136,45 @@ export default function AdminDiagnosticCentersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
+      {/* Header - Cyan */}
+      <GradientCard variant="cyan">
+        <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                {t("title")}
+              </h1>
+              <span className="rounded-full bg-cyan-100 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-cyan-800 dark:bg-cyan-950/50 dark:text-cyan-300">
+                Diagnostic Center Network
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              {t("subtitle")}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <button
+              type="button"
+              onClick={() => setShowCreateModal(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition hover:scale-105 active:scale-95"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>{t("addCenter")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => refetch()}
+              disabled={isLoading || isFetching}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              <RefreshCw
+                className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
+              />
+              <span>{t("retry")}</span>
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setShowCreateModal(true)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span>{t("addCenter")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => refetch()}
-            disabled={isLoading || isFetching}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-          >
-            <RefreshCw
-              className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
-            />
-            <span>{t("retry")}</span>
-          </button>
-        </div>
-      </div>
+      </GradientCard>
 
       {/* Action Error Alert */}
       {actionError && (
@@ -203,41 +211,43 @@ export default function AdminDiagnosticCentersPage() {
       )}
 
       {/* Status Filter Tabs */}
-      <div className="flex flex-wrap gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-        <button
-          type="button"
-          onClick={() => setActiveTab("ALL")}
-          className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "ALL"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          }`}
-        >
-          {t("all")}
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("APPROVED")}
-          className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "APPROVED"
-              ? "bg-emerald-600 text-white shadow-xs"
-              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          }`}
-        >
-          {t("approved")}
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("PENDING")}
-          className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "PENDING"
-              ? "bg-amber-600 text-white shadow-xs"
-              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          }`}
-        >
-          {t("pending")}
-        </button>
-      </div>
+      <GradientCard variant="slate">
+        <div className="flex flex-wrap gap-1.5 p-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab("ALL")}
+            className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
+              activeTab === "ALL"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {t("all")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("APPROVED")}
+            className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
+              activeTab === "APPROVED"
+                ? "bg-emerald-600 text-white shadow-xs"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {t("approved")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("PENDING")}
+            className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
+              activeTab === "PENDING"
+                ? "bg-amber-600 text-white shadow-xs"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {t("pending")}
+          </button>
+        </div>
+      </GradientCard>
 
       {/* Error State */}
       {isError && (
@@ -271,101 +281,108 @@ export default function AdminDiagnosticCentersPage() {
 
       {/* Diagnostic Centers Table */}
       {!isLoading && !isError && (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-          {centerList.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
-                <Activity className="h-6 w-6 text-slate-400" />
+        <GradientCard variant="slate">
+          <div className="overflow-hidden">
+            {centerList.length === 0 ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+                  <Activity className="h-6 w-6 text-slate-400" />
+                </div>
+                <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
+                  {t("emptyTitle")}
+                </h3>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {t("emptyDesc")}
+                </p>
               </div>
-              <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
-                {t("emptyTitle")}
-              </h3>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                {t("emptyDesc")}
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-850 dark:text-slate-400">
-                  <tr>
-                    <th className="px-4 py-3">{t("centerName")}</th>
-                    <th className="px-4 py-3">{t("owner")}</th>
-                    <th className="px-4 py-3">{t("location")}</th>
-                    <th className="px-4 py-3">{t("approvalStatus")}</th>
-                    <th className="px-4 py-3 text-right">{t("actions")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {centerList.map((center) => (
-                    <tr
-                      key={center.id}
-                      className="transition hover:bg-slate-50/60 dark:hover:bg-slate-800/50"
-                    >
-                      <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">
-                        {center.centerName}
-                      </td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
-                        <div>
-                          <p className="font-medium text-slate-800 dark:text-slate-200">
-                            {center.user?.name || "—"}
-                          </p>
-                          <p className="text-[11px] text-slate-400">
-                            {center.user?.email || "—"}
-                          </p>
-                          {center.user?.phone && (
-                            <p className="text-[10px] text-slate-400">
-                              {center.user.phone}
-                            </p>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
-                        {[center.city, center.state].filter(Boolean).join(", ") || "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        {center.isApproved ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                            <CheckCircle2 className="h-3.5 w-3.5" />
-                            <span>{t("approved")}</span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                            <XCircle className="h-3.5 w-3.5" />
-                            <span>{t("pending")}</span>
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        {center.isApproved ? (
-                          <button
-                            type="button"
-                            onClick={() => setPendingRevokeCenter(center)}
-                            disabled={revokeCenter.isPending}
-                            className="inline-flex items-center gap-1 rounded-lg bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-100 disabled:opacity-50 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
-                          >
-                            <ShieldAlert className="h-3 w-3" />
-                            <span>{t("revoke")}</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => setPendingApproveCenter(center)}
-                            disabled={approveCenter.isPending}
-                            className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
-                          >
-                            <ShieldCheck className="h-3 w-3" />
-                            <span>{t("approve")}</span>
-                          </button>
-                        )}
-                      </td>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-850 dark:text-slate-400">
+                    <tr>
+                      <th className="px-4 py-3">{t("centerName")}</th>
+                      <th className="px-4 py-3">{t("owner")}</th>
+                      <th className="px-4 py-3">{t("location")}</th>
+                      <th className="px-4 py-3">{t("approvalStatus")}</th>
+                      <th className="px-4 py-3 text-right">{t("actions")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {centerList.map((center) => (
+                      <tr
+                        key={center.id}
+                        className="transition hover:bg-slate-50/60 dark:hover:bg-slate-800/50"
+                      >
+                        <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">
+                          <div className="flex items-center gap-2.5">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400">
+                              <Activity className="h-4 w-4" />
+                            </div>
+                            <span>{center.centerName}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
+                          <div>
+                            <p className="font-medium text-slate-800 dark:text-slate-200">
+                              {center.user?.name || "—"}
+                            </p>
+                            <p className="text-[11px] text-slate-400">
+                              {center.user?.email || "—"}
+                            </p>
+                            {center.user?.phone && (
+                              <p className="text-[10px] text-slate-400">
+                                {center.user.phone}
+                              </p>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
+                          {[center.address, center.city].filter(Boolean).join(", ") || "—"}
+                        </td>
+                        <td className="px-4 py-3">
+                          {center.isApproved ? (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/50">
+                              <CheckCircle2 className="h-3 w-3" />
+                              <span>{t("approved")}</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50">
+                              <XCircle className="h-3 w-3" />
+                              <span>{t("pending")}</span>
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          {center.isApproved ? (
+                            <button
+                              type="button"
+                              onClick={() => setPendingRevokeCenter(center)}
+                              disabled={revokeCenter.isPending}
+                              className="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/50 dark:bg-slate-900 dark:text-rose-400 dark:hover:bg-rose-950/30"
+                            >
+                              <ShieldAlert className="h-3 w-3" />
+                              <span>{t("revoke")}</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setPendingApproveCenter(center)}
+                              disabled={approveCenter.isPending}
+                              className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50"
+                            >
+                              <ShieldCheck className="h-3 w-3" />
+                              <span>{t("approve")}</span>
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </GradientCard>
       )}
 
       {/* Approve Confirmation Modal */}

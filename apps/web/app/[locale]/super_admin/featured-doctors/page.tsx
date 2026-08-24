@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useFeaturedDoctors, useSetFeaturedDoctor } from "@/lib/hooks/useAdmin";
 import type { AdminDoctorRecord } from "@doctor-contract/shared";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 export default function AdminFeaturedDoctorsPage() {
   const t = useTranslations("AdminFeatured");
@@ -69,28 +70,35 @@ export default function AdminFeaturedDoctorsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
+      {/* Header - Amber */}
+      <GradientCard variant="amber">
+        <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                {t("title")}
+              </h1>
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+                Featured Spotlight
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              {t("subtitle")}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            disabled={isLoading || isFetching}
+            className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 sm:self-auto"
+          >
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-amber-600" : ""}`}
+            />
+            <span>{t("retry")}</span>
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => refetch()}
-          disabled={isLoading || isFetching}
-          className="inline-flex items-center gap-2 self-start rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-        >
-          <RefreshCw
-            className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
-          />
-          <span>{t("retry")}</span>
-        </button>
-      </div>
+      </GradientCard>
 
       {/* Action Error Alert */}
       {actionError && (
@@ -159,119 +167,120 @@ export default function AdminFeaturedDoctorsPage() {
 
       {/* Featured Doctors List */}
       {!isLoading && !isError && (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {featuredList.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-12 text-center shadow-xs dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
-                <Sparkles className="h-6 w-6 text-amber-500" />
+            <GradientCard variant="amber">
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 shadow-xs">
+                  <Sparkles className="h-6 w-6" />
+                </div>
+                <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
+                  {t("emptyTitle")}
+                </h3>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {t("emptyDesc")}
+                </p>
               </div>
-              <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
-                {t("emptyTitle")}
-              </h3>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                {t("emptyDesc")}
-              </p>
-            </div>
+            </GradientCard>
           ) : (
             featuredList.map((doc) => (
-              <div
-                key={doc.id}
-                className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs transition hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400">
-                    <Sparkles className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                        {doc.user?.name || "Doctor"}
-                      </h3>
-                      {doc.specialization && (
-                        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                          {doc.specialization}
-                        </span>
-                      )}
+              <GradientCard key={doc.id} variant="amber">
+                <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 shadow-xs">
+                      <Sparkles className="h-5 w-5" />
                     </div>
-                    <div className="mt-1 flex flex-wrap gap-x-4 text-xs text-slate-500 dark:text-slate-400">
-                      {doc.clinic?.clinicName && (
-                        <span className="flex items-center gap-1">
-                          <Building2 className="h-3.5 w-3.5" />
-                          <span>{doc.clinic.clinicName}</span>
-                        </span>
-                      )}
-                      {doc.clinic?.city && (
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" />
-                          <span>{doc.clinic.city}</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-                  {editingDoctorId === doc.id ? (
-                    <div className="flex items-center gap-1.5">
-                      <div className="flex items-center rounded-lg border border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-slate-800">
-                        <Hash className="h-3 w-3 text-slate-400" />
-                        <input
-                          type="number"
-                          min={1}
-                          max={999}
-                          value={orderInput}
-                          onChange={(e) => setOrderInput(Number(e.target.value))}
-                          className="w-12 bg-transparent text-xs text-slate-900 outline-none dark:text-slate-100"
-                        />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                          {doc.user?.name || "Doctor"}
+                        </h3>
+                        {doc.specialization && (
+                          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                            {doc.specialization}
+                          </span>
+                        )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleSaveOrder(doc.id)}
-                        disabled={setFeatured.isPending}
-                        className="rounded-lg bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
-                      >
-                        {setFeatured.isPending ? t("updating") : t("confirm")}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEditingDoctorId(null)}
-                        className="rounded-lg border border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
-                      >
-                        {t("cancel")}
-                      </button>
+                      <div className="mt-1 flex flex-wrap gap-x-4 text-xs text-slate-500 dark:text-slate-400">
+                        {doc.clinic?.clinicName && (
+                          <span className="flex items-center gap-1 font-medium">
+                            <Building2 className="h-3.5 w-3.5 text-slate-400" />
+                            <span>{doc.clinic.clinicName}</span>
+                          </span>
+                        )}
+                        {doc.clinic?.city && (
+                          <span className="flex items-center gap-1 font-medium">
+                            <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                            <span>{doc.clinic.city}</span>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
-                        <Hash className="h-3 w-3" />
-                        <span>
-                          {t("featuredOrder")}: {doc.featuredOrder || 1}
-                        </span>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingDoctorId(doc.id);
-                          setOrderInput(doc.featuredOrder || 1);
-                        }}
-                        className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200"
-                      >
-                        {t("setOrder")}
-                      </button>
-                    </div>
-                  )}
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleToggleFeatured(doc)}
-                    disabled={setFeatured.isPending}
-                    className="inline-flex items-center gap-1 rounded-lg bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-100 disabled:opacity-50 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
-                  >
-                    <XCircle className="h-3 w-3" />
-                    <span>{t("removeFeatured")}</span>
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                    {editingDoctorId === doc.id ? (
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex items-center rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-800 shadow-xs">
+                          <Hash className="h-3.5 w-3.5 text-slate-400" />
+                          <input
+                            type="number"
+                            min={1}
+                            max={999}
+                            value={orderInput}
+                            onChange={(e) => setOrderInput(Number(e.target.value))}
+                            className="w-12 bg-transparent text-xs font-bold text-slate-900 outline-none dark:text-slate-100"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveOrder(doc.id)}
+                          disabled={setFeatured.isPending}
+                          className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:scale-105 active:scale-95 disabled:opacity-50"
+                        >
+                          {setFeatured.isPending ? t("updating") : t("confirm")}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingDoctorId(null)}
+                          className="rounded-xl border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+                        >
+                          {t("cancel")}
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-extrabold text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+                          <Hash className="h-3 w-3" />
+                          <span>
+                            {t("featuredOrder")}: {doc.featuredOrder || 1}
+                          </span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingDoctorId(doc.id);
+                            setOrderInput(doc.featuredOrder || 1);
+                          }}
+                          className="rounded-xl border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-xs transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200"
+                        >
+                          {t("setOrder")}
+                        </button>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFeatured(doc)}
+                      disabled={setFeatured.isPending}
+                      className="inline-flex items-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3 py-1 text-[11px] font-bold text-rose-700 transition hover:bg-rose-100 hover:scale-105 active:scale-95 disabled:opacity-50 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
+                    >
+                      <XCircle className="h-3.5 w-3.5" />
+                      <span>{t("removeFeatured")}</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </GradientCard>
             ))
           )}
         </div>

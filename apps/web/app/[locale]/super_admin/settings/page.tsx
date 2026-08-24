@@ -16,6 +16,7 @@ import {
   useUpdatePlatformSettings,
 } from "@/lib/hooks/useAdmin";
 import { useAuth } from "@/lib/auth-context";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 export default function AdminSettingsPage() {
   const t = useTranslations("AdminSettings");
@@ -42,17 +43,19 @@ export default function AdminSettingsPage() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-amber-200 bg-amber-50/50 p-12 text-center shadow-xs dark:border-amber-900/40 dark:bg-amber-950/20">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
-          <ShieldAlert className="h-6 w-6" />
+      <GradientCard variant="amber">
+        <div className="flex flex-col items-center justify-center p-12 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 shadow-xs">
+            <ShieldAlert className="h-6 w-6" />
+          </div>
+          <h2 className="mt-4 text-base font-bold text-slate-900 dark:text-slate-100">
+            {t("superAdminOnly")}
+          </h2>
+          <p className="mt-1.5 max-w-md text-xs text-slate-500 dark:text-slate-400">
+            {t("superAdminOnlyDesc")}
+          </p>
         </div>
-        <h2 className="mt-4 text-base font-bold text-slate-900 dark:text-slate-100">
-          {t("superAdminOnly")}
-        </h2>
-        <p className="mt-1.5 max-w-md text-xs text-slate-500 dark:text-slate-400">
-          {t("superAdminOnlyDesc")}
-        </p>
-      </div>
+      </GradientCard>
     );
   }
 
@@ -81,28 +84,35 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            {t("title")}
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
+      {/* Header - Indigo */}
+      <GradientCard variant="indigo">
+        <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                {t("title")}
+              </h1>
+              <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-300">
+                Platform Architecture
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              {t("subtitle")}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            disabled={isLoading || isFetching}
+            className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 sm:self-auto"
+          >
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-indigo-600" : ""}`}
+            />
+            <span>{t("retry")}</span>
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => refetch()}
-          disabled={isLoading || isFetching}
-          className="inline-flex items-center gap-2 self-start rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-        >
-          <RefreshCw
-            className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
-          />
-          <span>{t("retry")}</span>
-        </button>
-      </div>
+      </GradientCard>
 
       {/* Action Error Alert */}
       {actionError && (
@@ -170,50 +180,54 @@ export default function AdminSettingsPage() {
 
       {/* Settings Form Card */}
       {!isLoading && (
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-          <form onSubmit={handleSave} className="space-y-5">
-            <div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                <label className="text-xs font-bold text-slate-900 dark:text-slate-100">
-                  {t("bookingWindow")}
-                </label>
+        <GradientCard variant="slate">
+          <div className="p-6">
+            <form onSubmit={handleSave} className="space-y-5">
+              <div>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400">
+                    <Clock className="h-4 w-4" />
+                  </div>
+                  <label className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                    {t("bookingWindow")}
+                  </label>
+                </div>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {t("bookingWindowDesc")}
+                </p>
+
+                <div className="mt-3 max-w-xs">
+                  <input
+                    type="number"
+                    min={1}
+                    max={1440}
+                    value={bookingWindow}
+                    onChange={(e) => setBookingWindow(Number(e.target.value))}
+                    required
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-900 shadow-xs outline-none transition focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                  />
+                </div>
               </div>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                {t("bookingWindowDesc")}
-              </p>
 
-              <div className="mt-3 max-w-xs">
-                <input
-                  type="number"
-                  min={1}
-                  max={1440}
-                  value={bookingWindow}
-                  onChange={(e) => setBookingWindow(Number(e.target.value))}
-                  required
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 shadow-xs outline-none transition focus:border-blue-600 focus:ring-1 focus:ring-blue-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-                />
+              {settings?.updatedAt && (
+                <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500">
+                  {t("lastUpdated")}: {new Date(settings.updatedAt).toLocaleString(localeCode)}
+                </p>
+              )}
+
+              <div className="border-t border-slate-100 pt-4 dark:border-slate-800">
+                <button
+                  type="submit"
+                  disabled={updateSettings.isPending}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 px-4 py-2 text-xs font-bold text-white shadow-xs transition hover:scale-105 active:scale-95 disabled:opacity-50"
+                >
+                  <Save className="h-3.5 w-3.5" />
+                  <span>{updateSettings.isPending ? t("saving") : t("saveSettings")}</span>
+                </button>
               </div>
-            </div>
-
-            {settings?.updatedAt && (
-              <p className="text-[10px] text-slate-400 dark:text-slate-500">
-                {t("lastUpdated")}: {new Date(settings.updatedAt).toLocaleString(localeCode)}
-              </p>
-            )}
-
-            <div className="border-t border-slate-100 pt-4 dark:border-slate-800">
-              <button
-                type="submit"
-                disabled={updateSettings.isPending}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
-              >
-                <Save className="h-3.5 w-3.5" />
-                <span>{updateSettings.isPending ? t("saving") : t("saveSettings")}</span>
-              </button>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </GradientCard>
       )}
     </div>
   );
