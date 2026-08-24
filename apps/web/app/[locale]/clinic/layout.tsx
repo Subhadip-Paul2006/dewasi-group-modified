@@ -374,69 +374,6 @@ function DesktopNavItem({
 }
 
 // ----------------------------------------------------------------------
-// Top Header Component
-// ----------------------------------------------------------------------
-function TopHeader() {
-  const { user } = useAuth();
-  const tNav = useTranslations("ClinicNav");
-
-  return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl md:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-3 md:px-6 lg:px-8">
-        {/* Desktop: Logo */}
-        <div className="hidden items-center gap-3 md:flex">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-[#1e3a8a]/30">
-            <Building2 className="h-5 w-5" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900">Clinic Dashboard</h1>
-            <p className="text-[11px] text-slate-500">{tNav("overview")}</p>
-          </div>
-        </div>
-
-        {/* Mobile: Logo Text */}
-        <div className="flex items-center gap-2 md:hidden">
-          <Building2 className="h-5 w-5 text-[#1e40af]" />
-          <span className="text-base font-bold text-slate-900">Clinic</span>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-2">
-          {/* Notification Bell */}
-          <button className="relative hidden h-10 w-10 items-center justify-center rounded-xl hover:bg-slate-100 md:flex">
-            <Bell className="h-5 w-5 text-slate-600" />
-            <span className="absolute right-2 top-2 flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#1e40af]"></span>
-            </span>
-          </button>
-
-          {/* Search */}
-          <button className="hidden h-10 w-10 items-center justify-center rounded-xl hover:bg-slate-100 md:flex">
-            <Search className="h-5 w-5 text-slate-600" />
-          </button>
-
-          {/* Settings Link */}
-          <Link
-            href="/clinic/settings"
-            className="hidden h-10 w-10 items-center justify-center rounded-xl hover:bg-slate-100 md:flex"
-          >
-            <Settings className="h-5 w-5 text-slate-600" />
-          </Link>
-
-          {/* User Avatar */}
-          <button className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white shadow-md">
-            <span className="text-sm font-bold">
-              {user?.name?.charAt(0) || "U"}
-            </span>
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-// ----------------------------------------------------------------------
 // Main Layout Component
 // ----------------------------------------------------------------------
 export default function ClinicDashboardLayout({
@@ -462,9 +399,6 @@ export default function ClinicDashboardLayout({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-[#3b82f6]/5 dark:from-slate-950 dark:to-slate-900">
-      {/* Top Header */}
-      <TopHeader />
-
       {/* Mobile Floating Action Button */}
       <MobileFabButton onClick={() => setIsMobileMenuOpen(true)} />
 
@@ -477,7 +411,7 @@ export default function ClinicDashboardLayout({
       />
 
       {/* Main Content Area */}
-      <div className="mx-auto flex w-full max-w-[1440px] items-start gap-6 px-4 pb-8 pt-20 md:px-6 md:pt-24 lg:px-8">
+      <div className="mx-auto flex w-full max-w-[1440px] items-start gap-6 px-4 py-6 md:px-6 md:py-8 lg:px-8">
         {/* Desktop Sidebar */}
         <DesktopSidebar pathname={pathname} tNav={tNav} />
 
