@@ -10,7 +10,6 @@ import {
   Stethoscope,
   Sparkles,
   Activity,
-  Settings,
   ShieldCheck,
   ChevronRight,
 } from "lucide-react";
@@ -24,11 +23,9 @@ interface NavItem {
     | "clinics"
     | "doctors"
     | "featuredDoctors"
-    | "diagnosticCenters"
-    | "settings";
+    | "diagnosticCenters";
   icon: typeof LayoutDashboard;
   exact?: boolean;
-  superAdminOnly?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -63,12 +60,6 @@ const NAV_ITEMS: NavItem[] = [
     key: "diagnosticCenters",
     icon: Activity,
   },
-  {
-    href: "/admin/settings",
-    key: "settings",
-    icon: Settings,
-    superAdminOnly: true,
-  },
 ];
 
 export default function AdminLayout({
@@ -81,9 +72,9 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
 
-  const isSuperAdmin = user?.role === "SUPER_ADMIN";
   const isAdmin = user?.role === "ADMIN";
-  const hasAccess = isSuperAdmin || isAdmin;
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+  const hasAccess = isAdmin || isSuperAdmin;
 
   useEffect(() => {
     if (!loading) {
@@ -106,9 +97,6 @@ export default function AdminLayout({
     );
   }
 
-  // Filter navigation items: Settings only for SUPER_ADMIN
-  const navList = NAV_ITEMS.filter((item) => !item.superAdminOnly || isSuperAdmin);
-
   return (
     <div className="mx-auto flex w-full max-w-[1440px] items-start gap-6 px-4 py-6 md:px-6 lg:px-8">
       {/* =====================================================
@@ -128,18 +116,12 @@ export default function AdminLayout({
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                     {tNav("portalTitle")}
                   </span>
-                  <span
-                    className={`rounded px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${
-                      isSuperAdmin
-                        ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
-                        : "bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
-                    }`}
-                  >
-                    {isSuperAdmin ? tNav("superAdminBadge") : tNav("adminBadge")}
+                  <span className="rounded bg-blue-100 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
+                    {tNav("adminBadge")}
                   </span>
                 </div>
                 <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
-                  {user.name || "Administrator"}
+                  {user.name || "Operator Admin"}
                 </p>
               </div>
             </div>
@@ -148,7 +130,7 @@ export default function AdminLayout({
           {/* Navigation Links */}
           <nav className="rounded-xl border border-slate-200 bg-white p-1.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
             <div className="space-y-0.5">
-              {navList.map(({ href, key, icon: Icon, exact }) => {
+              {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
                 const active = exact ? pathname === href : pathname.startsWith(href);
 
                 return (
@@ -191,14 +173,14 @@ export default function AdminLayout({
       {/* =====================================================
           MAIN CONTENT AREA
       ====================================================== */}
-      <main className="min-w-0 flex-1 pb-20 md:pb-0">{children}</main>
+      <main className="min-w-0 flex-1 pb-24 md:pb-6">{children}</main>
 
       {/* =====================================================
-          MOBILE BOTTOM NAVIGATION
+          MOBILE BOTTOM NAVIGATION (SCROLLABLE & TOUCH-FRIENDLY)
       ====================================================== */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-1.5 pb-[env(safe-area-inset-bottom)] pt-1.5 shadow-sm backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="flex items-center justify-around">
-          {navList.map(({ href, key, icon: Icon, exact }) => {
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5 shadow-lg backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+          {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
             const active = exact ? pathname === href : pathname.startsWith(href);
 
             return (
@@ -207,8 +189,8 @@ export default function AdminLayout({
                 href={href}
                 className={
                   active
-                    ? "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg px-1 py-1.5 text-[9px] font-bold text-blue-600 dark:text-blue-400"
-                    : "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg px-1 py-1.5 text-[9px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                    ? "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-blue-600 dark:text-blue-400"
+                    : "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }
               >
                 <span
@@ -227,7 +209,7 @@ export default function AdminLayout({
                   />
                 </span>
 
-                <span className="max-w-full truncate">{tNav(key)}</span>
+                <span className="max-w-[70px] truncate">{tNav(key)}</span>
               </Link>
             );
           })}

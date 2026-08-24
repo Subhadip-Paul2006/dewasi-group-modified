@@ -45,6 +45,8 @@ export default function LoginPage() {
           router.push("/diagnosticCenter/referrals");
           break;
         case "SUPER_ADMIN":
+          router.push("/super_admin/dashboard");
+          break;
         case "ADMIN":
           router.push("/admin/dashboard");
           break;

@@ -39,36 +39,18 @@ function getInitialTheme(): Theme {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-
-    try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-    } catch {
-      // Storage unavailable (private mode etc.) — theme still applies for
-      // the current session.
-    }
+    document.documentElement.classList.remove("dark");
   }, [theme]);
 
-  // Keep tabs in sync when the theme changes elsewhere.
-  useEffect(() => {
-    function onStorage(event: StorageEvent) {
-      if (event.key !== THEME_STORAGE_KEY || !event.newValue) return;
-      setThemeState(event.newValue === "dark" ? "dark" : "light");
-    }
-
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
   const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
+    // Disabled for now
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: "light", setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

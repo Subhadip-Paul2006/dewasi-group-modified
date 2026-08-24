@@ -31,7 +31,7 @@ export default function LanguageSwitcher() {
             onClick={() => switchTo(l.code)}
             aria-pressed={isActive}
             className={`
-              rounded-full px-3.5 py-1.5 text-sm font-medium
+              rounded-full px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-xs sm:text-sm font-medium
               transition-all duration-200
               ${
                 isActive

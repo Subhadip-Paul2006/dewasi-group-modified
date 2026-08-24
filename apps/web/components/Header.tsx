@@ -35,7 +35,8 @@ export default function Header() {
   const isDoctor = user?.role === "DOCTOR";
   const isDiagnosticCenter = user?.role === "DIAGNOSTIC_CENTER";
   const isDiagnosticStaff = user?.role === "DIAGNOSTIC_STAFF";
-  const isAdmin = user?.role === "SUPER_ADMIN" || user?.role === "ADMIN";
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+  const isAdmin = user?.role === "ADMIN";
   const dashboardHref = isClinic
     ? "/clinic"
     : isDoctor
@@ -44,9 +45,11 @@ export default function Header() {
         ? "/diagnosticCenter/dashboard"
         : isDiagnosticStaff
           ? "/diagnosticCenter/referrals"
-          : isAdmin
-            ? "/admin/dashboard"
-            : "/dashboard";
+          : isSuperAdmin
+            ? "/super_admin/dashboard"
+            : isAdmin
+              ? "/admin/dashboard"
+              : "/dashboard";
   const dashboardLabel = isClinic
     ? dash("clinicPanel")
     : isDoctor
@@ -55,9 +58,11 @@ export default function Header() {
         ? "Diagnostic Portal"
         : isDiagnosticStaff
           ? "Referrals Inbox"
-          : isAdmin
-            ? (user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin Portal")
-            : dash("dashboard");
+          : isSuperAdmin
+            ? "Super Admin"
+            : isAdmin
+              ? "Admin Portal"
+              : dash("dashboard");
 
   async function handleLogout() {
     await logout();
@@ -82,15 +87,14 @@ export default function Header() {
             />
           </div>
 
-          <div>
-            <span className="text-lg font-bold text-gray-800 dark:text-ink-800">
-              {t("title")}
-            </span>
-
-            <p className="hidden text-[10px] font-medium text-gray-400 sm:block">
-              Healthcare
-            </p>
-          </div>
+          <Image
+            src="/LOGO.png"
+            alt="Doctor Contact"
+            width={130}
+            height={36}
+            className="h-8 sm:h-9 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* ================= DESKTOP NAV ================= */}

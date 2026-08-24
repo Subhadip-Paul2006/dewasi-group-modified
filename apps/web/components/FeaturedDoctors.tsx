@@ -527,10 +527,10 @@ export default function FeaturedDoctors() {
       </div>
 
       {/* ====================================================
-          Desktop - 3 Columns
+          Tablet / Desktop Grid (2 columns on tablet, 3 on desktop)
       ===================================================== */}
 
-      <div className="hidden gap-5 md:grid md:grid-cols-3">
+      <div className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-3">
         {featured.map((doctor) => (
           <DoctorCard
             key={doctor.id}

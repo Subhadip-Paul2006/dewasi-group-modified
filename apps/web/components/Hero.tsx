@@ -19,21 +19,21 @@ export default function Hero() {
     <section id="search" className="bg-[var(--color-bg-soft)] px-5 py-10 md:py-14">
       <form
         onSubmit={handleSearch}
-        className="mx-auto flex max-w-2xl items-center gap-3 rounded-full border-2 border-[var(--color-primary)]/20 bg-white px-6 py-3 shadow-lg shadow-blue-900/[0.06] transition-colors focus-within:border-[var(--color-primary)] dark:bg-surface dark:shadow-black/30"
+        className="mx-auto flex max-w-2xl items-center gap-2 sm:gap-3 rounded-full border-2 border-[var(--color-primary)]/20 bg-white px-3.5 py-2 sm:px-6 sm:py-3 shadow-lg shadow-blue-900/[0.06] transition-colors focus-within:border-[var(--color-primary)] dark:bg-surface dark:shadow-black/30"
       >
-        <Search className="h-5 w-5 shrink-0 text-[var(--color-primary)] dark:text-[var(--color-primary-text)]" />
+        <Search className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[var(--color-primary)] dark:text-[var(--color-primary-text)]" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t("searchUnifiedPlaceholder")}
-          className="w-full bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400 dark:text-ink-800 dark:placeholder:text-ink-400"
+          className="w-full min-w-0 bg-transparent text-xs sm:text-sm text-gray-800 outline-none placeholder:text-gray-400 dark:text-ink-800 dark:placeholder:text-ink-400"
         />
         <button
           type="submit"
-          className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)]"
+          className="flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-[var(--color-primary)] px-3.5 py-2 text-xs sm:px-6 sm:py-2.5 sm:text-sm font-semibold text-white transition hover:bg-[var(--color-primary-dark)]"
         >
-          <Search className="h-4 w-4" />
-          {t("searchButton")}
+          <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span>{t("searchButton")}</span>
         </button>
       </form>
 

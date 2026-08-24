@@ -5,118 +5,98 @@ import { useTranslations } from "next-intl";
 import { usePathname, Link, useRouter } from "@/i18n/routing";
 import {
   LayoutDashboard,
-  ListOrdered,
-  CalendarClock,
-  Inbox,
-  Building2,
-  User,
-  ChevronRight,
-  Stethoscope,
-  Bell,
-  FlaskConical,
   Users,
-  FileText,
-  TrendingUp,
+  Building2,
+  Stethoscope,
+  Sparkles,
+  Activity,
+  Settings,
+  ShieldCheck,
+  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 interface NavItem {
   href: string;
-  key: "dashboard" | "queue" | "schedule" | "patients" | "prescriptions" | "earnings" | "requests" | "clinics" | "notifications" | "referrals" | "profile";
+  key:
+    | "dashboard"
+    | "users"
+    | "clinics"
+    | "doctors"
+    | "featuredDoctors"
+    | "diagnosticCenters"
+    | "settings";
   icon: typeof LayoutDashboard;
   exact?: boolean;
 }
 
-const NAV: NavItem[] = [
+const NAV_ITEMS: NavItem[] = [
   {
-    href: "/doctor/dashboard",
+    href: "/super_admin/dashboard",
     key: "dashboard",
     icon: LayoutDashboard,
     exact: true,
   },
   {
-    href: "/doctor/queue",
-    key: "queue",
-    icon: ListOrdered,
-  },
-  {
-    href: "/doctor/schedule",
-    key: "schedule",
-    icon: CalendarClock,
-  },
-  {
-    href: "/doctor/patients",
-    key: "patients",
+    href: "/super_admin/users",
+    key: "users",
     icon: Users,
   },
   {
-    href: "/doctor/prescriptions",
-    key: "prescriptions",
-    icon: FileText,
-  },
-  {
-    href: "/doctor/earnings",
-    key: "earnings",
-    icon: TrendingUp,
-  },
-  {
-    href: "/doctor/requests",
-    key: "requests",
-    icon: Inbox,
-  },
-  {
-    href: "/doctor/clinics",
+    href: "/super_admin/clinics",
     key: "clinics",
     icon: Building2,
   },
   {
-    href: "/doctor/notifications",
-    key: "notifications",
-    icon: Bell,
+    href: "/super_admin/doctors",
+    key: "doctors",
+    icon: Stethoscope,
   },
   {
-    href: "/doctor/referrals",
-    key: "referrals",
-    icon: FlaskConical,
+    href: "/super_admin/featured-doctors",
+    key: "featuredDoctors",
+    icon: Sparkles,
   },
   {
-    href: "/doctor/profile",
-    key: "profile",
-    icon: User,
+    href: "/super_admin/diagnostic-centers",
+    key: "diagnosticCenters",
+    icon: Activity,
+  },
+  {
+    href: "/super_admin/settings",
+    key: "settings",
+    icon: Settings,
   },
 ];
 
-export default function DoctorLayout({
+export default function SuperAdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const tNav = useTranslations("DoctorNav");
+  const tNav = useTranslations("AdminNav");
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+
   useEffect(() => {
     if (!loading) {
-      if (!user || user.role !== "DOCTOR") {
+      if (!user || !isSuperAdmin) {
         router.push("/login");
       }
     }
-  }, [loading, user, router]);
+  }, [loading, user, isSuperAdmin, router]);
 
-  if (loading || !user || user.role !== "DOCTOR") {
+  if (loading || !user || !isSuperAdmin) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
+      <div className="flex min-h-[400px] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div
-            className="
-              h-7 w-7 animate-spin rounded-full
-              border-[2.5px]
-              border-blue-600
-              border-t-transparent
-            "
-          />
-          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{tNav("loadingPortal")}</p>
+          <div className="h-7 w-7 animate-spin rounded-full border-[2.5px] border-amber-600 border-t-transparent" />
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+            {tNav("loadingPortal")}
+          </p>
         </div>
       </div>
     );
@@ -129,31 +109,34 @@ export default function DoctorLayout({
       ====================================================== */}
       <aside className="hidden w-60 shrink-0 md:block">
         <div className="sticky top-20 space-y-3">
-          {/* Sidebar Brand Header */}
-          <div className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
+          {/* Sidebar Brand / Identity Card */}
+          <div className="rounded-xl border border-amber-200/80 bg-white p-3.5 shadow-xs transition-colors dark:border-amber-900/40 dark:bg-slate-900">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
-                <Stethoscope className="h-4.5 w-4.5" />
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white shadow-xs">
+                <ShieldCheck className="h-4.5 w-4.5" />
               </div>
 
               <div className="min-w-0 flex-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                  {tNav("doctorPortal")}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                    {tNav("portalTitle")}
+                  </span>
+                  <span className="rounded bg-amber-100 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                    {tNav("superAdminBadge")}
+                  </span>
+                </div>
                 <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
-                  {user.name || "Doctor"}
+                  {user.name || "Super Administrator"}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation Links */}
           <nav className="rounded-xl border border-slate-200 bg-white p-1.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
             <div className="space-y-0.5">
-              {NAV.map(({ href, key, icon: Icon, exact }) => {
-                const active = exact
-                  ? pathname === href
-                  : pathname.startsWith(href);
+              {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
+                const active = exact ? pathname === href : pathname.startsWith(href);
 
                 return (
                   <Link
@@ -161,7 +144,7 @@ export default function DoctorLayout({
                     href={href}
                     className={
                       active
-                        ? "group flex items-center gap-3 rounded-lg bg-blue-600 px-3 py-2.5 text-xs font-semibold text-white shadow-xs transition-all"
+                        ? "group flex items-center gap-3 rounded-lg bg-amber-600 px-3 py-2.5 text-xs font-semibold text-white shadow-xs transition-all"
                         : "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs font-medium text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/70 dark:hover:text-slate-200"
                     }
                   >
@@ -183,9 +166,7 @@ export default function DoctorLayout({
 
                     <span className="flex-1">{tNav(key)}</span>
 
-                    {active && (
-                      <ChevronRight className="h-3.5 w-3.5 text-white/70" />
-                    )}
+                    {active && <ChevronRight className="h-3.5 w-3.5 text-white/70" />}
                   </Link>
                 );
               })}
@@ -204,10 +185,8 @@ export default function DoctorLayout({
       ====================================================== */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5 shadow-lg backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-          {NAV.map(({ href, key, icon: Icon, exact }) => {
-            const active = exact
-              ? pathname === href
-              : pathname.startsWith(href);
+          {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
+            const active = exact ? pathname === href : pathname.startsWith(href);
 
             return (
               <Link
@@ -215,21 +194,21 @@ export default function DoctorLayout({
                 href={href}
                 className={
                   active
-                    ? "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-blue-600 dark:text-blue-400"
+                    ? "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-amber-600 dark:text-amber-400"
                     : "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }
               >
                 <span
                   className={
                     active
-                      ? "flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-900"
+                      ? "flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 dark:bg-slate-900"
                       : "flex h-7 w-7 items-center justify-center rounded-lg"
                   }
                 >
                   <Icon
                     className={
                       active
-                        ? "h-3.5 w-3.5 text-blue-600 dark:text-blue-400"
+                        ? "h-3.5 w-3.5 text-amber-600 dark:text-amber-400"
                         : "h-3.5 w-3.5 text-slate-400 dark:text-slate-500"
                     }
                   />
