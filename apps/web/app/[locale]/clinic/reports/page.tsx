@@ -16,6 +16,9 @@ import {
   Loader2,
   FileSpreadsheet,
   FileText,
+  Sparkles,
+  Award,
+  Activity,
 } from "lucide-react";
 
 import {
@@ -28,33 +31,62 @@ import {
 
 const today = new Date().toISOString().split("T")[0];
 
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#667eea] via-[#764ba2] to-[#f093fb]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3px] bg-gradient-to-r ${gradient} shadow-xl ${className}`}>
+      <div className="rounded-[calc(1rem-2px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function ClinicReportsPage() {
   const t = useTranslations("ClinicReports");
 
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Gradient Border
       ====================================================== */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-        <div className="mb-2 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-slate-800 dark:text-blue-400">
-            <BarChart3 className="h-4 w-4" />
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+        <div className="p-5">
+          <div className="mb-2 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <BarChart3 className="h-4 w-4" />
+            </div>
+
+            <span className="text-xs font-bold uppercase tracking-wider text-[#1e40af]">
+              {t("tagline")}
+            </span>
+
+            <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-2 py-0.5 text-[9px] font-bold text-white">
+              <Sparkles className="h-3 w-3" />
+              Analytics
+            </span>
           </div>
 
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-            {t("tagline")}
-          </span>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            {t("heading")}
+          </h1>
+
+          <p className="mt-1 text-xs text-slate-500">
+            {t("subtitle")}
+          </p>
         </div>
-
-        <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl">
-          {t("heading")}
-        </h1>
-
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          {t("subtitle")}
-        </p>
-      </div>
+      </GradientCard>
 
       <PeriodReportCard />
 
@@ -64,7 +96,7 @@ export default function ClinicReportsPage() {
 }
 
 /* ============================================================
-   PERIOD REPORT
+   PERIOD REPORT - Gradient Border
 ============================================================ */
 
 function PeriodReportCard() {
@@ -125,21 +157,21 @@ function PeriodReportCard() {
   const report = periodReport.data;
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
+    <GradientCard gradient="from-[#667eea] via-[#764ba2] to-[#f093fb]">
       <div className="p-5 sm:p-6">
         {/* Header */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-purple-500/30">
               <CalendarDays className="h-5 w-5" />
             </div>
 
             <div>
-              <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-sm font-semibold text-slate-900">
                 {t("patientReportTitle")}
               </h2>
 
-              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-0.5 text-xs text-slate-500">
                 {t("patientReportSub")}
               </p>
             </div>
@@ -151,12 +183,12 @@ function PeriodReportCard() {
                 type="button"
                 onClick={() => handleDownload("pdf")}
                 disabled={download.isPending}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700/80 shadow-xs"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#f5576c] to-[#fda085] px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-pink-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
               >
                 {download.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <FileText className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+                  <FileText className="h-3.5 w-3.5" />
                 )}
                 PDF
               </button>
@@ -165,12 +197,12 @@ function PeriodReportCard() {
                 type="button"
                 onClick={() => handleDownload("excel")}
                 disabled={download.isPending}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700/80 shadow-xs"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#059669] to-[#10b981] px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-green-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
               >
                 {download.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <FileSpreadsheet className="h-3.5 w-3.5" />
                 )}
                 Excel
               </button>
@@ -180,7 +212,7 @@ function PeriodReportCard() {
 
         {/* Period selector */}
         <div className="mt-5">
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
             {t("reportPeriod")}
           </p>
 
@@ -192,8 +224,8 @@ function PeriodReportCard() {
                 onClick={() => setPeriod(p.value)}
                 className={
                   period === p.value
-                    ? "rounded-lg bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition"
-                    : "rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/60"
+                    ? "rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-3.5 py-2 text-xs font-semibold text-white shadow-md shadow-blue-500/30 transition"
+                    : "rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs font-medium text-slate-600 transition hover:border-[#1e40af]/30 hover:bg-[#1e40af]/5"
                 }
               >
                 {t(p.labelKey)}
@@ -203,7 +235,7 @@ function PeriodReportCard() {
         </div>
 
         {/* Date controls */}
-        <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
+        <div className="mt-4 rounded-lg border border-[#1e40af]/10 bg-gradient-to-r from-[#1e40af]/5 to-transparent p-3.5">
           <div className="flex flex-wrap items-end gap-3">
             {(period === "daily" || period === "weekly") && (
               <Field
@@ -215,7 +247,7 @@ function PeriodReportCard() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
                 />
               </Field>
             )}
@@ -226,7 +258,7 @@ function PeriodReportCard() {
                   type="month"
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
                 />
               </Field>
             )}
@@ -239,7 +271,7 @@ function PeriodReportCard() {
                   max="2100"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 w-28"
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 w-28"
                 />
               </Field>
             )}
@@ -251,7 +283,7 @@ function PeriodReportCard() {
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
                   />
                 </Field>
 
@@ -260,7 +292,7 @@ function PeriodReportCard() {
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
                   />
                 </Field>
               </>
@@ -270,7 +302,7 @@ function PeriodReportCard() {
               type="button"
               onClick={handleFetch}
               disabled={periodReport.isPending}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-4 py-2 text-xs font-semibold text-white shadow-md shadow-blue-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
             >
               {periodReport.isPending && (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -282,7 +314,7 @@ function PeriodReportCard() {
 
         {/* Report Results */}
         {report && (
-          <div className="mt-6 space-y-6 border-t border-slate-100 pt-5 dark:border-slate-800">
+          <div className="mt-6 space-y-6 border-t border-slate-100 pt-5">
             {/* Stats */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               <ReportStat
@@ -335,39 +367,39 @@ function PeriodReportCard() {
             <div>
               <SectionTitle>{t("doctorWiseBreakdown")}</SectionTitle>
 
-              <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="overflow-hidden rounded-lg border border-slate-200 divide-y divide-slate-100">
                 {Object.entries(report.byDoctor).map(
                   ([doctorName, doctor]) => (
                     <div
                       key={doctorName}
-                      className="flex flex-col gap-3 p-3.5 sm:flex-row sm:items-center sm:justify-between hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                      className="flex flex-col gap-3 p-3.5 sm:flex-row sm:items-center sm:justify-between hover:bg-[#1e40af]/5 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30">
                           <Stethoscope className="h-4 w-4" />
                         </div>
 
                         <div>
-                          <p className="text-xs font-bold text-slate-900 dark:text-white">
+                          <p className="text-xs font-bold text-slate-900">
                             {doctorName}
                           </p>
 
-                          <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                          <p className="mt-0.5 text-[11px] text-slate-500">
                             {doctor.totalAppointments} {t("appointmentsShort")}
                           </p>
                         </div>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-                        <span className="rounded-md bg-slate-100 px-2.5 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span className="rounded-md bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-2.5 py-1 text-white shadow-md shadow-blue-500/30">
                           {doctor.totalAppointments} {t("totalAppointments")}
                         </span>
 
-                        <span className="rounded-md bg-emerald-50 px-2.5 py-1 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50">
+                        <span className="rounded-md bg-gradient-to-r from-[#059669] to-[#10b981] px-2.5 py-1 text-white shadow-md shadow-green-500/30">
                           {doctor.completed} {tStatus("COMPLETED")}
                         </span>
 
-                        <span className="rounded-md bg-blue-50 px-2.5 py-1 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/50">
+                        <span className="rounded-md bg-gradient-to-r from-[#f59e0b] to-[#f97316] px-2.5 py-1 text-white shadow-md shadow-orange-500/30">
                           ₹{doctor.revenue}
                         </span>
                       </div>
@@ -377,9 +409,9 @@ function PeriodReportCard() {
 
                 {Object.keys(report.byDoctor).length === 0 && (
                   <div className="p-6 text-center">
-                    <Stethoscope className="mx-auto h-6 w-6 text-slate-400 dark:text-slate-500" />
+                    <Stethoscope className="mx-auto h-6 w-6 text-slate-400" />
 
-                    <p className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                    <p className="mt-2 text-xs font-medium text-slate-500">
                       {t("noAppointmentsPeriod")}
                     </p>
                   </div>
@@ -389,12 +421,12 @@ function PeriodReportCard() {
           </div>
         )}
       </div>
-    </section>
+    </GradientCard>
   );
 }
 
 /* ============================================================
-   GROWTH REPORT
+   GROWTH REPORT - Gradient Border
 ============================================================ */
 
 function GrowthCard() {
@@ -425,27 +457,27 @@ function GrowthCard() {
   const data = growth.data;
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
+    <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#059669]">
       <div className="p-5 sm:p-6">
         {/* Header */}
-        <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+        <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-[#059669] to-[#10b981] text-white shadow-lg shadow-green-500/30">
             <TrendingUp className="h-5 w-5" />
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-sm font-semibold text-slate-900">
               {t("patientGrowthTitle")}
             </h2>
 
-            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-0.5 text-xs text-slate-500">
               {t("patientGrowthSub")}
             </p>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
+        <div className="mt-4 rounded-lg border border-[#059669]/10 bg-gradient-to-r from-[#059669]/5 to-transparent p-3.5">
           <div className="flex flex-wrap items-end gap-3">
             <Field label={t("granularityLabel")}>
               <select
@@ -453,7 +485,7 @@ function GrowthCard() {
                 onChange={(e) =>
                   setGranularity(e.target.value as typeof granularity)
                 }
-                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
               >
                 <option value="daily">{t("daily")}</option>
                 <option value="weekly">{t("weekly")}</option>
@@ -467,7 +499,7 @@ function GrowthCard() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
               />
             </Field>
 
@@ -476,7 +508,7 @@ function GrowthCard() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-800"
               />
             </Field>
 
@@ -484,7 +516,7 @@ function GrowthCard() {
               type="button"
               onClick={handleFetch}
               disabled={growth.isPending}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#059669] to-[#10b981] px-4 py-2 text-xs font-semibold text-white shadow-md shadow-green-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
             >
               {growth.isPending && (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -496,7 +528,7 @@ function GrowthCard() {
 
         {/* Growth result */}
         {data && (
-          <div className="mt-6 space-y-6 border-t border-slate-100 pt-5 dark:border-slate-800">
+          <div className="mt-6 space-y-6 border-t border-slate-100 pt-5">
             {/* Summary */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <GrowthStat
@@ -509,18 +541,18 @@ function GrowthCard() {
                 value={data.summary.previousPeriodPatients}
               />
 
-              <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   {t("growthRate")}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
                   {data.summary.growthRatePercent >= 0 ? (
-                    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-r from-[#059669] to-[#10b981] text-white shadow-md shadow-green-500/30">
                       <TrendingUp className="h-3.5 w-3.5" />
                     </div>
                   ) : (
-                    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-r from-[#f5576c] to-[#fda085] text-white shadow-md shadow-pink-500/30">
                       <TrendingDown className="h-3.5 w-3.5" />
                     </div>
                   )}
@@ -529,15 +561,15 @@ function GrowthCard() {
                     className={
                       "text-base font-bold " +
                       (data.summary.growthRatePercent >= 0
-                        ? "text-emerald-600 dark:text-emerald-400"
-                        : "text-rose-600 dark:text-rose-400")
+                        ? "text-[#059669]"
+                        : "text-[#f5576c]")
                     }
                   >
                     {data.summary.growthRatePercent}%
                   </span>
                 </div>
 
-                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-[11px] text-slate-500">
                   {t("vsPreviousPeriod")}
                 </p>
               </div>
@@ -547,33 +579,33 @@ function GrowthCard() {
             <div>
               <SectionTitle>{t("growthTrend")}</SectionTitle>
 
-              <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="overflow-hidden rounded-lg border border-slate-200 divide-y divide-slate-100">
                 {data.trend.map((point) => (
                   <div
                     key={point.period}
-                    className="p-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                    className="p-3.5 hover:bg-[#1e40af]/5 transition-colors"
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="text-xs font-bold text-slate-900 dark:text-white">
+                        <p className="text-xs font-bold text-slate-900">
                           {point.period}
                         </p>
 
-                        <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                        <p className="mt-0.5 text-[11px] text-slate-500">
                           {t("patientActivity")}
                         </p>
                       </div>
 
                       <div className="flex flex-wrap gap-2 text-[11px] font-semibold">
-                        <span className="rounded-md bg-blue-50 px-2.5 py-1 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/50">
+                        <span className="rounded-md bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-2.5 py-1 text-white shadow-md shadow-blue-500/30">
                           {point.newPatients} {t("newShort")}
                         </span>
 
-                        <span className="rounded-md bg-slate-100 px-2.5 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span className="rounded-md bg-gradient-to-r from-[#059669] to-[#10b981] px-2.5 py-1 text-white shadow-md shadow-green-500/30">
                           {point.returningPatients} {t("returningShort")}
                         </span>
 
-                        <span className="rounded-md bg-slate-100 px-2.5 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span className="rounded-md bg-gradient-to-r from-[#f59e0b] to-[#f97316] px-2.5 py-1 text-white shadow-md shadow-orange-500/30">
                           {point.totalAppointments} {t("appointmentsShort")}
                         </span>
                       </div>
@@ -583,9 +615,9 @@ function GrowthCard() {
 
                 {data.trend.length === 0 && (
                   <div className="p-6 text-center">
-                    <TrendingUp className="mx-auto h-6 w-6 text-slate-400 dark:text-slate-500" />
+                    <TrendingUp className="mx-auto h-6 w-6 text-slate-400" />
 
-                    <p className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                    <p className="mt-2 text-xs font-medium text-slate-500">
                       {t("noDataRange")}
                     </p>
                   </div>
@@ -595,7 +627,7 @@ function GrowthCard() {
           </div>
         )}
       </div>
-    </section>
+    </GradientCard>
   );
 }
 
@@ -612,7 +644,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
         {label}
       </span>
 
@@ -623,7 +655,7 @@ function Field({
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+    <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">
       {children}
     </p>
   );
@@ -639,18 +671,18 @@ function ReportStat({
   value: string | number;
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
+    <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5">
       <div className="flex items-center justify-between gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-xs">
+        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30">
           <Icon className="h-3.5 w-3.5" />
         </div>
       </div>
 
-      <p className="mt-2 text-lg font-bold text-slate-900 dark:text-white">
+      <p className="mt-2 text-lg font-bold text-slate-900">
         {value}
       </p>
 
-      <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+      <p className="mt-0.5 text-[11px] text-slate-500">
         {label}
       </p>
     </div>
@@ -665,17 +697,17 @@ function GrowthStat({
   value: string | number;
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
-      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+    <div className="rounded-lg border border-slate-200 bg-slate-50/80 p-3.5">
+      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
         {label}
       </p>
 
-      <p className="mt-1.5 text-lg font-bold text-slate-900 dark:text-white">
+      <p className="mt-1.5 text-lg font-bold text-slate-900">
         {value}
       </p>
 
-      <div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-        <div className="h-full w-2/3 rounded-full bg-blue-600" />
+      <div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-200">
+        <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6]" />
       </div>
     </div>
   );
@@ -689,9 +721,7 @@ function StatusCard({
 }: {
   status: string;
   count: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tStatus: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   t: any;
 }) {
   const isCancelled = status === "CANCELLED";
@@ -699,25 +729,21 @@ function StatusCard({
   const isCompleted = status === "COMPLETED";
 
   let icon = Users;
-  let iconClass = "text-blue-600 dark:text-blue-400";
-  let bgClass = "bg-blue-50 dark:bg-blue-950/40";
-  let textClass = "text-blue-700 dark:text-blue-400";
+  let gradient = "from-[#1e3a8a] to-[#3b82f6]"; // Royal Blue
+  let textClass = "text-[#1e40af]";
 
   if (isCancelled) {
     icon = XCircle;
-    iconClass = "text-rose-600 dark:text-rose-400";
-    bgClass = "bg-rose-50 dark:bg-rose-950/40";
-    textClass = "text-rose-700 dark:text-rose-400";
+    gradient = "from-[#f5576c] to-[#fda085]"; // Pink/Red
+    textClass = "text-[#f5576c]";
   } else if (isAbsent) {
     icon = UserX;
-    iconClass = "text-amber-600 dark:text-amber-400";
-    bgClass = "bg-amber-50 dark:bg-amber-950/40";
-    textClass = "text-amber-700 dark:text-amber-400";
+    gradient = "from-[#f59e0b] to-[#f97316]"; // Amber/Orange
+    textClass = "text-[#f59e0b]";
   } else if (isCompleted) {
     icon = CheckCircle2;
-    iconClass = "text-emerald-600 dark:text-emerald-400";
-    bgClass = "bg-emerald-50 dark:bg-emerald-950/40";
-    textClass = "text-emerald-700 dark:text-emerald-400";
+    gradient = "from-[#059669] to-[#10b981]"; // Leaf Green
+    textClass = "text-[#059669]";
   }
 
   const Icon = icon;
@@ -729,23 +755,18 @@ function StatusCard({
       : status;
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 shadow-xs">
+    <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-xs">
       <div className="flex items-center gap-3">
-        <div
-          className={
-            "flex h-8 w-8 shrink-0 items-center justify-center rounded-md " +
-            bgClass
-          }
-        >
-          <Icon className={"h-4 w-4 " + iconClass} />
+        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-r ${gradient} text-white shadow-md`}>
+          <Icon className="h-4 w-4" />
         </div>
 
         <div className="min-w-0">
-          <p className={"truncate text-xs font-semibold " + textClass}>
+          <p className={`truncate text-xs font-semibold ${textClass}`}>
             {displayStatus}
           </p>
 
-          <p className="mt-0.5 text-base font-bold text-slate-900 dark:text-white">
+          <p className="mt-0.5 text-base font-bold text-slate-900">
             {count}
           </p>
         </div>

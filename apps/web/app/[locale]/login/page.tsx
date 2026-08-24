@@ -30,10 +30,10 @@ export default function LoginPage() {
 
       switch (data.data.user.role) {
         case "PATIENT":
-          router.push("/dashboard");
+          router.push("/patient");
           break;
         case "CLINIC":
-          router.push("/clinic");
+          router.push("/clinic/dashboard");
           break;
         case "DOCTOR":
           router.push("/doctor/dashboard");

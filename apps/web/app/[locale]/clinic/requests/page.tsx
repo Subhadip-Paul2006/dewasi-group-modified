@@ -12,6 +12,11 @@ import {
   CheckCircle2,
   XCircle,
   Clock3,
+  Sparkles,
+  TrendingUp,
+  Award,
+  UserCheck,
+  UserX,
 } from "lucide-react";
 import {
   useReceivedDoctorRequests,
@@ -19,6 +24,28 @@ import {
   useRespondToDoctorRequest,
   type SentDoctorRequest,
 } from "@/lib/hooks/useClinic";
+
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#667eea] via-[#764ba2] to-[#f093fb]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3px] bg-gradient-to-r ${gradient} shadow-xl ${className}`}>
+      <div className="rounded-[calc(1rem-2px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function ClinicRequestsPage() {
   const t = useTranslations("ClinicRequests");
@@ -33,66 +60,73 @@ export default function ClinicRequestsPage() {
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Gradient Border
       ====================================================== */}
-      <div className="flex flex-col gap-1">
-        <div className="mb-2 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
-            <Inbox className="h-4 w-4 text-[var(--color-primary-text)]" />
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+        <div className="p-5">
+          <div className="mb-2 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <Inbox className="h-4 w-4" />
+            </div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#1e40af]">
+              {t("tagline")}
+            </span>
+
+            {pending.length > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#f97316] px-2 py-0.5 text-[9px] font-bold text-white">
+                <Sparkles className="h-3 w-3" />
+                {pending.length} Pending
+              </span>
+            )}
           </div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
-            {t("tagline")}
-          </span>
+
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            {t("heading")}
+          </h1>
+
+          <p className="mt-1 text-sm text-slate-500">
+            {t("subtitle")}
+          </p>
         </div>
-
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
-          {t("heading")}
-        </h1>
-
-        <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
-          {t("subtitle")}
-        </p>
-      </div>
+      </GradientCard>
 
       {/* =====================================================
-          INCOMING REQUESTS
+          INCOMING REQUESTS - Gradient Border
       ====================================================== */}
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
-        <div className="h-1 bg-[var(--color-primary)]" />
-
+      <GradientCard gradient="from-[#667eea] via-[#764ba2] to-[#f093fb]">
         <div className="p-5 sm:p-6">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <Inbox className="h-5 w-5 text-[var(--color-primary-text)]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-purple-500/30">
+              <Inbox className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+              <h2 className="text-base font-bold text-slate-800">
                 {t("incomingTab")}
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-0.5 text-xs text-slate-500">
                 {t("incomingSub")}
               </p>
             </div>
           </div>
 
           {loadingReceived ? (
-            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50 dark:border-soft-300 dark:bg-soft-50/50">
+            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50/50">
               <div className="flex flex-col items-center gap-3">
-                <Loader2 className="h-6 w-6 animate-spin text-[var(--color-primary-text)]" />
-                <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
+                <Loader2 className="h-6 w-6 animate-spin text-[#667eea]" />
+                <p className="text-sm font-medium text-slate-500">
                   {t("loadingIncoming")}
                 </p>
               </div>
             </div>
           ) : pending.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center dark:border-soft-300 dark:bg-soft-50">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-surface">
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-[#059669] to-[#10b981] text-white shadow-lg shadow-green-500/30">
+                <CheckCircle2 className="h-6 w-6" />
               </div>
-              <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
+              <h3 className="mt-4 text-sm font-bold text-slate-800">
                 {t("emptyIncomingTitle")}
               </h3>
-              <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-1 text-xs text-slate-500">
                 {t("emptyIncomingDesc")}
               </p>
             </div>
@@ -113,47 +147,45 @@ export default function ClinicRequestsPage() {
             </div>
           )}
         </div>
-      </div>
+      </GradientCard>
 
       {/* =====================================================
-          SENT REQUESTS
+          SENT REQUESTS - Gradient Border
       ====================================================== */}
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
-        <div className="h-1 bg-gray-200 dark:bg-soft-300" />
-
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#059669]">
         <div className="p-5 sm:p-6">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 dark:bg-soft-100">
-              <Send className="h-5 w-5 text-gray-600 dark:text-ink-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <Send className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+              <h2 className="text-base font-bold text-slate-800">
                 {t("sentTab")}
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-0.5 text-xs text-slate-500">
                 {t("sentSub")}
               </p>
             </div>
           </div>
 
           {loadingSent ? (
-            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-gray-100 bg-gray-50/50 dark:border-soft-300 dark:bg-soft-50/50">
+            <div className="flex min-h-[150px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50/50">
               <div className="flex flex-col items-center gap-3">
-                <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-ink-400" />
-                <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                <p className="text-sm font-medium text-slate-500">
                   {t("loadingSent")}
                 </p>
               </div>
             </div>
           ) : !sent || sent.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center dark:border-soft-300 dark:bg-soft-50">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-surface">
-                <Send className="h-6 w-6 text-gray-400 dark:text-ink-400" />
+            <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+                <Send className="h-6 w-6" />
               </div>
-              <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
+              <h3 className="mt-4 text-sm font-bold text-slate-800">
                 {t("emptySentTitle")}
               </h3>
-              <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-1 text-xs text-slate-500">
                 {t("emptySentDesc")}
               </p>
             </div>
@@ -162,23 +194,23 @@ export default function ClinicRequestsPage() {
               {sent.map((r) => (
                 <div
                   key={r.id}
-                  className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-surface"
+                  className="flex flex-col gap-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] transition hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-50 dark:bg-soft-100">
-                      <span className="text-sm font-bold text-gray-500 dark:text-ink-500">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30">
+                      <span className="text-sm font-bold">
                         {getInitials(r.doctor?.user?.name ?? "Doctor")}
                       </span>
                     </div>
 
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-gray-800 dark:text-ink-800">
+                      <p className="truncate text-sm font-bold text-slate-800">
                         {r.doctor?.user?.name ?? "Unknown Doctor"}
                       </p>
                       {r.dayOfWeek && (
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-gray-500 dark:text-ink-500">
+                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-500">
                           <div className="flex items-center gap-1.5">
-                            <CalendarDays className="h-3.5 w-3.5 text-gray-400 dark:text-ink-400" />
+                            <CalendarDays className="h-3.5 w-3.5 text-[#1e40af]" />
                             <span>
                               {tDays.has(r.dayOfWeek)
                                 ? tDays(r.dayOfWeek)
@@ -186,7 +218,7 @@ export default function ClinicRequestsPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <Clock className="h-3.5 w-3.5 text-gray-400 dark:text-ink-400" />
+                            <Clock className="h-3.5 w-3.5 text-[#1e40af]" />
                             <span>
                               {r.startTime} – {r.endTime}
                             </span>
@@ -204,7 +236,7 @@ export default function ClinicRequestsPage() {
             </div>
           )}
         </div>
-      </div>
+      </GradientCard>
     </div>
   );
 }
@@ -228,23 +260,23 @@ function IncomingRow({
   tDays: any;
 }) {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-[var(--color-primary)]/10 bg-[var(--color-primary)]/5 p-4 transition hover:bg-[var(--color-primary)]/10 sm:flex-row sm:items-center sm:justify-between dark:border-soft-300 dark:bg-soft-50/50 dark:hover:bg-soft-100/50">
+    <div className="flex flex-col gap-4 rounded-2xl border border-[#667eea]/10 bg-gradient-to-r from-[#667eea]/5 to-transparent p-4 transition hover:from-[#667eea]/10 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3">
         {/* Avatar */}
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-surface">
-          <span className="text-sm font-bold text-[var(--color-primary-text)]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30">
+          <span className="text-sm font-bold">
             {getInitials(request.doctor?.user?.name ?? "Doctor")}
           </span>
         </div>
 
         <div className="min-w-0">
-          <p className="truncate text-sm font-bold text-[var(--color-primary-dark-text)]">
+          <p className="truncate text-sm font-bold text-slate-800">
             {request.doctor?.user?.name ?? "Unknown Doctor"}
           </p>
           {request.dayOfWeek && (
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-gray-600 dark:text-ink-600">
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-600">
               <div className="flex items-center gap-1.5">
-                <CalendarDays className="h-3.5 w-3.5 text-[var(--color-primary-text)]" />
+                <CalendarDays className="h-3.5 w-3.5 text-[#1e40af]" />
                 <span>
                   {tDays.has(request.dayOfWeek)
                     ? tDays(request.dayOfWeek)
@@ -252,7 +284,7 @@ function IncomingRow({
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-[var(--color-primary-text)]" />
+                <Clock className="h-3.5 w-3.5 text-[#1e40af]" />
                 <span>
                   {request.startTime} – {request.endTime}
                 </span>
@@ -268,7 +300,7 @@ function IncomingRow({
           type="button"
           disabled={busy}
           onClick={() => onRespond("ACCEPT")}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-[var(--color-primary)] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#059669] to-[#10b981] px-4 py-2 text-xs font-bold text-white shadow-md shadow-green-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Check className="h-4 w-4" />
           {t("accept")}
@@ -277,7 +309,7 @@ function IncomingRow({
           type="button"
           disabled={busy}
           onClick={() => onRespond("REJECT")}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-white px-4 py-2 text-xs font-bold text-red-600 shadow-sm transition hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-500/30 dark:bg-surface-100 dark:text-red-400 dark:hover:bg-red-500/15"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#f5576c] to-[#fda085] px-4 py-2 text-xs font-bold text-white shadow-md shadow-pink-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <X className="h-4 w-4" />
           {t("reject")}
@@ -288,13 +320,13 @@ function IncomingRow({
 }
 
 // ============================================================
-// Status Badge Component
+// Status Badge Component - Gradient Colors
 // ============================================================
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function StatusBadge({ status, t }: { status: string; t: any }) {
   if (status === "APPROVED") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-700 dark:bg-green-500/15 dark:text-green-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md shadow-green-500/30">
         <CheckCircle2 className="h-3.5 w-3.5" />
         {t("statusApproved")}
       </span>
@@ -303,7 +335,7 @@ function StatusBadge({ status, t }: { status: string; t: any }) {
 
   if (status === "REJECTED") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700 dark:bg-red-500/15 dark:text-red-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#f5576c] to-[#fda085] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md shadow-pink-500/30">
         <XCircle className="h-3.5 w-3.5" />
         {t("statusRejected")}
       </span>
@@ -312,7 +344,7 @@ function StatusBadge({ status, t }: { status: string; t: any }) {
 
   // PENDING or other
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
+    <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#f97316] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md shadow-orange-500/30">
       <Clock3 className="h-3.5 w-3.5" />
       {t("statusPending")}
     </span>

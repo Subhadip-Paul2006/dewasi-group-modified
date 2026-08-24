@@ -10,6 +10,10 @@ import {
   Loader2,
   Building2,
   CalendarOff,
+  Sparkles,
+  TrendingUp,
+  Award,
+  Shield,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -48,6 +52,28 @@ function formatDay(day: DayOfWeek) {
 // Premium input styling
 const inputClasses =
   "rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[var(--color-primary)] focus:ring-[3px] focus:ring-[var(--color-primary)]/15";
+
+// ============================================================
+// GRADIENT BORDER CARD COMPONENT
+// ============================================================
+
+function GradientCard({
+  children,
+  className = "",
+  gradient = "from-[#667eea] via-[#764ba2] to-[#f093fb]",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  gradient?: string;
+}) {
+  return (
+    <div className={`relative rounded-2xl p-[3px] bg-gradient-to-r ${gradient} shadow-xl ${className}`}>
+      <div className="rounded-[calc(1rem-2px)] bg-white dark:bg-slate-900 h-full">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function ClinicSchedulePage() {
   const tDays = useTranslations("Days");
@@ -119,59 +145,60 @@ export default function ClinicSchedulePage() {
   return (
     <div className="space-y-6">
       {/* =====================================================
-          PAGE HEADER
+          PAGE HEADER - Gradient Border
       ====================================================== */}
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+      <GradientCard gradient="from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]">
+        <div className="p-5">
           <div className="mb-2 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <Building2 className="h-4 w-4 text-[var(--color-primary-text)]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-lg shadow-blue-500/30">
+              <Building2 className="h-4 w-4" />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary-text)]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#1e40af]">
               {tNav("schedule")}
             </span>
+
+            {holidays && holidays.length > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#059669] to-[#10b981] px-2 py-0.5 text-[9px] font-bold text-white">
+                <Sparkles className="h-3 w-3" />
+                {holidays.length} Holidays
+              </span>
+            )}
           </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--color-primary-dark-text)] sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             {tSched("heading")}
           </h1>
 
-          <p className="mt-1 text-sm text-gray-500 dark:text-ink-500">
+          <p className="mt-1 text-sm text-slate-500">
             {tSched("subtitle")}
           </p>
         </div>
-      </div>
+      </GradientCard>
 
       {/* =====================================================
-          WORKING HOURS
+          WORKING HOURS - Gradient Border
       ====================================================== */}
-      <form
-        onSubmit={handleSaveHours}
-        className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface"
-      >
-        {/* Top border accent */}
-        <div className="h-1 bg-[var(--color-primary)]" />
-
-        <div className="p-5 sm:p-6">
+      <GradientCard gradient="from-[#667eea] via-[#764ba2] to-[#f093fb]">
+        <form onSubmit={handleSaveHours} className="p-5 sm:p-6">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-bg-soft)] dark:bg-soft-100">
-              <Clock3 className="h-5 w-5 text-[var(--color-primary-text)]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg shadow-purple-500/30">
+              <Clock3 className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+              <h2 className="text-base font-bold text-slate-800">
                 {tSched("weeklyHours")}
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-0.5 text-xs text-slate-500">
                 {tSched("subtitle")}
               </p>
             </div>
           </div>
 
           {isLoading ? (
-            <div className="flex min-h-[300px] items-center justify-center rounded-3xl border border-gray-100 bg-gray-50/50 dark:border-soft-300 dark:bg-soft-50/50">
+            <div className="flex min-h-[300px] items-center justify-center rounded-3xl border border-slate-100 bg-slate-50/50">
               <div className="flex flex-col items-center gap-3">
-                <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-[var(--color-primary)] border-t-transparent" />
-                <p className="text-sm font-medium text-gray-500 dark:text-ink-500">
+                <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-[#667eea] border-t-transparent" />
+                <p className="text-sm font-medium text-slate-500">
                   {tSched("loadingSchedule")}
                 </p>
               </div>
@@ -183,13 +210,13 @@ export default function ClinicSchedulePage() {
                   key={h.dayOfWeek}
                   className={`relative overflow-hidden rounded-2xl border transition-all duration-200 ${
                     h.isClosed
-                      ? "border-gray-100 bg-gray-50/70 opacity-80 dark:border-soft-300 dark:bg-soft-50/70"
-                      : "border-gray-200 bg-white shadow-sm hover:border-[var(--color-primary)]/30 hover:shadow-md dark:border-soft-300 dark:bg-surface"
+                      ? "border-slate-100 bg-slate-50/70 opacity-80"
+                      : "border-slate-200 bg-white shadow-sm hover:border-[#667eea]/30 hover:shadow-md"
                   }`}
                 >
                   {/* Left accent bar if open */}
                   {!h.isClosed && (
-                    <div className="absolute bottom-0 left-0 top-0 w-1 bg-[var(--color-primary)]" />
+                    <div className="absolute bottom-0 left-0 top-0 w-1 bg-gradient-to-b from-[#667eea] to-[#764ba2]" />
                   )}
 
                   <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:pl-5">
@@ -198,8 +225,8 @@ export default function ClinicSchedulePage() {
                       <div
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ${
                           h.isClosed
-                            ? "bg-gray-200 text-gray-400 dark:bg-soft-200 dark:text-ink-400"
-                            : "bg-[var(--color-bg-soft)] text-[var(--color-primary-text)] dark:bg-soft-100"
+                            ? "bg-slate-200 text-slate-400"
+                            : "bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] text-white shadow-md shadow-blue-500/30"
                         }`}
                       >
                         <CalendarDays className="h-5 w-5" />
@@ -209,15 +236,15 @@ export default function ClinicSchedulePage() {
                         <p
                           className={`text-sm font-bold ${
                             h.isClosed
-                              ? "text-gray-500 dark:text-ink-500"
-                              : "text-[var(--color-primary-dark-text)]"
+                              ? "text-slate-500"
+                              : "text-slate-800"
                           }`}
                         >
                           {tDays(h.dayOfWeek)}
                         </p>
                         <p
                           className={`mt-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                            h.isClosed ? "text-gray-400 dark:text-ink-400" : "text-green-600 dark:text-green-400"
+                            h.isClosed ? "text-slate-400" : "text-[#059669]"
                           }`}
                         >
                           {h.isClosed ? tSched("closed") : tSched("open")}
@@ -235,8 +262,8 @@ export default function ClinicSchedulePage() {
                         onClick={() =>
                           updateDay(h.dayOfWeek, { isClosed: !h.isClosed })
                         }
-                        className={`relative h-7 w-12 shrink-0 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 ${
-                          !h.isClosed ? "bg-[var(--color-primary)]" : "bg-gray-300 dark:bg-soft-300"
+                        className={`relative h-7 w-12 shrink-0 rounded-full p-1 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#667eea]/20 ${
+                          !h.isClosed ? "bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6]" : "bg-slate-300"
                         }`}
                       >
                         <span
@@ -248,7 +275,7 @@ export default function ClinicSchedulePage() {
 
                       {/* Time Inputs */}
                       {!h.isClosed && (
-                        <div className="flex items-center gap-2 rounded-xl border border-gray-100 bg-gray-50/80 p-1.5 dark:border-soft-300 dark:bg-soft-50/80">
+                        <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50/80 p-1.5">
                           <input
                             type="time"
                             value={h.openTime ?? "09:00"}
@@ -257,9 +284,9 @@ export default function ClinicSchedulePage() {
                                 openTime: e.target.value,
                               })
                             }
-                            className={`${inputClasses} w-[110px] border-none !bg-white !py-2 !px-3 shadow-sm dark:!bg-surface-100 dark:!text-ink-800`}
+                            className={`${inputClasses} w-[110px] border-none !bg-white !py-2 !px-3 shadow-sm`}
                           />
-                          <span className="text-xs font-bold text-gray-400 dark:text-ink-400">
+                          <span className="text-xs font-bold text-slate-400">
                             {tSched("to")}
                           </span>
                           <input
@@ -270,7 +297,7 @@ export default function ClinicSchedulePage() {
                                 closeTime: e.target.value,
                               })
                             }
-                            className={`${inputClasses} w-[110px] border-none !bg-white !py-2 !px-3 shadow-sm dark:!bg-surface-100 dark:!text-ink-800`}
+                            className={`${inputClasses} w-[110px] border-none !bg-white !py-2 !px-3 shadow-sm`}
                           />
                         </div>
                       )}
@@ -282,11 +309,11 @@ export default function ClinicSchedulePage() {
           )}
 
           {/* Save Button */}
-          <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-gray-100 pt-6 dark:border-soft-100">
+          <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-6">
             <button
               type="submit"
               disabled={setHours.isPending || isLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 py-3 text-sm font-bold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1e3a8a] to-[#3b82f6] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
             >
               {setHours.isPending && (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -295,31 +322,29 @@ export default function ClinicSchedulePage() {
             </button>
 
             {saved && (
-              <div className="flex items-center gap-1.5 rounded-xl bg-green-50 px-4 py-3 text-xs font-bold text-green-700 dark:bg-green-500/15 dark:text-green-400">
+              <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#059669]/10 to-transparent px-4 py-3 text-xs font-bold text-[#059669]">
                 <CheckCircle2 className="h-4 w-4" />
                 {tSched("hoursSuccess")}
               </div>
             )}
           </div>
-        </div>
-      </form>
+        </form>
+      </GradientCard>
 
       {/* =====================================================
-          HOLIDAYS
+          HOLIDAYS - Gradient Border
       ====================================================== */}
-      <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.04)] dark:border-soft-300 dark:bg-surface">
-        <div className="h-1 bg-gradient-to-r from-red-400 to-rose-400" />
-
+      <GradientCard gradient="from-[#f093fb] via-[#f5576c] to-[#fda085]">
         <div className="p-5 sm:p-6">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-500/15">
-              <CalendarOff className="h-5 w-5 text-rose-500 dark:text-rose-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#f5576c] to-[#fda085] text-white shadow-lg shadow-pink-500/30">
+              <CalendarOff className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-800 dark:text-ink-800">
+              <h2 className="text-base font-bold text-slate-800">
                 {tSched("holidaysHeading")}
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-ink-500">
+              <p className="mt-0.5 text-xs text-slate-500">
                 {tSched("holidaysSub")}
               </p>
             </div>
@@ -328,11 +353,11 @@ export default function ClinicSchedulePage() {
           {/* Add Holiday */}
           <form
             onSubmit={handleAddHoliday}
-            className="rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:p-5 dark:border-soft-300 dark:bg-soft-50/70"
+            className="rounded-2xl border border-[#f5576c]/10 bg-gradient-to-r from-[#f5576c]/5 to-transparent p-4 sm:p-5"
           >
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-[180px_1fr_auto] sm:items-end">
               <label className="block">
-                <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
+                <span className="mb-1.5 block text-xs font-bold text-slate-600">
                   {tSched("selectDate")}
                 </span>
                 <input
@@ -345,9 +370,9 @@ export default function ClinicSchedulePage() {
               </label>
 
               <label className="block">
-                <span className="mb-1.5 block text-xs font-bold text-gray-600 dark:text-ink-600">
+                <span className="mb-1.5 block text-xs font-bold text-slate-600">
                   {tSched("reasonLabel")}
-                  <span className="ml-1 font-medium text-gray-400 dark:text-ink-400">
+                  <span className="ml-1 font-medium text-slate-400">
                     {tSched("optional")}
                   </span>
                 </span>
@@ -363,7 +388,7 @@ export default function ClinicSchedulePage() {
               <button
                 type="submit"
                 disabled={addHoliday.isPending}
-                className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-gray-800 px-5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-gray-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 dark:bg-soft-100 dark:text-ink-800 dark:hover:bg-soft-200"
+                className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#f5576c] to-[#fda085] px-5 text-sm font-bold text-white shadow-md shadow-pink-500/30 transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {addHoliday.isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -378,14 +403,14 @@ export default function ClinicSchedulePage() {
           {/* Holiday List */}
           <div className="mt-6">
             {(holidays ?? []).length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-10 text-center dark:border-soft-300 dark:bg-surface">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50 shadow-sm dark:bg-soft-100">
-                  <CalendarDays className="h-6 w-6 text-gray-400 dark:text-ink-400" />
+              <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-[#f5576c] to-[#fda085] text-white shadow-lg shadow-pink-500/30">
+                  <CalendarDays className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 text-sm font-bold text-gray-800 dark:text-ink-800">
+                <h3 className="mt-4 text-sm font-bold text-slate-800">
                   {tSched("noHolidaysTitle")}
                 </h3>
-                <p className="mt-1 text-xs text-gray-500 dark:text-ink-500">
+                <p className="mt-1 text-xs text-slate-500">
                   {tSched("noHolidaysSub")}
                 </p>
               </div>
@@ -406,11 +431,11 @@ export default function ClinicSchedulePage() {
                   return (
                     <div
                       key={holiday.id}
-                      className="group flex items-center justify-between gap-3 overflow-hidden rounded-2xl border border-gray-100 bg-white p-3 shadow-sm transition hover:border-gray-200 hover:shadow-md dark:border-soft-300 dark:bg-surface"
+                      className="group flex items-center justify-between gap-3 overflow-hidden rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition hover:border-[#f5576c]/30 hover:shadow-md"
                     >
                       <div className="flex min-w-0 items-center gap-3">
                         {/* Mini Calendar Badge */}
-                        <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-500/15 dark:text-rose-400">
+                        <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-br from-[#f5576c] to-[#fda085] text-white shadow-md shadow-pink-500/30">
                           <span className="text-[10px] font-bold uppercase leading-none">
                             {month}
                           </span>
@@ -420,10 +445,10 @@ export default function ClinicSchedulePage() {
                         </div>
 
                         <div className="min-w-0">
-                          <p className="text-sm font-bold text-gray-800 dark:text-ink-800">
+                          <p className="text-sm font-bold text-slate-800">
                             {holiday.reason || tSched("defaultReason")}
                           </p>
-                          <p className="mt-0.5 text-xs font-semibold text-gray-400 dark:text-ink-400">
+                          <p className="mt-0.5 text-xs font-semibold text-slate-400">
                             {year}
                           </p>
                         </div>
@@ -433,7 +458,7 @@ export default function ClinicSchedulePage() {
                         type="button"
                         onClick={() => removeHoliday.mutate(holiday.id)}
                         disabled={removeHoliday.isPending}
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-100 bg-gray-50 text-gray-400 opacity-0 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 disabled:opacity-50 dark:border-soft-300 dark:bg-soft-100 dark:text-ink-400 dark:hover:border-red-500/30 dark:hover:bg-red-500/15 dark:hover:text-red-400"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 text-slate-400 opacity-0 transition-all hover:border-[#f5576c]/30 hover:bg-[#f5576c]/5 hover:text-[#f5576c] group-hover:opacity-100 disabled:opacity-50"
                         aria-label="Remove holiday"
                       >
                         {removeHoliday.isPending ? (
@@ -449,7 +474,7 @@ export default function ClinicSchedulePage() {
             )}
           </div>
         </div>
-      </div>
+      </GradientCard>
     </div>
   );
 }

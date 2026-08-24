@@ -98,50 +98,64 @@
     "profile": "প্রোফাইল"
   },
   "Dashboard": {
-    "welcome": "আবার স্বাগতম",
-    "subtitle": "আপনার অ্যাপয়েন্টমেন্টের সর্বশেষ অবস্থা দেখুন।",
-    "upcomingCount": "আসন্ন",
-    "totalCount": "মোট অ্যাপয়েন্টমেন্ট",
-    "findDoctorCta": "ডাক্তার খুঁজুন",
-    "myAppointments": "আমার অ্যাপয়েন্টমেন্ট",
-    "myProfile": "আমার প্রোফাইল",
-    "logout": "লগআউট",
-    "noAppointments": "আপনার এখনো কোনো অ্যাপয়েন্টমেন্ট নেই।",
-    "noAppointmentsCta": "আপনার প্রথম অ্যাপয়েন্টমেন্ট বুক করুন",
-    "token": "টোকেন",
-    "statusWaiting": "অপেক্ষমান",
-    "statusCheckedIn": "চেক-ইন হয়েছে",
-    "statusAbsent": "অনুপস্থিত",
-    "statusCompleted": "সম্পন্ন",
-    "statusCancelled": "বাতিল",
-    "patientsAhead": "জন রোগী আপনার আগে আছেন",
-    "estimatedWait": "আনুমানিক অপেক্ষার সময়",
-    "minutes": "মিনিট",
-    "privateQueue": "লাইভ কিউ ব্যক্তিগত রাখা হয়েছে - রিসেপশনে জিজ্ঞাসা করুন।",
-    "loadingAppointments": "আপনার অ্যাপয়েন্টমেন্ট লোড হচ্ছে...",
-    "profileName": "নাম",
-    "profilePhone": "ফোন",
-    "profileEmail": "ইমেইল",
-    "profileDob": "জন্ম তারিখ",
-    "profileGender": "লিঙ্গ",
-    "profileBloodGroup": "রক্তের গ্রুপ",
-    "profileNotSet": "সেট করা নেই",
-    "editProfile": "প্রোফাইল সম্পাদনা করুন",
-    "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
-    "savingChanges": "সংরক্ষণ হচ্ছে...",
-    "profileUpdated": "প্রোফাইল সফলভাবে আপডেট হয়েছে",
-    "selectGender": "লিঙ্গ নির্বাচন করুন",
-    "genderMale": "পুরুষ",
-    "genderFemale": "মহিলা",
-    "genderOther": "অন্যান্য",
-    "addressPlaceholder": "রাস্তা, এলাকা, শহর",
-    "bloodGroupPlaceholder": "যেমন O+",
-    "backToDashboard": "ড্যাশবোর্ডে ফিরে যান",
-    "doctorPanel": "ডাক্তার প্যানেল",
-    "clinicPanel": "ক্লিনিক প্যানেল",
-    "dashboard": "ড্যাশবোর্ড",
-    "profile": "প্রোফাইল"
-  },
+  "welcome": "আবারও স্বাগতম",
+  "subtitle": "আপনার অ্যাপয়েন্টমেন্টগুলোর সর্বশেষ অবস্থা এখানে দেখুন।",
+
+  "upcomingCount": "আসন্ন",
+  "totalCount": "মোট অ্যাপয়েন্টমেন্ট",
+
+  "findDoctorCta": "ডাক্তার খুঁজুন",
+  "myAppointments": "আমার অ্যাপয়েন্টমেন্ট",
+  "myProfile": "আমার প্রোফাইল",
+  "logout": "লগআউট",
+
+  "noAppointments": "আপনার এখনও কোনো অ্যাপয়েন্টমেন্ট নেই।",
+  "noAppointmentsDesc": "আজই একজন বিশ্বস্ত ডাক্তারের সাথে আপনার প্রথম অ্যাপয়েন্টমেন্ট বুক করুন।",
+  "noAppointmentsCta": "প্রথম অ্যাপয়েন্টমেন্ট বুক করুন",
+
+  "token": "টোকেন",
+  "statusWaiting": "অপেক্ষমাণ",
+  "statusCheckedIn": "চেক-ইন সম্পন্ন",
+  "statusAbsent": "অনুপস্থিত",
+  "statusCompleted": "সম্পন্ন",
+  "statusCancelled": "বাতিল",
+
+  "patientsAhead": "জন রোগী আপনার আগে আছেন",
+  "estimatedWait": "আনুমানিক অপেক্ষার সময়",
+  "minutes": "মিনিট",
+  "privateQueue": "লাইভ কিউ ব্যক্তিগত। অনুগ্রহ করে রিসেপশনে চেক করুন।",
+
+  "loadingAppointments": "আপনার অ্যাপয়েন্টমেন্ট লোড হচ্ছে...",
+
+  "profileName": "নাম",
+  "profilePhone": "ফোন",
+  "profileEmail": "ইমেইল",
+  "profileDob": "জন্মতারিখ",
+  "profileGender": "লিঙ্গ",
+  "profileBloodGroup": "রক্তের গ্রুপ",
+  "profileNotSet": "সেট করা হয়নি",
+
+  "editProfile": "প্রোফাইল সম্পাদনা করুন",
+  "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
+  "savingChanges": "সংরক্ষণ করা হচ্ছে...",
+  "profileUpdated": "প্রোফাইল সফলভাবে আপডেট হয়েছে",
+
+  "selectGender": "লিঙ্গ নির্বাচন করুন",
+  "genderMale": "পুরুষ",
+  "genderFemale": "মহিলা",
+  "genderOther": "অন্যান্য",
+
+  "addressPlaceholder": "রাস্তা, এলাকা, শহর",
+  "bloodGroupPlaceholder": "যেমন O+",
+
+  "backToDashboard": "ড্যাশবোর্ডে ফিরে যান",
+
+  "doctorPanel": "ডাক্তার প্যানেল",
+  "clinicPanel": "ক্লিনিক প্যানেল",
+
+  "dashboard": "ড্যাশবোর্ড",
+  "profile": "প্রোফাইল"
+},
   "Notifications": {
     "heading": "বিজ্ঞপ্তি",
     "empty": "এখনো কোনো বিজ্ঞপ্তি নেই।",
@@ -190,7 +204,8 @@
     "schedule": "সময়সূচী",
     "requests": "অনুরোধসমূহ",
     "referrals": "রেফারেল",
-    "reports": "রিপোর্ট্স"
+    "reports": "রিপোর্ট্স",
+    "settings": "Settings"
   },
   "ClinicDashboard": {
     "title": "অপারেশনাল ড্যাশবোর্ড",

@@ -94,50 +94,64 @@
     "clinicEmail": "ईमेल करें"
   },
   "Dashboard": {
-    "welcome": "वापसी पर स्वागत है",
-    "subtitle": "यहाँ आपके अपॉइंटमेंट्स की वर्तमान स्थिति है।",
-    "upcomingCount": "आगामी",
-    "totalCount": "कुल अपॉइंटमेंट",
-    "findDoctorCta": "डॉक्टर खोजें",
-    "myAppointments": "मेरे अपॉइंटमेंट्स",
-    "myProfile": "मेरी प्रोफ़ाइल",
-    "logout": "लॉगआउट",
-    "noAppointments": "आपका अभी कोई अपॉइंटमेंट नहीं है।",
-    "noAppointmentsCta": "अपना पहला अपॉइंटमेंट बुक करें",
-    "token": "टोकन",
-    "statusWaiting": "प्रतीक्षारत",
-    "statusCheckedIn": "चेक-इन",
-    "statusAbsent": "अनुपस्थित",
-    "statusCompleted": "पूर्ण",
-    "statusCancelled": "रद्द",
-    "patientsAhead": "मरीज़ आपके आगे हैं",
-    "estimatedWait": "अनुमानित प्रतीक्षा",
-    "minutes": "मिनट",
-    "privateQueue": "लाइव कतार निजी है - कृपया रिसेप्शन पर पता करें।",
-    "loadingAppointments": "आपके अपॉइंटमेंट्स लोड हो रहे हैं...",
-    "profileName": "नाम",
-    "profilePhone": "फोन",
-    "profileEmail": "ईमेल",
-    "profileDob": "जन्म तिथि",
-    "profileGender": "लिंग",
-    "profileBloodGroup": "रक्त समूह",
-    "profileNotSet": "सेट नहीं",
-    "editProfile": "प्रोफ़ाइल संपादित करें",
-    "saveChanges": "बदलाव सहेजें",
-    "savingChanges": "सहेजा जा रहा है...",
-    "profileUpdated": "प्रोफ़ाइल सफलतापूर्वक अपडेट हो गई",
-    "selectGender": "लिंग चुनें",
-    "genderMale": "पुरुष",
-    "genderFemale": "महिला",
-    "genderOther": "अन्य",
-    "addressPlaceholder": "सड़क, इलाका, शहर",
-    "bloodGroupPlaceholder": "उदा. O+",
-    "backToDashboard": "डैशबोर्ड पर वापस जाएं",
-    "doctorPanel": "डॉक्टर पैनल",
-    "clinicPanel": "क्लिनिक पैनल",
-    "dashboard": "डैशबोर्ड",
-    "profile": "प्रोफ़ाइल"
-  },
+  "welcome": "वापसी पर स्वागत है",
+  "subtitle": "आपकी अपॉइंटमेंट से जुड़ी सभी जानकारी यहां देखें।",
+
+  "upcomingCount": "आगामी",
+  "totalCount": "कुल अपॉइंटमेंट",
+
+  "findDoctorCta": "डॉक्टर खोजें",
+  "myAppointments": "मेरी अपॉइंटमेंट",
+  "myProfile": "मेरी प्रोफ़ाइल",
+  "logout": "लॉगआउट",
+
+  "noAppointments": "आपकी अभी तक कोई अपॉइंटमेंट नहीं है।",
+  "noAppointmentsDesc": "आज ही किसी विश्वसनीय डॉक्टर के साथ अपनी पहली अपॉइंटमेंट बुक करें।",
+  "noAppointmentsCta": "पहली अपॉइंटमेंट बुक करें",
+
+  "token": "टोकन",
+  "statusWaiting": "प्रतीक्षा में",
+  "statusCheckedIn": "चेक-इन पूरा",
+  "statusAbsent": "अनुपस्थित",
+  "statusCompleted": "पूरा हुआ",
+  "statusCancelled": "रद्द",
+
+  "patientsAhead": "मरीज़ आपसे आगे हैं",
+  "estimatedWait": "अनुमानित प्रतीक्षा समय",
+  "minutes": "मिनट",
+  "privateQueue": "लाइव कतार निजी है। कृपया रिसेप्शन पर जांच करें।",
+
+  "loadingAppointments": "आपकी अपॉइंटमेंट लोड हो रही हैं...",
+
+  "profileName": "नाम",
+  "profilePhone": "फ़ोन",
+  "profileEmail": "ईमेल",
+  "profileDob": "जन्म तिथि",
+  "profileGender": "लिंग",
+  "profileBloodGroup": "ब्लड ग्रुप",
+  "profileNotSet": "सेट नहीं किया गया",
+
+  "editProfile": "प्रोफ़ाइल संपादित करें",
+  "saveChanges": "परिवर्तन सहेजें",
+  "savingChanges": "सहेजा जा रहा है...",
+  "profileUpdated": "प्रोफ़ाइल सफलतापूर्वक अपडेट हो गई",
+
+  "selectGender": "लिंग चुनें",
+  "genderMale": "पुरुष",
+  "genderFemale": "महिला",
+  "genderOther": "अन्य",
+
+  "addressPlaceholder": "सड़क, क्षेत्र, शहर",
+  "bloodGroupPlaceholder": "जैसे O+",
+
+  "backToDashboard": "डैशबोर्ड पर वापस जाएं",
+
+  "doctorPanel": "डॉक्टर पैनल",
+  "clinicPanel": "क्लिनिक पैनल",
+
+  "dashboard": "डैशबोर्ड",
+  "profile": "प्रोफ़ाइल"
+},
   "DoctorSearch": {
     "heading": "उपलब्ध डॉक्टर",
     "noResults": "कोई डॉक्टर नहीं मिला। भिन्न खोज का प्रयास करें।",
@@ -186,7 +200,8 @@
     "schedule": "शेड्यूल",
     "requests": "अनुरोध",
     "referrals": "रेफ़रल",
-    "reports": "रिपोर्ट"
+    "reports": "रिपोर्ट",
+    "settings": "Settings"
   },
   "ClinicDashboard": {
     "title": "ऑपरेशनल डैशबोर्ड",
