@@ -35,7 +35,8 @@ export default function Header() {
   const isDoctor = user?.role === "DOCTOR";
   const isDiagnosticCenter = user?.role === "DIAGNOSTIC_CENTER";
   const isDiagnosticStaff = user?.role === "DIAGNOSTIC_STAFF";
-  const isAdmin = user?.role === "SUPER_ADMIN" || user?.role === "ADMIN";
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+  const isAdmin = user?.role === "ADMIN";
   const dashboardHref = isClinic
     ? "/clinic"
     : isDoctor
@@ -44,9 +45,11 @@ export default function Header() {
         ? "/diagnosticCenter/dashboard"
         : isDiagnosticStaff
           ? "/diagnosticCenter/referrals"
-          : isAdmin
-            ? "/admin/dashboard"
-            : "/dashboard";
+          : isSuperAdmin
+            ? "/super_admin/dashboard"
+            : isAdmin
+              ? "/admin/dashboard"
+              : "/dashboard";
   const dashboardLabel = isClinic
     ? dash("clinicPanel")
     : isDoctor
@@ -55,9 +58,11 @@ export default function Header() {
         ? "Diagnostic Portal"
         : isDiagnosticStaff
           ? "Referrals Inbox"
-          : isAdmin
-            ? (user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin Portal")
-            : dash("dashboard");
+          : isSuperAdmin
+            ? "Super Admin"
+            : isAdmin
+              ? "Admin Portal"
+              : dash("dashboard");
 
   async function handleLogout() {
     await logout();

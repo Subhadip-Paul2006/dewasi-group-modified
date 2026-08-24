@@ -32,15 +32,16 @@ export function AdminQuickActions({
 
   const actions = [
     {
-      href: "/admin/users",
+      href: "/super_admin/users",
       title: t("manageUsers"),
       desc: t("manageUsersDesc"),
       icon: Users,
       color: "blue",
       badge: null,
+      superAdminOnly: false,
     },
     {
-      href: "/admin/clinics",
+      href: "/super_admin/clinics",
       title: t("reviewClinics"),
       desc: t("reviewClinicsDesc"),
       icon: Building2,
@@ -50,9 +51,10 @@ export function AdminQuickActions({
           ? `${pendingClinics.toLocaleString(localeCode)} ${t("pendingAction")}`
           : null,
       badgeVariant: "warning" as const,
+      superAdminOnly: false,
     },
     {
-      href: "/admin/doctors",
+      href: "/super_admin/doctors",
       title: t("verifyDoctors"),
       desc: t("verifyDoctorsDesc"),
       icon: Stethoscope,
@@ -62,22 +64,34 @@ export function AdminQuickActions({
           ? `${unverifiedDoctors.toLocaleString(localeCode)} ${t("pendingAction")}`
           : null,
       badgeVariant: "warning" as const,
+      superAdminOnly: false,
     },
     {
-      href: "/admin/featured-doctors",
+      href: "/super_admin/featured-doctors",
       title: t("featuredDoctors"),
       desc: t("featuredDoctorsDesc"),
       icon: Sparkles,
       color: "amber",
       badge: null,
+      superAdminOnly: false,
     },
     {
-      href: "/admin/diagnostic-centers",
+      href: "/super_admin/diagnostic-centers",
       title: t("diagnosticCenters"),
       desc: t("diagnosticCentersDesc"),
       icon: Activity,
       color: "emerald",
       badge: null,
+      superAdminOnly: false,
+    },
+    {
+      href: "/super_admin/settings",
+      title: t("configureSettings"),
+      desc: t("configureSettingsDesc"),
+      icon: Settings,
+      color: "indigo",
+      badge: null,
+      superAdminOnly: false,
     },
   ];
 

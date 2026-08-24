@@ -372,6 +372,13 @@ export type AdminSettingsResponse = {
   settings: PlatformSettingsRecord;
 };
 
+export type CreateAdminInput = {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+};
+
 export type CreateClinicInput = {
   name: string;
   email: string;

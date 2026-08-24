@@ -9,6 +9,7 @@ import type {
   PlatformSettingsRecord,
   AdminUsersResponse,
   AdminClinicsResponse,
+  CreateAdminInput,
   CreateClinicInput,
   CreateDiagnosticCenterInput,
   SetFeaturedDoctorInput,
@@ -30,7 +31,7 @@ export function useAdminStats() {
 }
 
 // ============================================================
-// 2. User Management
+// 2. User Management & Admin Creation
 // ============================================================
 
 export type AdminUsersFilterParams = {
@@ -45,6 +46,20 @@ export function useAdminUsers(params: AdminUsersFilterParams = {}) {
     queryFn: async () => {
       const res = await api.get("/admin/users", { params });
       return res.data.data;
+    },
+  });
+}
+
+export function useCreateAdmin() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: CreateAdminInput) => {
+      const res = await api.post("/admin/admins", payload);
+      return res.data.data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
     },
   });
 }
