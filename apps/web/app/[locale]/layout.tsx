@@ -18,9 +18,8 @@ export const metadata: Metadata = {
   description: "Doctor Appointment & Clinic Management System",
 };
 
-// Applies the persisted theme before first paint. Must stay in sync with
-// components/ThemeProvider.tsx (same storage key and fallback logic).
-const themeScript = `(function(){try{var k=document.documentElement;var t=localStorage.getItem("dc-theme");if(t==="dark"||(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches))k.classList.add("dark");else k.classList.remove("dark");}catch(e){}})()`;
+// Temporarily disabled: dark mode will be configured later
+const themeScript = `(function(){try{document.documentElement.classList.remove("dark");}catch(e){}})()`;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

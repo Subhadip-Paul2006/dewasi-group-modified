@@ -82,15 +82,14 @@ export default function Header() {
             />
           </div>
 
-          <div>
-            <span className="text-lg font-bold text-gray-800 dark:text-ink-800">
-              {t("title")}
-            </span>
-
-            <p className="hidden text-[10px] font-medium text-gray-400 sm:block">
-              Healthcare
-            </p>
-          </div>
+          <Image
+            src="/LOGO.png"
+            alt="Doctor Contact"
+            width={130}
+            height={36}
+            className="h-8 sm:h-9 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* ================= DESKTOP NAV ================= */}
