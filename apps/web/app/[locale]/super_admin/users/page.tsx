@@ -317,8 +317,8 @@ export default function SuperAdminUsersPage() {
 
       {/* Filter & Search Bar */}
       <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
-        {/* Role Filter Tabs */}
-        <div className="flex flex-wrap gap-1">
+        {/* Role Filter Tabs (Touch scroll on mobile) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {ROLES.map((role) => (
             <button
               key={role}
@@ -327,7 +327,7 @@ export default function SuperAdminUsersPage() {
                 setSelectedRole(role);
                 setPage(1);
               }}
-              className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              className={`shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
                 selectedRole === role
                   ? "bg-amber-600 text-white shadow-xs"
                   : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
@@ -339,7 +339,7 @@ export default function SuperAdminUsersPage() {
         </div>
 
         {/* Search Input */}
-        <div className="relative min-w-[220px]">
+        <div className="relative min-w-[200px] sm:min-w-[240px]">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
@@ -582,11 +582,11 @@ export default function SuperAdminUsersPage() {
         </div>
       )}
 
-      {/* Create New Admin Modal (Super Admin Exclusive) */}
+      {/* Create Admin Modal */}
       {showCreateAdminModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl transition-all dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-md max-h-[90dvh] overflow-y-auto scrollbar-thin rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
                   <ShieldCheck className="h-5 w-5" />

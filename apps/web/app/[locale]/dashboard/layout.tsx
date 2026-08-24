@@ -55,7 +55,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
       </aside>
 
       {/* Mobile tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-gray-100 bg-white px-2 py-2 md:hidden dark:border-soft-300 dark:bg-surface">
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-gray-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-lg backdrop-blur-md md:hidden dark:border-soft-300 dark:bg-surface/95">
         {NAV.map(({ href, label, icon: Icon, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href);
           return (
@@ -63,8 +63,8 @@ export default function PatientDashboardLayout({ children }: { children: React.R
               key={href}
               href={href}
               className={
-                "flex flex-col items-center gap-0.5 rounded-lg px-2 py-1 text-[10px] font-medium " +
-                (active ? "text-[var(--color-primary-text)]" : "text-gray-500 dark:text-ink-500")
+                "flex flex-col items-center gap-1 rounded-lg px-4 py-1 text-[10px] font-semibold transition-colors " +
+                (active ? "text-[var(--color-primary-text)] font-bold" : "text-gray-500 dark:text-ink-500")
               }
             >
               <Icon className="h-4 w-4" />
@@ -74,7 +74,7 @@ export default function PatientDashboardLayout({ children }: { children: React.R
         })}
       </nav>
 
-      <main className="min-w-0 flex-1 pb-16 md:pb-0">{children}</main>
+      <main className="min-w-0 flex-1 pb-24 md:pb-0">{children}</main>
     </div>
   );
 }

@@ -178,13 +178,13 @@ export default function SuperAdminLayout({
       {/* =====================================================
           MAIN CONTENT AREA
       ====================================================== */}
-      <main className="min-w-0 flex-1 pb-20 md:pb-0">{children}</main>
+      <main className="min-w-0 flex-1 pb-24 md:pb-6">{children}</main>
 
       {/* =====================================================
-          MOBILE BOTTOM NAVIGATION
+          MOBILE BOTTOM NAVIGATION (SCROLLABLE & TOUCH-FRIENDLY)
       ====================================================== */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-1.5 pb-[env(safe-area-inset-bottom)] pt-1.5 shadow-sm backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="flex items-center justify-around">
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5 shadow-lg backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
           {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
             const active = exact ? pathname === href : pathname.startsWith(href);
 
@@ -194,8 +194,8 @@ export default function SuperAdminLayout({
                 href={href}
                 className={
                   active
-                    ? "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg px-1 py-1.5 text-[9px] font-bold text-amber-600 dark:text-amber-400"
-                    : "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg px-1 py-1.5 text-[9px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                    ? "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-amber-600 dark:text-amber-400"
+                    : "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }
               >
                 <span
@@ -214,7 +214,7 @@ export default function SuperAdminLayout({
                   />
                 </span>
 
-                <span className="max-w-full truncate">{tNav(key)}</span>
+                <span className="max-w-[70px] truncate">{tNav(key)}</span>
               </Link>
             );
           })}

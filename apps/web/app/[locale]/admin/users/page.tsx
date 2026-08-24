@@ -241,8 +241,8 @@ export default function AdminUsersPage() {
 
       {/* Filter & Search Bar */}
       <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
-        {/* Role Filter Tabs */}
-        <div className="flex flex-wrap gap-1">
+        {/* Role Filter Tabs (Touch scroll on mobile) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
           {ROLES.map((role) => (
             <button
               key={role}
@@ -251,7 +251,7 @@ export default function AdminUsersPage() {
                 setSelectedRole(role);
                 setPage(1);
               }}
-              className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              className={`shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
                 selectedRole === role
                   ? "bg-blue-600 text-white shadow-xs"
                   : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
@@ -263,7 +263,7 @@ export default function AdminUsersPage() {
         </div>
 
         {/* Search Input */}
-        <div className="relative min-w-[220px]">
+        <div className="relative min-w-[200px] sm:min-w-[240px]">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
