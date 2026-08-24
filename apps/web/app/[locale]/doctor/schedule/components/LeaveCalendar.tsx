@@ -9,6 +9,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import type { DoctorLeave } from "@doctor-contract/shared";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 interface LeaveCalendarProps {
   leaves: DoctorLeave[];
@@ -166,8 +167,9 @@ export function LeaveCalendar({
   const selectedLeave = leavesMap.get(selectedDate);
 
   return (
-    <div className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-      <div>
+    <GradientCard variant="indigo" className="h-full">
+      <div className="flex h-full flex-col justify-between p-5">
+        <div>
         {/* Header with Navigation */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
@@ -357,6 +359,7 @@ export function LeaveCalendar({
           )}
         </div>
       )}
-    </div>
+      </div>
+    </GradientCard>
   );
 }

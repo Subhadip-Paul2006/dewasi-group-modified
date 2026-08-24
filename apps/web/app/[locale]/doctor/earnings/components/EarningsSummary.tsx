@@ -7,6 +7,7 @@ import {
   BadgeIndianRupee,
 } from "lucide-react";
 import type { DoctorEarningsSummary } from "@doctor-contract/shared";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 interface EarningsSummaryProps {
   summary: DoctorEarningsSummary;
@@ -20,85 +21,93 @@ export function EarningsSummary({ summary }: EarningsSummaryProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {/* 1. Total Revenue */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-            Total Revenue
-          </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
-            <TrendingUp className="h-4 w-4" />
+      {/* 1. Total Revenue - Emerald */}
+      <GradientCard variant="emerald">
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
+              Total Revenue
+            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 shadow-xs">
+              <TrendingUp className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+              ₹{totalEarnings.toLocaleString()}
+            </h2>
+            <p className="mt-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+              Recorded fee earnings
+            </p>
           </div>
         </div>
-        <div className="mt-3">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            ₹{totalEarnings.toLocaleString()}
-          </h2>
-          <p className="mt-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-            Recorded consultation fee earnings
-          </p>
-        </div>
-      </div>
+      </GradientCard>
 
-      {/* 2. Total Consultations */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-            Completed Consultations
-          </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
-            <Users className="h-4 w-4" />
+      {/* 2. Total Consultations - Blue */}
+      <GradientCard variant="blue">
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
+              Completed Consultations
+            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400 shadow-xs">
+              <Users className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+              {totalConsultations.toLocaleString()}
+            </h2>
+            <p className="mt-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+              Completed patient visits
+            </p>
           </div>
         </div>
-        <div className="mt-3">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {totalConsultations.toLocaleString()}
-          </h2>
-          <p className="mt-1 text-[11px] font-medium text-blue-600 dark:text-blue-400">
-            Completed patient visits
-          </p>
-        </div>
-      </div>
+      </GradientCard>
 
-      {/* 3. Average Consultation Fee */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-            Avg Fee / Consultation
-          </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400">
-            <BadgeIndianRupee className="h-4 w-4" />
+      {/* 3. Average Consultation Fee - Purple */}
+      <GradientCard variant="purple">
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
+              Avg Fee / Consultation
+            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400 shadow-xs">
+              <BadgeIndianRupee className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+              ₹{avgFee.toLocaleString()}
+            </h2>
+            <p className="mt-1 text-[11px] font-semibold text-purple-600 dark:text-purple-400">
+              Effective average per visit
+            </p>
           </div>
         </div>
-        <div className="mt-3">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            ₹{avgFee.toLocaleString()}
-          </h2>
-          <p className="mt-1 text-[11px] font-medium text-purple-600 dark:text-purple-400">
-            Effective average per visit
-          </p>
-        </div>
-      </div>
+      </GradientCard>
 
-      {/* 4. Practice Clinics Count */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-            Practice Clinics
-          </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
-            <Building2 className="h-4 w-4" />
+      {/* 4. Practice Clinics Count - Cyan */}
+      <GradientCard variant="cyan">
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
+              Practice Clinics
+            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-950/50 dark:text-cyan-400 shadow-xs">
+              <Building2 className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+              {activeClinicsCount}
+            </h2>
+            <p className="mt-1 text-[11px] font-semibold text-cyan-600 dark:text-cyan-400">
+              Contributing centers
+            </p>
           </div>
         </div>
-        <div className="mt-3">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {activeClinicsCount}
-          </h2>
-          <p className="mt-1 text-[11px] font-medium text-sky-600 dark:text-sky-400">
-            Contributing practice centers
-          </p>
-        </div>
-      </div>
+      </GradientCard>
     </div>
   );
 }
