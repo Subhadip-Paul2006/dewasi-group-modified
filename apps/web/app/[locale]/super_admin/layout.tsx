@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname, Link, useRouter } from "@/i18n/routing";
 import {
@@ -13,59 +13,77 @@ import {
   Settings,
   ShieldCheck,
   ChevronRight,
+  Menu,
+  X,
+  Shield,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import type { LucideIcon } from "lucide-react";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 interface NavItem {
   href: string;
-  key:
-    | "dashboard"
-    | "users"
-    | "clinics"
-    | "doctors"
-    | "featuredDoctors"
-    | "diagnosticCenters"
-    | "settings";
-  icon: typeof LayoutDashboard;
+  label: string;
+  icon: LucideIcon;
   exact?: boolean;
 }
 
-const NAV_ITEMS: NavItem[] = [
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const SUPER_ADMIN_NAV_SECTIONS: NavSection[] = [
   {
-    href: "/super_admin/dashboard",
-    key: "dashboard",
-    icon: LayoutDashboard,
-    exact: true,
+    title: "MAIN OPERATIONS",
+    items: [
+      {
+        href: "/super_admin/dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard,
+        exact: true,
+      },
+      {
+        href: "/super_admin/users",
+        label: "Users & Accounts",
+        icon: Users,
+      },
+    ],
   },
   {
-    href: "/super_admin/users",
-    key: "users",
-    icon: Users,
+    title: "MEDICAL ECOSYSTEM",
+    items: [
+      {
+        href: "/super_admin/clinics",
+        label: "Clinics Directory",
+        icon: Building2,
+      },
+      {
+        href: "/super_admin/doctors",
+        label: "Doctors Directory",
+        icon: Stethoscope,
+      },
+      {
+        href: "/super_admin/featured-doctors",
+        label: "Featured Doctors",
+        icon: Sparkles,
+      },
+      {
+        href: "/super_admin/diagnostic-centers",
+        label: "Diagnostic Centers",
+        icon: Activity,
+      },
+    ],
   },
   {
-    href: "/super_admin/clinics",
-    key: "clinics",
-    icon: Building2,
-  },
-  {
-    href: "/super_admin/doctors",
-    key: "doctors",
-    icon: Stethoscope,
-  },
-  {
-    href: "/super_admin/featured-doctors",
-    key: "featuredDoctors",
-    icon: Sparkles,
-  },
-  {
-    href: "/super_admin/diagnostic-centers",
-    key: "diagnosticCenters",
-    icon: Activity,
-  },
-  {
-    href: "/super_admin/settings",
-    key: "settings",
-    icon: Settings,
+    title: "SYSTEM & PLATFORM",
+    items: [
+      {
+        href: "/super_admin/settings",
+        label: "Platform Settings",
+        icon: Settings,
+      },
+    ],
   },
 ];
 
@@ -78,6 +96,7 @@ export default function SuperAdminLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isSuperAdmin = user?.role === "SUPER_ADMIN";
 
@@ -89,137 +108,291 @@ export default function SuperAdminLayout({
     }
   }, [loading, user, isSuperAdmin, router]);
 
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   if (loading || !user || !isSuperAdmin) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-7 w-7 animate-spin rounded-full border-[2.5px] border-amber-600 border-t-transparent" />
-          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
-            {tNav("loadingPortal")}
-          </p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner text={tNav("loadingPortal")} />;
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] items-start gap-6 px-4 py-6 md:px-6 lg:px-8">
-      {/* =====================================================
-          DESKTOP SIDEBAR
-      ====================================================== */}
-      <aside className="hidden w-60 shrink-0 md:block">
-        <div className="sticky top-20 space-y-3">
-          {/* Sidebar Brand / Identity Card */}
-          <div className="rounded-xl border border-amber-200/80 bg-white p-3.5 shadow-xs transition-colors dark:border-amber-900/40 dark:bg-slate-900">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-white shadow-xs">
-                <ShieldCheck className="h-4.5 w-4.5" />
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-amber-500/5 dark:from-slate-950 dark:to-slate-900">
+      {/* Mobile Floating Action Button (FAB) */}
+      <MobileFabButton onClick={() => setIsMobileMenuOpen(true)} />
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                    {tNav("portalTitle")}
-                  </span>
-                  <span className="rounded bg-amber-100 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
-                    {tNav("superAdminBadge")}
-                  </span>
-                </div>
-                <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
-                  {user.name || "Super Administrator"}
+      {/* Mobile Drawer Menu (Opens from LEFT side, exactly like Clinic & Doctor portals) */}
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        sections={SUPER_ADMIN_NAV_SECTIONS}
+        pathname={pathname}
+        userName={user.name || "Super Administrator"}
+        userEmail={user.email || ""}
+        userRole={user.role}
+      />
+
+      {/* Main Container */}
+      <div className="mx-auto flex w-full max-w-[1440px] items-start gap-6 px-4 py-6 md:px-6 md:py-8 lg:px-8">
+        {/* Desktop Sidebar */}
+        <DesktopSidebar
+          sections={SUPER_ADMIN_NAV_SECTIONS}
+          pathname={pathname}
+          userName={user.name || "Super Administrator"}
+          userRole={user.role}
+        />
+
+        {/* Main Content Area */}
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sub-Components
+// ---------------------------------------------------------------------------
+
+function LoadingSpinner({ text }: { text: string }) {
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="flex flex-col items-center gap-3">
+        <div className="relative">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-amber-600 border-t-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Shield className="h-5 w-5 text-amber-600" />
+          </div>
+        </div>
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+          {text}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MobileFabButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/40 transition-all hover:scale-110 hover:shadow-xl active:scale-95 md:hidden"
+      aria-label="Open navigation menu"
+    >
+      <Menu className="h-6 w-6" />
+    </button>
+  );
+}
+
+function MobileDrawer({
+  isOpen,
+  onClose,
+  sections,
+  pathname,
+  userName,
+  userEmail,
+  userRole,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  sections: NavSection[];
+  pathname: string;
+  userName: string;
+  userEmail: string;
+  userRole: string;
+}) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  return (
+    <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Drawer (Sliding from LEFT) */}
+      <div
+        className={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-white shadow-2xl transition-transform duration-300 ease-out dark:bg-slate-900 md:hidden ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header Banner */}
+        <div className="flex items-center justify-between bg-gradient-to-r from-amber-500 to-orange-600 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 text-white backdrop-blur-sm">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">Super Admin Portal</p>
+              <p className="text-xs text-amber-100">{userName}</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-lg p-2 text-white transition-colors hover:bg-white/10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Navigation Items */}
+        <div className="flex h-[calc(100vh-140px)] flex-col overflow-y-auto p-3">
+          <div className="space-y-1">
+            {sections.map((section, sIdx) => (
+              <div key={sIdx} className="space-y-1">
+                <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-amber-600/70 dark:text-amber-400 pt-3">
+                  {section.title}
                 </p>
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = item.exact
+                    ? pathname === item.href
+                    : pathname.startsWith(item.href);
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={onClose}
+                      className={`group flex items-center gap-3 rounded-xl px-3 py-3 transition-all ${
+                        active
+                          ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30"
+                          : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      <div
+                        className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+                          active
+                            ? "bg-white/20 text-white"
+                            : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-slate-700"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <span className="flex-1 text-sm font-medium">{item.label}</span>
+                      {active && <ChevronRight className="h-4 w-4 text-white/70" />}
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+
+          {/* User Info Footer Section */}
+          <div className="mt-auto border-t border-slate-200 pt-4 dark:border-slate-800">
+            <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent p-3 dark:bg-slate-800/60">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md">
+                <span className="text-sm font-bold">
+                  {userName.charAt(0) || "S"}
+                </span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  {userName}
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{userEmail || userRole}</p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
-          {/* Navigation Links */}
-          <nav className="rounded-xl border border-slate-200 bg-white p-1.5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-            <div className="space-y-0.5">
-              {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
-                const active = exact ? pathname === href : pathname.startsWith(href);
-
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={
-                      active
-                        ? "group flex items-center gap-3 rounded-lg bg-amber-600 px-3 py-2.5 text-xs font-semibold text-white shadow-xs transition-all"
-                        : "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs font-medium text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/70 dark:hover:text-slate-200"
-                    }
-                  >
-                    <span
-                      className={
-                        active
-                          ? "flex h-7 w-7 items-center justify-center rounded-md bg-white/15"
-                          : "flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 transition-colors group-hover:bg-slate-200/70 dark:bg-slate-800 dark:group-hover:bg-slate-750"
-                      }
-                    >
-                      <Icon
-                        className={
-                          active
-                            ? "h-3.5 w-3.5 text-white"
-                            : "h-3.5 w-3.5 text-slate-500 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200"
-                        }
-                      />
-                    </span>
-
-                    <span className="flex-1">{tNav(key)}</span>
-
-                    {active && <ChevronRight className="h-3.5 w-3.5 text-white/70" />}
-                  </Link>
-                );
-              })}
+function DesktopSidebar({
+  sections,
+  pathname,
+  userName,
+  userRole,
+}: {
+  sections: NavSection[];
+  pathname: string;
+  userName: string;
+  userRole: string;
+}) {
+  return (
+    <aside className="hidden w-72 shrink-0 md:block">
+      <div className="sticky top-20 space-y-6">
+        {/* Sidebar Header Card */}
+        <GradientCard variant="amber">
+          <div className="flex items-center gap-3 p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30">
+              <ShieldCheck className="h-6 w-6" />
             </div>
-          </nav>
-        </div>
-      </aside>
-
-      {/* =====================================================
-          MAIN CONTENT AREA
-      ====================================================== */}
-      <main className="min-w-0 flex-1 pb-24 md:pb-6">{children}</main>
-
-      {/* =====================================================
-          MOBILE BOTTOM NAVIGATION (SCROLLABLE & TOUCH-FRIENDLY)
-      ====================================================== */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5 shadow-lg backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-          {NAV_ITEMS.map(({ href, key, icon: Icon, exact }) => {
-            const active = exact ? pathname === href : pathname.startsWith(href);
-
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={
-                  active
-                    ? "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold text-amber-600 dark:text-amber-400"
-                    : "flex min-w-[64px] shrink-0 flex-col items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                }
-              >
-                <span
-                  className={
-                    active
-                      ? "flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 dark:bg-slate-900"
-                      : "flex h-7 w-7 items-center justify-center rounded-lg"
-                  }
-                >
-                  <Icon
-                    className={
-                      active
-                        ? "h-3.5 w-3.5 text-amber-600 dark:text-amber-400"
-                        : "h-3.5 w-3.5 text-slate-400 dark:text-slate-500"
-                    }
-                  />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                  {userRole}
                 </span>
+              </div>
+              <p className="truncate text-sm font-bold text-slate-900 dark:text-white mt-0.5">
+                {userName}
+              </p>
+              <p className="text-[11px] font-medium text-slate-400 dark:text-slate-500 truncate">
+                Central Platform Control
+              </p>
+            </div>
+          </div>
+        </GradientCard>
 
-                <span className="max-w-[70px] truncate">{tNav(key)}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-    </div>
+        {/* Categorized Navigation Container */}
+        <GradientCard variant="slate">
+          <nav className="p-2 space-y-1">
+            {sections.map((section, sIdx) => (
+              <div key={sIdx} className="space-y-1">
+                <p className="px-3 pb-1 pt-3 text-[10px] font-bold uppercase tracking-wider text-amber-600/70 dark:text-amber-400">
+                  {section.title}
+                </p>
+                <div className="space-y-0.5">
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    const active = item.exact
+                      ? pathname === item.href
+                      : pathname.startsWith(item.href);
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all ${
+                          active
+                            ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30"
+                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200"
+                        }`}
+                      >
+                        <div
+                          className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all ${
+                            active
+                              ? "bg-white/20 text-white"
+                              : "bg-slate-100 text-slate-600 group-hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <span className="flex-1 text-sm font-medium">{item.label}</span>
+                        {active && <ChevronRight className="h-4 w-4 text-white/70" />}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+        </GradientCard>
+      </div>
+    </aside>
   );
 }

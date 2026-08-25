@@ -7,7 +7,6 @@ import {
   Inbox,
   Building2,
   Stethoscope,
-  Activity,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useDoctorDashboard } from "@/lib/hooks/useDoctor";
@@ -15,6 +14,8 @@ import { DashboardHeader } from "./components/DashboardHeader";
 import { StatCard } from "./components/StatCard";
 import { DashboardSkeleton } from "./components/DashboardSkeleton";
 import { DashboardError } from "./components/DashboardError";
+import { DoctorQuickActions } from "./components/DoctorQuickActions";
+import { DoctorQueueOverview } from "./components/DoctorQueueOverview";
 
 export default function DoctorDashboardPage() {
   const t = useTranslations("DoctorDashboard");
@@ -30,46 +31,29 @@ export default function DoctorDashboardPage() {
     return <DashboardError onRetry={() => refetch()} message={errorMessage} />;
   }
 
-  const activeQueueStatus = stats?.activeQueueStatus;
+  const waitingToday = stats?.waitingToday ?? 0;
+  const completedToday = stats?.completedToday ?? 0;
+  const totalToday = stats?.totalAppointmentsToday ?? 0;
+  const activeQueueStatus = stats?.activeQueueStatus || "Active";
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {/* 1. Greeting Banner Header with Verified Badge & Date */}
       <DashboardHeader />
 
-      {/* Queue Status Banner (if provided by API) */}
-      {activeQueueStatus && (
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50/80 p-4 transition-colors dark:border-blue-900/50 dark:bg-blue-950/30">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
-              <Activity className="h-4.5 w-4.5" />
-            </div>
-
-            <div>
-              <p className="text-xs font-bold text-slate-900 dark:text-white">
-                {t("queueStatus")} <span className="uppercase text-blue-600 dark:text-blue-400">{activeQueueStatus}</span>
-              </p>
-              <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
-                {t("liveUpdatesActive")}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Statistics Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* 2. Primary 4 KPI Stat Cards with Vibrant Gradient Borders */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title={t("todayAppointments")}
-          value={stats?.totalAppointmentsToday}
-          subtitle={t("todayAppointmentsSub")}
+          value={totalToday}
+          subtitle={`${waitingToday} waiting in queue`}
           icon={CalendarDays}
           colorScheme="blue"
         />
 
         <StatCard
           title={t("completedToday")}
-          value={stats?.completedToday}
+          value={completedToday}
           subtitle={t("completedTodaySub")}
           icon={CheckCircle2}
           colorScheme="emerald"
@@ -77,7 +61,7 @@ export default function DoctorDashboardPage() {
 
         <StatCard
           title={t("waitingPatients")}
-          value={stats?.waitingToday}
+          value={waitingToday}
           subtitle={t("waitingPatientsSub")}
           icon={Clock}
           colorScheme="amber"
@@ -85,15 +69,18 @@ export default function DoctorDashboardPage() {
 
         <StatCard
           title={t("pendingRequests")}
-          value={stats?.pendingRequestsCount}
+          value={stats?.pendingRequestsCount ?? 0}
           subtitle={t("pendingRequestsSub")}
           icon={Inbox}
           colorScheme="indigo"
         />
+      </div>
 
+      {/* 3. Secondary 2 KPI Stat Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
           title={t("associatedClinics")}
-          value={stats?.associatedClinicsCount}
+          value={stats?.associatedClinicsCount ?? 0}
           subtitle={t("associatedClinicsSub")}
           icon={Building2}
           colorScheme="cyan"
@@ -113,14 +100,22 @@ export default function DoctorDashboardPage() {
         />
       </div>
 
-      {/* Operational Summary */}
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
-          {t("practiceOverviewTitle")}
-        </h2>
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          {t("practiceOverviewDesc")}
-        </p>
+      {/* 4. Split Queue Overview & Quick Actions Grid */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Left 2 Cols: Live Queue Status & Patient Consultation Overview */}
+        <div className="lg:col-span-2">
+          <DoctorQueueOverview
+            waitingCount={waitingToday}
+            completedCount={completedToday}
+            totalAppointments={totalToday}
+            activeStatus={activeQueueStatus}
+          />
+        </div>
+
+        {/* Right 1 Col: Quick Actions Shortcuts with Gradient Border */}
+        <div className="lg:col-span-1">
+          <DoctorQuickActions />
+        </div>
       </div>
     </div>
   );

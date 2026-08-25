@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useAdminUsers, useToggleUserStatus, useCreateAdmin } from "@/lib/hooks/useAdmin";
 import type { AdminUserRecord, Role, CreateAdminInput } from "@doctor-contract/shared";
+import { GradientCard } from "@/components/ui/GradientCard";
 
 const ROLES: (Role | "ALL")[] = [
   "ALL",
@@ -196,45 +197,47 @@ export default function SuperAdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-              {t("title")}
-            </h1>
-            <span className="rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
-              Super Admin Control
-            </span>
+      {/* Header Banner - Amber */}
+      <GradientCard variant="amber">
+        <div className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+                {t("title")}
+              </h1>
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+                Super Admin Control
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              {t("subtitle")}
+            </p>
           </div>
-          <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
-        </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowCreateAdminModal(true)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs transition hover:bg-blue-700"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Create New Admin</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowCreateAdminModal(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition hover:scale-105 active:scale-95"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Create New Admin</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => refetch()}
-            disabled={isLoading || isFetching}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-          >
-            <RefreshCw
-              className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
-            />
-            <span>{t("retry")}</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => refetch()}
+              disabled={isLoading || isFetching}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-xs transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            >
+              <RefreshCw
+                className={`h-3.5 w-3.5 ${isFetching ? "animate-spin text-blue-600" : ""}`}
+              />
+              <span>{t("retry")}</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </GradientCard>
 
       {/* Action Error Alert */}
       {actionError && (
@@ -271,85 +274,93 @@ export default function SuperAdminUsersPage() {
       )}
 
       {/* Summary Stat Badges */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
-            <Users className="h-4 w-4" />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <GradientCard variant="blue">
+          <div className="flex items-center gap-3 p-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 shadow-xs">
+              <Users className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                {t("totalUsers")}
+              </span>
+              <p className="text-xl font-black text-slate-900 dark:text-slate-100">
+                {total.toLocaleString(localeCode)}
+              </p>
+            </div>
           </div>
-          <div>
-            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-              {t("totalUsers")}
-            </span>
-            <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              {total.toLocaleString(localeCode)}
-            </p>
-          </div>
-        </div>
+        </GradientCard>
 
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
-            <CheckCircle2 className="h-4 w-4" />
+        <GradientCard variant="emerald">
+          <div className="flex items-center gap-3 p-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 shadow-xs">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                {t("activeUsers")} (Page)
+              </span>
+              <p className="text-xl font-black text-emerald-600 dark:text-emerald-400">
+                {activeCount.toLocaleString(localeCode)}
+              </p>
+            </div>
           </div>
-          <div>
-            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-              {t("activeUsers")} (Page)
-            </span>
-            <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-              {activeCount.toLocaleString(localeCode)}
-            </p>
-          </div>
-        </div>
+        </GradientCard>
 
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
-            <XCircle className="h-4 w-4" />
+        <GradientCard variant="rose">
+          <div className="flex items-center gap-3 p-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 shadow-xs">
+              <XCircle className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                {t("inactiveUsers")} (Page)
+              </span>
+              <p className="text-xl font-black text-rose-600 dark:text-rose-400">
+                {inactiveCount.toLocaleString(localeCode)}
+              </p>
+            </div>
           </div>
-          <div>
-            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-              {t("inactiveUsers")} (Page)
-            </span>
-            <p className="text-lg font-bold text-rose-600 dark:text-rose-400">
-              {inactiveCount.toLocaleString(localeCode)}
-            </p>
-          </div>
-        </div>
+        </GradientCard>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
-        {/* Role Filter Tabs (Touch scroll on mobile) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-          {ROLES.map((role) => (
-            <button
-              key={role}
-              type="button"
-              onClick={() => {
-                setSelectedRole(role);
-                setPage(1);
-              }}
-              className={`shrink-0 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
-                selectedRole === role
-                  ? "bg-amber-600 text-white shadow-xs"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-              }`}
-            >
-              {role === "ALL" ? t("allRoles") : role}
-            </button>
-          ))}
-        </div>
+      <GradientCard variant="slate">
+        <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+          {/* Role Filter Tabs (Touch scroll on mobile) */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+            {ROLES.map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => {
+                  setSelectedRole(role);
+                  setPage(1);
+                }}
+                className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-bold transition ${
+                  selectedRole === role
+                    ? "bg-amber-600 text-white shadow-xs"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                }`}
+              >
+                {role === "ALL" ? t("allRoles") : role}
+              </button>
+            ))}
+          </div>
 
-        {/* Search Input */}
-        <div className="relative min-w-[200px] sm:min-w-[240px]">
-          <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t("searchPlaceholder")}
-            className="w-full rounded-lg border border-slate-200 bg-slate-50/60 py-1.5 pl-8 pr-3 text-xs text-slate-900 outline-none transition focus:border-amber-600 focus:bg-white dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:focus:border-amber-500"
-          />
+          {/* Search Input */}
+          <div className="relative min-w-[200px] sm:min-w-[240px]">
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t("searchPlaceholder")}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/80 py-1.5 pl-8 pr-3 text-xs text-slate-900 outline-none transition focus:border-amber-600 focus:bg-white dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-100 dark:focus:border-amber-500"
+            />
+          </div>
         </div>
-      </div>
+      </GradientCard>
 
       {/* Error State */}
       {isError && (
@@ -383,150 +394,152 @@ export default function SuperAdminUsersPage() {
 
       {/* Users Table */}
       {!isLoading && !isError && (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs transition-colors dark:border-slate-800 dark:bg-slate-900">
-          {filteredUsers.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
-                <Users className="h-6 w-6 text-slate-400" />
+        <GradientCard variant="slate">
+          <div className="overflow-hidden">
+            {filteredUsers.length === 0 ? (
+              <div className="flex flex-col items-center justify-center p-12 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+                  <Users className="h-6 w-6 text-slate-400" />
+                </div>
+                <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
+                  {t("emptyTitle")}
+                </h3>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  {t("emptyDesc")}
+                </p>
               </div>
-              <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
-                {t("emptyTitle")}
-              </h3>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                {t("emptyDesc")}
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-850 dark:text-slate-400">
-                  <tr>
-                    <th className="px-4 py-3">{t("name")}</th>
-                    <th className="px-4 py-3">{t("email")}</th>
-                    <th className="px-4 py-3">{t("phone")}</th>
-                    <th className="px-4 py-3">{t("role")}</th>
-                    <th className="px-4 py-3">{t("status")}</th>
-                    <th className="px-4 py-3">{t("verified")}</th>
-                    <th className="px-4 py-3">{t("joined")}</th>
-                    <th className="px-4 py-3 text-right">{t("actions")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {filteredUsers.map((user) => {
-                    const isSuperAdmin = user.role === "SUPER_ADMIN";
-                    const roleBadge = getRoleBadge(user.role);
-                    const RoleIcon = roleBadge.icon;
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-850 dark:text-slate-400">
+                    <tr>
+                      <th className="px-4 py-3">{t("name")}</th>
+                      <th className="px-4 py-3">{t("email")}</th>
+                      <th className="px-4 py-3">{t("phone")}</th>
+                      <th className="px-4 py-3">{t("role")}</th>
+                      <th className="px-4 py-3">{t("status")}</th>
+                      <th className="px-4 py-3">{t("verified")}</th>
+                      <th className="px-4 py-3">{t("joined")}</th>
+                      <th className="px-4 py-3 text-right">{t("actions")}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredUsers.map((user) => {
+                      const isSuperAdmin = user.role === "SUPER_ADMIN";
+                      const roleBadge = getRoleBadge(user.role);
+                      const RoleIcon = roleBadge.icon;
 
-                    return (
-                      <tr
-                        key={user.id}
-                        className="transition hover:bg-slate-50/60 dark:hover:bg-slate-800/50"
-                      >
-                        <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">
-                          <div className="flex items-center gap-2">
-                            <span>{user.name}</span>
-                            {isSuperAdmin && (
-                              <Shield
-                                className="h-3.5 w-3.5 text-amber-500"
-                                aria-label="Super Administrator"
-                              />
+                      return (
+                        <tr
+                          key={user.id}
+                          className="transition hover:bg-slate-50/60 dark:hover:bg-slate-800/50"
+                        >
+                          <td className="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">
+                            <div className="flex items-center gap-2">
+                              <span>{user.name}</span>
+                              {isSuperAdmin && (
+                                <Shield
+                                  className="h-3.5 w-3.5 text-amber-500"
+                                  aria-label="Super Administrator"
+                                />
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
+                            {user.email || "—"}
+                          </td>
+                          <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
+                            {user.phone || "—"}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border ${roleBadge.bg} ${roleBadge.text} ${roleBadge.border}`}
+                            >
+                              {RoleIcon && <RoleIcon className="h-3 w-3" />}
+                              <span>{user.role}</span>
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            {user.isActive ? (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                <span>{t("active")}</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-rose-600 dark:text-rose-400">
+                                <XCircle className="h-3.5 w-3.5" />
+                                <span>{t("inactive")}</span>
+                              </span>
                             )}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
-                          {user.email || "—"}
-                        </td>
-                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
-                          {user.phone || "—"}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border ${roleBadge.bg} ${roleBadge.text} ${roleBadge.border}`}
-                          >
-                            {RoleIcon && <RoleIcon className="h-3 w-3" />}
-                            <span>{user.role}</span>
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          {user.isActive ? (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                              <span>{t("active")}</span>
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-rose-600 dark:text-rose-400">
-                              <XCircle className="h-3.5 w-3.5" />
-                              <span>{t("inactive")}</span>
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          {user.isVerified ? (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 dark:text-blue-400">
-                              <ShieldCheck className="h-3.5 w-3.5" />
-                              <span>{t("verified")}</span>
-                            </span>
-                          ) : (
-                            <span className="text-[11px] text-slate-400 dark:text-slate-500">
-                              {t("unverified")}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-slate-500 dark:text-slate-400">
-                          {formatJoinedDate(user.createdAt)}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <button
-                            type="button"
-                            onClick={() => setPendingConfirmUser(user)}
-                            disabled={isSuperAdmin || toggleStatus.isPending}
-                            title={isSuperAdmin ? t("superAdminProtected") : undefined}
-                            className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
-                              user.isActive
-                                ? "bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
-                                : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
-                            }`}
-                          >
-                            {user.isActive ? t("deactivate") : t("activate")}
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {/* Pagination Controls */}
-          {total > limit && (
-            <div className="flex items-center justify-between border-t border-slate-200 px-4 py-3 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
-              <span>
-                {t("page")} {page} of {totalPages} ({total.toLocaleString(localeCode)} users)
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  disabled={page <= 1 || isLoading}
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 font-medium transition hover:bg-slate-50 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
-                >
-                  <ChevronLeft className="h-3.5 w-3.5" />
-                  <span>{t("previous")}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={page >= totalPages || isLoading}
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 font-medium transition hover:bg-slate-50 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
-                >
-                  <span>{t("next")}</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
-                </button>
+                          </td>
+                          <td className="px-4 py-3">
+                            {user.isVerified ? (
+                              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 dark:text-blue-400">
+                                <ShieldCheck className="h-3.5 w-3.5" />
+                                <span>{t("verified")}</span>
+                              </span>
+                            ) : (
+                              <span className="text-[11px] text-slate-400 dark:text-slate-500">
+                                {t("unverified")}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-slate-500 dark:text-slate-400">
+                            {formatJoinedDate(user.createdAt)}
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <button
+                              type="button"
+                              onClick={() => setPendingConfirmUser(user)}
+                              disabled={isSuperAdmin || toggleStatus.isPending}
+                              title={isSuperAdmin ? t("superAdminProtected") : undefined}
+                              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                                user.isActive
+                                  ? "bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
+                                  : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+                              }`}
+                            >
+                              {user.isActive ? t("deactivate") : t("activate")}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+
+            {/* Pagination Controls */}
+            {total > limit && (
+              <div className="flex items-center justify-between border-t border-slate-200 px-4 py-3 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                <span>
+                  {t("page")} {page} of {totalPages} ({total.toLocaleString(localeCode)} users)
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page <= 1 || isLoading}
+                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 font-medium transition hover:bg-slate-50 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                    <span>{t("previous")}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page >= totalPages || isLoading}
+                    className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 font-medium transition hover:bg-slate-50 disabled:opacity-40 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
+                  >
+                    <span>{t("next")}</span>
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </GradientCard>
       )}
 
       {/* Confirmation Modal for Toggle User Status */}
