@@ -1,18 +1,22 @@
 {
-  "HomePage": {
-    "title": "डॉक्टर कांटेक्ट",
-    "subtitle": "डॉक्टर अपॉइंटमेंट और क्लिनिक प्रबंधन प्रणाली",
+ "HomePage": {
     "login": "लॉगिन",
     "register": "रजिस्टर",
     "featuredDoctors": "प्रमुख डॉक्टर",
-    "viewAll": "सभी देखें"
+    "viewAll": "सभी देखें",
+    "allDoctors": "सभी डॉक्टर",
+    "viewAllDoctors": "सभी डॉक्टर देखें",
+    "featuredClinics": "प्रमुख क्लिनिक",
+    "allClinics": "सभी क्लिनिक",
+    "viewAllClinics": "सभी क्लिनिक देखें"
   },
   "Navbar": {
     "findDoctor": "डॉक्टर खोजें",
     "forClinics": "क्लिनिक के लिए",
     "howItWorks": "यह कैसे काम करता है",
     "availableDoctors": "उपलब्ध डॉक्टर",
-    "applyForListing": "लिस्टिंग के लिए आवेदन करें"
+    "applyForListing": "लिस्टिंग के लिए आवेदन करें",
+    "availableClinics": "उपलब्ध क्लिनिक"
   },
   "Hero": {
     "badge": "सत्यापित डॉक्टर - लाइव कतार",
@@ -1012,5 +1016,11 @@
     "receivedBy": "प्राप्तकर्ता एवं संसाधक",
     "referralNotFoundNotice": "वर्तमान पृष्ठ पर रेफरल रिकॉर्ड नहीं मिला।",
     "noReferralsToExport": "निर्यात के लिए कोई रेफरल लोड नहीं है।"
+  },
+  "ClinicSearch": {
+    "heading": "उपलब्ध क्लिनिक",
+    "searchPlaceholder": "नाम या शहर से क्लिनिक खोजें...",
+    "noResults": "कोई क्लिनिक नहीं मिला। भिन्न खोज का प्रयास करें।",
+    "loadError": "अभी क्लिनिक लोड नहीं हो सके। कृपया थोड़ी देर बाद पुनः प्रयास करें।"
   }
 }
