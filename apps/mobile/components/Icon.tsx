@@ -15,6 +15,7 @@ export type IconName =
   | 'stethoscope'
   | 'clock'
   | 'arrow-right'
+  | 'arrow-left'
   | 'alert-circle'
   | 'phone'
   | 'message-circle'
@@ -23,7 +24,17 @@ export type IconName =
   | 'check-circle'
   | 'user'
   | 'building'
-  | 'pulse';
+  | 'pulse'
+  | 'calendar'
+  | 'layout-dashboard'
+  | 'map-pin'
+  | 'users'
+  | 'chevron-right'
+  | 'award'
+  | 'activity'
+  | 'heart'
+  | 'save'
+  | 'refresh-cw';
 
 interface IconProps {
   name: IconName;
@@ -69,6 +80,8 @@ export function Icon({ name, size = 20, color = '#111827' }: IconProps) {
       return <FeatherIcon name="clock" size={size} color={color} />;
     case 'arrow-right':
       return <FeatherIcon name="arrow-right" size={size} color={color} />;
+    case 'arrow-left':
+      return <FeatherIcon name="arrow-left" size={size} color={color} />;
     case 'alert-circle':
       return <FeatherIcon name="alert-circle" size={size} color={color} />;
     case 'phone':
@@ -87,6 +100,26 @@ export function Icon({ name, size = 20, color = '#111827' }: IconProps) {
       return <MaterialCommunityIcon name="hospital-building" size={size} color={color} />;
     case 'pulse':
       return <MaterialCommunityIcon name="heart-pulse" size={size} color={color} />;
+    case 'calendar':
+      return <FeatherIcon name="calendar" size={size} color={color} />;
+    case 'layout-dashboard':
+      return <MaterialCommunityIcon name="view-dashboard-outline" size={size} color={color} />;
+    case 'map-pin':
+      return <FeatherIcon name="map-pin" size={size} color={color} />;
+    case 'users':
+      return <FeatherIcon name="users" size={size} color={color} />;
+    case 'chevron-right':
+      return <FeatherIcon name="chevron-right" size={size} color={color} />;
+    case 'award':
+      return <FeatherIcon name="award" size={size} color={color} />;
+    case 'activity':
+      return <FeatherIcon name="activity" size={size} color={color} />;
+    case 'heart':
+      return <FeatherIcon name="heart" size={size} color={color} />;
+    case 'save':
+      return <FeatherIcon name="save" size={size} color={color} />;
+    case 'refresh-cw':
+      return <FeatherIcon name="refresh-cw" size={size} color={color} />;
     default:
       return <FeatherIcon name="help-circle" size={size} color={color} />;
   }

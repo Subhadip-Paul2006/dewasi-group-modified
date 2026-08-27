@@ -21,6 +21,25 @@ export interface AuthUser {
   phone?: string | null;
 }
 
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+
+export interface PatientProfile {
+  id: string;
+  userId: string | null;
+  dob: string | null;
+  age?: number | null;
+  gender: Gender | null;
+  bloodGroup: string | null;
+  address: string | null;
+}
+
+export interface UpdateProfileInput {
+  dob?: string;
+  gender?: Gender;
+  bloodGroup?: string;
+  address?: string;
+}
+
 export type AppointmentStatus =
   | 'WAITING'
   | 'CHECKED_IN'
@@ -86,4 +105,3 @@ export interface ApiResponse<T = unknown> {
   message?: string;
   data: T;
 }
-
