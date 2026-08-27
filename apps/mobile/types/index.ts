@@ -70,8 +70,20 @@ export interface Appointment {
   clinic?: { clinicName: string };
 }
 
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponseData {
+  accessToken: string;
+  refreshToken?: string;
+  user: AuthUser;
+}
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;
   data: T;
 }
+

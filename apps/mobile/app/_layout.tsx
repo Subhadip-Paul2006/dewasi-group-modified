@@ -11,16 +11,23 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <StatusBar style="auto" />
+          <StatusBar style="dark" />
           <Stack
             screenOptions={{
               headerShown: false,
               animation: 'slide_from_right',
-              contentStyle: { backgroundColor: '#FFFFFF' },
+              contentStyle: { backgroundColor: '#F4F7FE' },
             }}
           >
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(patient)" options={{ headerShown: false }} />
+            <Stack.Screen name="(doctor)" options={{ headerShown: false }} />
+            <Stack.Screen name="(clinic)" options={{ headerShown: false }} />
+            <Stack.Screen name="(diagnosticCenter)" options={{ headerShown: false }} />
+            <Stack.Screen name="(diagnosticStaff)" options={{ headerShown: false }} />
+            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+            <Stack.Screen name="(superAdmin)" options={{ headerShown: false }} />
             <Stack.Screen name="(main)" options={{ headerShown: false }} />
           </Stack>
         </AuthProvider>

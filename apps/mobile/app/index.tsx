@@ -1,46 +1,77 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Spacing, Radius, Typography } from '../theme';
+import { useAuth } from '../lib/auth-context';
+import type { Role } from '../types';
 
 export default function IndexScreen() {
   const router = useRouter();
+  const { user, loading, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAuthenticated && user) {
+        switch (user.role as Role) {
+          case 'PATIENT':
+            router.replace('/(patient)');
+            break;
+          case 'DOCTOR':
+            router.replace('/(doctor)');
+            break;
+          case 'CLINIC':
+            router.replace('/(clinic)');
+            break;
+          case 'DIAGNOSTIC_CENTER':
+            router.replace('/(diagnosticCenter)');
+            break;
+          case 'DIAGNOSTIC_STAFF':
+            router.replace('/(diagnosticStaff)');
+            break;
+          case 'SUPER_ADMIN':
+            router.replace('/(superAdmin)');
+            break;
+          case 'ADMIN':
+            router.replace('/(admin)');
+            break;
+          default:
+            router.replace('/(main)');
+            break;
+        }
+      } else {
+        router.replace('/(auth)');
+      }
+    }
+  }, [loading, isAuthenticated, user, router]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>Phase 0 Foundation</Text>
+        {/* Brand Showcase */}
+        <View style={styles.brandBox}>
+          <View style={styles.iconContainer}>
+            <Image
+              source={require('../assets/logo-icon.png')}
+              style={styles.logoIcon}
+              resizeMode="contain"
+            />
+          </View>
+          <Image
+            source={require('../assets/LOGO.png')}
+            style={styles.logoFull}
+            resizeMode="contain"
+          />
         </View>
 
-        <Text style={styles.title}>Dewasi Group</Text>
-        <Text style={styles.subtitle}>Smart Healthcare & Queue Ecosystem</Text>
-
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Mobile Architecture Ready</Text>
-          <Text style={styles.cardText}>
-            React Native + Expo Router + TanStack Query + Secure Auth Foundation
-          </Text>
+        <View style={styles.statusBox}>
+          <ActivityIndicator size="small" color={Colors.light.primary} />
+          <Text style={styles.statusText}>Connecting to Dewasi Health Network...</Text>
         </View>
+      </View>
 
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => router.push('/(auth)')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.primaryButtonText}>Test Auth Route</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => router.push('/(main)')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.secondaryButtonText}>Test Main Route</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Phase 1 • Secure Authentication Gateway</Text>
       </View>
     </SafeAreaView>
   );
@@ -50,86 +81,67 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.light.backgroundSoft,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: Spacing.four,
   },
   content: {
     flex: 1,
-    padding: Spacing.four,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: Spacing.four,
   },
-  badge: {
-    backgroundColor: Colors.light.secondaryLight,
-    paddingHorizontal: Spacing.two + Spacing.half,
-    paddingVertical: Spacing.one,
-    borderRadius: Radius.full,
-    marginBottom: Spacing.three,
-  },
-  badgeText: {
-    color: Colors.light.secondaryDark,
-    fontSize: Typography.fontSizes.xs,
-    fontWeight: Typography.fontWeights.semibold,
-  },
-  title: {
-    fontSize: Typography.fontSizes['3xl'],
-    fontWeight: Typography.fontWeights.extrabold,
-    color: Colors.light.primaryDark,
-    textAlign: 'center',
-    marginBottom: Spacing.one,
-  },
-  subtitle: {
-    fontSize: Typography.fontSizes.sm,
-    color: Colors.light.ink500,
-    textAlign: 'center',
+  brandBox: {
+    alignItems: 'center',
+    gap: Spacing.three,
     marginBottom: Spacing.five,
   },
-  card: {
-    width: '100%',
+  iconContainer: {
+    width: 72,
+    height: 72,
+    borderRadius: Radius.xl,
+    backgroundColor: '#EFF6FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#BFDBFE',
+    shadowColor: '#1B3A8C',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  logoIcon: {
+    width: 48,
+    height: 48,
+  },
+  logoFull: {
+    width: 180,
+    height: 40,
+  },
+  statusBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
     backgroundColor: Colors.light.surfaceWhite,
-    borderRadius: Radius.lg,
-    padding: Spacing.four,
+    paddingVertical: 10,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Radius.full,
     borderWidth: 1,
     borderColor: Colors.light.surface200,
-    marginBottom: Spacing.five,
   },
-  cardTitle: {
-    fontSize: Typography.fontSizes.base,
-    fontWeight: Typography.fontWeights.bold,
-    color: Colors.light.ink900,
-    marginBottom: Spacing.one,
-  },
-  cardText: {
-    fontSize: Typography.fontSizes.xs,
+  statusText: {
+    fontSize: 13,
+    fontWeight: '500',
     color: Colors.light.ink600,
-    lineHeight: Typography.lineHeights.sm,
   },
-  buttonGroup: {
-    width: '100%',
-    gap: Spacing.two,
+  footer: {
+    paddingBottom: Spacing.two,
   },
-  primaryButton: {
-    backgroundColor: Colors.light.primary,
-    paddingVertical: Spacing.three,
-    borderRadius: Radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  primaryButtonText: {
-    color: Colors.light.surfaceWhite,
-    fontSize: Typography.fontSizes.sm,
-    fontWeight: Typography.fontWeights.semibold,
-  },
-  secondaryButton: {
-    backgroundColor: Colors.light.surfaceWhite,
-    borderWidth: 1,
-    borderColor: Colors.light.border,
-    paddingVertical: Spacing.three,
-    borderRadius: Radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButtonText: {
-    color: Colors.light.ink700,
-    fontSize: Typography.fontSizes.sm,
-    fontWeight: Typography.fontWeights.semibold,
+  footerText: {
+    fontSize: 11,
+    color: Colors.light.ink400,
+    fontWeight: '500',
   },
 });

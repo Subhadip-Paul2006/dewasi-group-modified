@@ -1,11 +1,11 @@
 import React from 'react';
 import { AuthenticatedPlaceholder } from '../../components';
 
-export default function MainHomeScreen() {
+export default function PatientHomeScreen() {
   return (
     <AuthenticatedPlaceholder
-      portalTitle="Healthcare Portal"
-      portalSubtitle="Dewasi Group Healthcare Ecosystem"
+      portalTitle="Patient Portal"
+      portalSubtitle="Book appointments, track queues, and view prescriptions"
       expectedRole="PATIENT"
       iconName="user"
     />
