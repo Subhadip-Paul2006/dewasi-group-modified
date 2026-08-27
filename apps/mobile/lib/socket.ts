@@ -15,9 +15,14 @@ export async function getSocket(): Promise<Socket> {
     });
 
     socket.on('connect_error', (err) => {
-      // Soft log - socket failures should never crash the app
       if (__DEV__) {
-        console.warn('[Socket] Connection warning:', err.message);
+        console.warn('[Socket] Connection error:', err.message);
+      }
+    });
+
+    socket.on('disconnect', (reason) => {
+      if (__DEV__) {
+        console.log('[Socket] Disconnected:', reason);
       }
     });
   }

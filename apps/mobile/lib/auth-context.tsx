@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import type { AuthUser } from '../types';
 import { api, setAccessToken } from './api';
 import { TokenStorage } from './secure-store';
+import { disconnectSocket } from './socket';
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -73,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setAccessToken(null);
       await TokenStorage.clearAll();
+      disconnectSocket();
       setUserState(null);
     }
   };

@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '../../components/Icon';
-import { Colors, Typography } from '../../theme';
+import { Colors } from '../../theme';
 
 export default function PatientTabsLayout() {
   const insets = useSafeAreaInsets();
@@ -35,6 +35,27 @@ export default function PatientTabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Icon name="layout-dashboard" size={size || 22} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="doctors"
+        options={{
+          href: null,
+          title: 'Find Doctor',
+        }}
+      />
+      <Tabs.Screen
+        name="book"
+        options={{
+          href: null,
+          title: 'Book Appointment',
+        }}
+      />
+      <Tabs.Screen
+        name="appointment/[id]"
+        options={{
+          href: null,
+          title: 'Appointment Details',
         }}
       />
       <Tabs.Screen

@@ -89,6 +89,203 @@ export interface Appointment {
   clinic?: { clinicName: string };
 }
 
+export type DayOfWeek =
+  | 'MONDAY'
+  | 'TUESDAY'
+  | 'WEDNESDAY'
+  | 'THURSDAY'
+  | 'FRIDAY'
+  | 'SATURDAY'
+  | 'SUNDAY';
+
+export type DoctorRequestStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+
+export interface DoctorRequest {
+  id: string;
+  status: DoctorRequestStatus;
+  dayOfWeek?: DayOfWeek;
+  startTime?: string;
+  endTime?: string;
+  fee?: number | null;
+  doctorId?: string;
+  clinicId?: string;
+  doctor?: { id: string; user?: { name: string; email?: string; phone?: string | null } };
+  clinic?: { id: string; clinicName: string; city?: string | null; address?: string | null };
+  createdAt?: string;
+}
+
+export interface DoctorLeave {
+  id: string;
+  date: string; // YYYY-MM-DD
+  reason?: string | null;
+  doctorId?: string;
+  clinicId?: string;
+  createdAt?: string;
+}
+
+export type QueueStatus =
+  | 'WAITING'
+  | 'CHECKED_IN'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'ABSENT'
+  | 'PAUSED'
+  | 'CLOSED';
+
+export interface QueueToken {
+  id: string;
+  token: number;
+  patientName?: string;
+  patientAge?: number | null;
+  patientGender?: Gender | null;
+  status: QueueStatus;
+  bookedAt?: string;
+}
+
+export interface DoctorQueue {
+  doctorId: string;
+  clinicId: string;
+  date: string;
+  currentToken: number;
+  lastTokenIssued: number;
+  status: string;
+  tokens?: QueueToken[];
+}
+
+export interface DashboardStats {
+  totalAppointmentsToday?: number;
+  completedToday?: number;
+  waitingToday?: number;
+  pendingRequestsCount?: number;
+  associatedClinicsCount?: number;
+  activeQueueStatus?: string;
+  avgConsultationMinutes?: number;
+  [key: string]: unknown;
+}
+
+export interface ClinicSearchResult {
+  id: string;
+  clinicName: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  logo: string | null;
+  isApproved: boolean;
+}
+
+export interface DoctorPatientRecord {
+  id: string;
+  patientId: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  age: number | null;
+  gender: Gender | null;
+  bloodGroup: string | null;
+  totalConsultations: number;
+  lastConsultationDate: string;
+  clinicId: string;
+  clinicName: string;
+}
+
+export interface PrescriptionItem {
+  id?: string;
+  medicineName: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  instructions?: string | null;
+}
+
+export interface DoctorPrescription {
+  id: string;
+  doctorId: string;
+  patientId: string;
+  clinicId: string;
+  appointmentId?: string | null;
+  patientName: string;
+  clinicName: string;
+  diagnosis: string;
+  items: PrescriptionItem[];
+  notes?: string | null;
+  createdAt: string;
+}
+
+export interface ClinicEarningsBreakdown {
+  clinicId: string;
+  clinicName: string;
+  totalCompletedConsultations: number;
+  consultationFee: number;
+  totalEarnings: number;
+}
+
+export interface DoctorEarningsSummary {
+  period: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'custom';
+  startDate?: string;
+  endDate?: string;
+  totalEarnings: number;
+  totalConsultations: number;
+  clinicBreakdown: ClinicEarningsBreakdown[];
+}
+
+export interface PatientLookup {
+  id: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  age: number | null;
+  gender: string | null;
+  isGuest: boolean;
+}
+
+export interface DiagnosticCenterLookup {
+  id: string;
+  centerName: string;
+  city: string | null;
+  address: string | null;
+  logo: string | null;
+}
+
+export interface SentReferral {
+  id: string;
+  testNames: string[];
+  notes: string | null;
+  createdAt: string;
+  patient: { name: string; phone: string | null; user?: { name: string; phone: string | null } };
+  diagnosticCenter: { centerName: string };
+}
+
+export type NotificationType =
+  | 'APPOINTMENT_BOOKED'
+  | 'APPOINTMENT_CANCELLED'
+  | 'CLINIC_APPROVED'
+  | 'CLINIC_REVOKED'
+  | 'DOCTOR_VERIFIED'
+  | 'CONNECTION_REQUEST_RECEIVED'
+  | 'CONNECTION_REQUEST_RESPONDED'
+  | 'GENERAL';
+
+export interface AppNotification {
+  id: string;
+  userId?: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  isRead: boolean;
+  meta?: Record<string, any> | null;
+  createdAt: string;
+}
+
+export interface DoctorSettings {
+  doctorId: string;
+  emailNotifications: boolean;
+  smsNotifications: boolean;
+  autoAcceptClinicRequests: boolean;
+  defaultConsultationFee: number | null;
+  digitalSignatureUrl?: string | null;
+}
+
 export interface LoginInput {
   email: string;
   password: string;
@@ -105,3 +302,4 @@ export interface ApiResponse<T = unknown> {
   message?: string;
   data: T;
 }
+

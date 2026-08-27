@@ -77,7 +77,7 @@ export default function PatientOverviewScreen() {
           badgeText="Dashboard"
           actionLabel="Find Doctor"
           onActionPress={() => {
-            // Placeholder CTA for future doctor search phase
+            router.push('/(patient)/doctors');
           }}
         />
 
@@ -161,7 +161,9 @@ export default function PatientOverviewScreen() {
             title="No Appointments Yet"
             description="You do not have any upcoming appointments. Book your first appointment to track your live queue."
             actionLabel="Find a Doctor"
-            onActionPress={() => {}}
+            onActionPress={() => {
+              router.push('/(patient)/doctors');
+            }}
           />
         )}
 

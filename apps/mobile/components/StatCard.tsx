@@ -6,7 +6,7 @@ import { Colors, Spacing, Radius, Typography } from '../theme';
 
 interface StatCardProps {
   label: string;
-  value: number;
+  value: number | string;
   iconName: IconName;
   variant: GradientVariant;
 }
