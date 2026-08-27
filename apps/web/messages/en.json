@@ -1,18 +1,22 @@
 {
   "HomePage": {
-    "title": "Doctor Contact",
-    "subtitle": "Doctor Appointment & Clinic Management System",
     "login": "Login",
     "register": "Register",
     "featuredDoctors": "Featured Doctors",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "allDoctors": "All Doctors",
+    "viewAllDoctors": "View All Doctors",
+    "featuredClinics": "Featured Clinics",
+    "allClinics": "All Clinics",
+    "viewAllClinics": "View All Clinics"
   },
   "Navbar": {
     "findDoctor": "Find a Doctor",
     "forClinics": "For Clinics",
     "howItWorks": "How it Works",
     "availableDoctors": "Available Doctors",
-    "applyForListing": "Apply for Listing"
+    "applyForListing": "Apply for Listing",
+    "availableClinics": "Available Clinics"
   },
   "Hero": {
     "badge": "VERIFIED DOCTORS - REAL-TIME QUEUE",
@@ -1024,5 +1028,11 @@
     "receivedBy": "Received & Processed By",
     "referralNotFoundNotice": "Referral record was not found on the current page.",
     "noReferralsToExport": "No loaded referrals available for export."
+  },
+  "ClinicSearch": {
+    "heading": "Available Clinics",
+    "searchPlaceholder": "Search clinics by name or city...",
+    "noResults": "No clinics found. Try a different search.",
+    "loadError": "Could not load clinics right now. Please try again shortly."
   }
 }

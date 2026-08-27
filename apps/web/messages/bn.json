@@ -1,18 +1,22 @@
 {
-  "HomePage": {
-    "title": "ডক্টর কনট্রাক্ট",
-    "subtitle": "ডাক্তার অ্যাপয়েন্টমেন্ট ও ক্লিনিক ম্যানেজমেন্ট সিস্টেম",
+ "HomePage": {
     "login": "লগইন",
     "register": "রেজিস্টার",
     "featuredDoctors": "বিশেষ ডাক্তারগণ",
-    "viewAll": "সব দেখুন"
+    "viewAll": "সব দেখুন",
+    "allDoctors": "সকল ডাক্তার",
+    "viewAllDoctors": "সকল ডাক্তার দেখুন",
+    "featuredClinics": "বিশেষ ক্লিনিক",
+    "allClinics": "সকল ক্লিনিক",
+    "viewAllClinics": "সকল ক্লিনিক দেখুন"
   },
   "Navbar": {
     "findDoctor": "ডাক্তার খুঁজুন",
     "forClinics": "ক্লিনিকদের জন্য",
     "howItWorks": "কীভাবে কাজ করে",
     "availableDoctors": "উপলব্ধ ডাক্তার",
-    "applyForListing": "তালিকাভুক্তির জন্য আবেদন করুন"
+    "applyForListing": "তালিকাভুক্তির জন্য আবেদন করুন",
+    "availableClinics": "উপলব্ধ ক্লিনিক"
   },
   "Hero": {
     "badge": "ভেরিফায়েড ডাক্তার - রিয়েল-টাইম কিউ",
@@ -1078,5 +1082,12 @@
     "receivedBy": "গ্রহণ ও প্রস্তুত করেছেন",
     "referralNotFoundNotice": "বর্তমান পৃষ্ঠায় রেফারেল রেকর্ডটি পাওয়া যায়নি।",
     "noReferralsToExport": "এক্সপোর্ট করার মতো কোনো রেফারেল লোড হয়নি।"
+  },
+
+  "ClinicSearch": {
+    "heading": "উপলব্ধ ক্লিনিক",
+    "searchPlaceholder": "নাম বা শহর দিয়ে ক্লিনিক খুঁজুন...",
+    "noResults": "কোনো ক্লিনিক পাওয়া যায়নি। অন্যভাবে খুঁজে দেখুন।",
+    "loadError": "এই মুহূর্তে ক্লিনিকের তথ্য লোড করা যায়নি। একটু পরে আবার চেষ্টা করুন।"
   }
 }
